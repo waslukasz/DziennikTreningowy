@@ -136,3 +136,4 @@ C:\Users\ljwas\RiderProjects\DziennikTreningowy\backend\dzienniktreningowyapi\ob
 C:\Users\ljwas\RiderProjects\DziennikTreningowy\backend\dzienniktreningowyapi\obj\Debug\net8.0\DziennikTreningowyAPI.pdb
 C:\Users\ljwas\RiderProjects\DziennikTreningowy\backend\dzienniktreningowyapi\obj\Debug\net8.0\DziennikTreningowyAPI.genruntimeconfig.cache
 C:\Users\ljwas\RiderProjects\DziennikTreningowy\backend\dzienniktreningowyapi\obj\Debug\net8.0\ref\DziennikTreningowyAPI.dll
+C:\Users\ljwas\RiderProjects\DziennikTreningowy\Backend\DziennikTreningowyAPI\bin\Debug\net8.0\AutoMapper.dll

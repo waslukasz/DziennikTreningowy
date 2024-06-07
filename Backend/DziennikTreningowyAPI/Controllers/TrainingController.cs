@@ -1,4 +1,7 @@
-﻿using DziennikTreningowyAPI.Data;
+﻿using AutoMapper;
+using DziennikTreningowyAPI.Data;
+using DziennikTreningowyAPI.Dtos.Exercise;
+using DziennikTreningowyAPI.Dtos.Training;
 using DziennikTreningowyAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,22 +12,27 @@ namespace DziennikTreningowyAPI.Controllers;
 public class TrainingController : Controller
 {
     private readonly ApplicationDbContext _context;
-    public TrainingController(ApplicationDbContext context)
+    private readonly IMapper _mapper;
+
+    public TrainingController(ApplicationDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        List<Training> trainings = _context.Trainings.ToList();
+        // TODO: Add select(exercises) and map them to ExerciseDtos
+        List<TrainingDto> trainings = _mapper.Map<List<Training>, List<TrainingDto>>(_context.Trainings.ToList());
         return Ok(trainings);
     }
 
     [HttpGet("{id}")]
     public IActionResult GetById([FromRoute] int id)
     {
-        Training? training = _context.Trainings.Find(id);
+        // TODO: Add select(exercises) and map to ExerciseDto
+        TrainingDto? training = _mapper.Map<Training?, TrainingDto?>(_context.Trainings.Find(id));
         if (training == null) return NotFound();
         return Ok(training);
     }

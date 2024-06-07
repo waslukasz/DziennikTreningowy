@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "A4OOYAMU63qPz0dRkAZ9kqm6TbxlXRLaJpnVPYFSGF1moq0S8yFXLgMEiS8kh3alrP7zNe5gZEKW28HPZ3IS5A==",
+  "dgSpecHash": "yp39fL7c2BM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\Backend\\DziennikTreningowyAPI\\DziennikTreningowyAPI.csproj",
+  "projectFilePath": "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\backend\\dzienniktreningowyapi\\DziennikTreningowyAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ljwas\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\ljwas\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

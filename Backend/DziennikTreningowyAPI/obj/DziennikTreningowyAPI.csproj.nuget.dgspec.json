@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\backend\\dzienniktreningowyapi\\DziennikTreningowyAPI.csproj": {}
+    "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\Backend\\DziennikTreningowyAPI\\DziennikTreningowyAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\backend\\dzienniktreningowyapi\\DziennikTreningowyAPI.csproj": {
+    "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\Backend\\DziennikTreningowyAPI\\DziennikTreningowyAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\backend\\dzienniktreningowyapi\\DziennikTreningowyAPI.csproj",
+        "projectUniqueName": "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\Backend\\DziennikTreningowyAPI\\DziennikTreningowyAPI.csproj",
         "projectName": "DziennikTreningowyAPI",
-        "projectPath": "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\backend\\dzienniktreningowyapi\\DziennikTreningowyAPI.csproj",
+        "projectPath": "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\Backend\\DziennikTreningowyAPI\\DziennikTreningowyAPI.csproj",
         "packagesPath": "C:\\Users\\ljwas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\backend\\dzienniktreningowyapi\\obj\\",
+        "outputPath": "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\Backend\\DziennikTreningowyAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ljwas\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -35,11 +35,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {

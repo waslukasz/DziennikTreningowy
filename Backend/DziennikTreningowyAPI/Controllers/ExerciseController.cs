@@ -44,4 +44,23 @@ public class ExerciseController : Controller
         _context.SaveChanges();
         return CreatedAtAction(nameof(GetById), new { id = exerciseModel.Id }, _mapper.Map<Exercise, ExerciseDto>(exerciseModel));
     }
+
+    [HttpPatch]
+    [Route("{id}")]
+    public IActionResult Update([FromRoute] int id, [FromBody] UpdateExerciseRequest dto)
+    {
+        var exerciseModel = _context.Exercises.FirstOrDefault((e) => e.Id == id);
+        if (exerciseModel == null) return NotFound();
+        if (_context.Trainings.FirstOrDefault((t) => t.Id == dto.TrainingId) == null) return NotFound(); // TODO: Training not found
+
+        exerciseModel.Name = dto.Name;
+        exerciseModel.Description = dto.Description;
+        exerciseModel.Weight = dto.Weight;
+        exerciseModel.Repetitions = dto.Repetitions;
+        exerciseModel.Duration = dto.Duration;
+        exerciseModel.TrainingId = dto.TrainingId;
+
+        _context.SaveChanges();
+        return Ok(_mapper.Map<Exercise, ExerciseDto>(exerciseModel));
+    }
 }

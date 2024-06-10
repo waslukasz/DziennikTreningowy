@@ -2,6 +2,7 @@
 using DziennikTreningowyAPI.Data;
 using DziennikTreningowyAPI.Dtos.Exercise;
 using DziennikTreningowyAPI.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DziennikTreningowyAPI.Controllers;
@@ -62,5 +63,16 @@ public class ExerciseController : Controller
 
         _context.SaveChanges();
         return Ok(_mapper.Map<Exercise, ExerciseDto>(exerciseModel));
+    }
+
+    [HttpDelete]
+    [Route("{id}")]
+    public IActionResult Delete([FromRoute] int id)
+    {
+        var exerciseModel = _context.Exercises.FirstOrDefault((e) => e.Id == id);
+        if (exerciseModel == null) return NotFound();
+        _context.Exercises.Remove(exerciseModel);
+        _context.SaveChanges();
+        return NoContent();
     }
 }

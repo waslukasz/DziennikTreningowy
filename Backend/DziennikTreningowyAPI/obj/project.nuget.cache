@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+Du5sRpm805y/7kM25NegGPwIRF9YTVNltPEiU0QzASkvmC78ZBVKzZgTZmwdzY9p3LoVt2VHkfvYWMQB+dinQ==",
+  "dgSpecHash": "328DEDYrFv8qvtelgeEm7BRgBMlPJwXI0YzHpqfvs1sDd+VZwqKlP37sOVcB0rgyEzBTpIFtZgzMKfwgZjSZ4Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ljwas\\RiderProjects\\DziennikTreningowy\\Backend\\DziennikTreningowyAPI\\DziennikTreningowyAPI.csproj",
+  "projectFilePath": "D:\\JetBrains Rider\\DziennikTreningowy\\Backend\\DziennikTreningowyAPI\\DziennikTreningowyAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ljwas\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\ljwas\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",

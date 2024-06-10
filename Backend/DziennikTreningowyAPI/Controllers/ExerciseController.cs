@@ -4,6 +4,7 @@ using DziennikTreningowyAPI.Dtos.Exercise;
 using DziennikTreningowyAPI.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DziennikTreningowyAPI.Controllers;
 
@@ -21,38 +22,46 @@ public class ExerciseController : Controller
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        List<ExerciseDto> exerciseDtos = _mapper.Map<List<ExerciseDto>>(_context.Exercises.ToList());
+        List<Exercise> exercises = await _context.Exercises.ToListAsync();
+        List<ExerciseDto> exerciseDtos = _mapper.Map<List<ExerciseDto>>(exercises);
         return Ok(exerciseDtos);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        ExerciseDto exerciseDto = _mapper.Map<ExerciseDto>(_context.Exercises.Find(id));
-        if (exerciseDto == null) return NotFound();
+        Exercise? exercise = await _context.Exercises.FindAsync(id);
+        if (exercise == null) return NotFound();
+        ExerciseDto exerciseDto = _mapper.Map<ExerciseDto>(exercise);
         return Ok(exerciseDto);
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateExerciseRequest dto)
+    public async Task<IActionResult> Create([FromBody] CreateExerciseRequest dto)
     {
-        var exerciseModel = _mapper.Map<CreateExerciseRequest, Exercise>(dto);
-        var training = _context.Trainings.FirstOrDefault((t) => t.Id == dto.TrainingId);
+        Exercise exerciseModel = _mapper.Map<CreateExerciseRequest, Exercise>(dto);
+
+        Training? training = await _context.Trainings.FindAsync(dto.TrainingId); // TODO: If does not exist, create new
         if (training == null) return NotFound(); // TODO: Training not found
-        _context.Exercises.Add(exerciseModel);
-        _context.SaveChanges();
-        return CreatedAtAction(nameof(GetById), new { id = exerciseModel.Id }, _mapper.Map<Exercise, ExerciseDto>(exerciseModel));
+        
+        await _context.Exercises.AddAsync(exerciseModel);
+        await _context.SaveChangesAsync();
+
+        ExerciseDto exerciseDto = _mapper.Map<Exercise, ExerciseDto>(exerciseModel);
+        return CreatedAtAction(nameof(GetById), new { id = exerciseModel.Id }, exerciseDto);
     }
 
     [HttpPatch]
     [Route("{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] UpdateExerciseRequest dto)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateExerciseRequest dto)
     {
-        var exerciseModel = _context.Exercises.FirstOrDefault((e) => e.Id == id);
+        Exercise? exerciseModel = await _context.Exercises.FindAsync(id);
         if (exerciseModel == null) return NotFound();
-        if (_context.Trainings.FirstOrDefault((t) => t.Id == dto.TrainingId) == null) return NotFound(); // TODO: Training not found
+
+        Training? training = await _context.Trainings.FindAsync(dto.TrainingId);
+        if (training == null) return NotFound(); // TODO: Training not found
 
         exerciseModel.Name = dto.Name;
         exerciseModel.Description = dto.Description;
@@ -60,19 +69,20 @@ public class ExerciseController : Controller
         exerciseModel.Repetitions = dto.Repetitions;
         exerciseModel.Duration = dto.Duration;
         exerciseModel.TrainingId = dto.TrainingId;
+        await _context.SaveChangesAsync();
 
-        _context.SaveChanges();
-        return Ok(_mapper.Map<Exercise, ExerciseDto>(exerciseModel));
+        ExerciseDto exerciseDto = _mapper.Map<Exercise, ExerciseDto>(exerciseModel);
+        return Ok(exerciseDto);
     }
 
     [HttpDelete]
     [Route("{id}")]
-    public IActionResult Delete([FromRoute] int id)
+    public async Task<IActionResult> Delete([FromRoute] int id)
     {
-        var exerciseModel = _context.Exercises.FirstOrDefault((e) => e.Id == id);
+        Exercise? exerciseModel = await _context.Exercises.FindAsync(id);
         if (exerciseModel == null) return NotFound();
         _context.Exercises.Remove(exerciseModel);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return NoContent();
     }
 }

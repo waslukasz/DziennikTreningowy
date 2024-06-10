@@ -22,17 +22,19 @@ public class TrainingController : Controller
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        List<TrainingDto> trainings = _mapper.Map<List<Training>, List<TrainingDto>>(_context.Trainings.Include((t) => t.Exercises).ToList());
-        return Ok(trainings);
+        List<Training> trainings = await _context.Trainings.Include((t) => t.Exercises).ToListAsync();
+        List<TrainingDto> trainingDtos = _mapper.Map<List<Training>, List<TrainingDto>> (trainings);
+        return Ok(trainingDtos);
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetById([FromRoute] int id)
+    public async Task<IActionResult> GetById([FromRoute] int id)
     {
-        TrainingDto? training = _mapper.Map<Training?, TrainingDto?>(_context.Trainings.Include((t) => t.Exercises).FirstOrDefault((t) => t.Id == id));
+        Training? training = await _context.Trainings.FindAsync(id);
         if (training == null) return NotFound();
-        return Ok(training);
+        TrainingDto trainingDto = _mapper.Map<Training, TrainingDto>(training);
+        return Ok(trainingDto);
     }
 }

@@ -1,6 +1,3 @@
 @DziennikTreningowyAPI_HostAddress = http://localhost:5029
 
-GET {{DziennikTreningowyAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
 ###

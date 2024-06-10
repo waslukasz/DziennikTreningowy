@@ -2,7 +2,7 @@
 
 public class Training
 {
-    public int Id { get; set; }
-    public List<Exercise> Exercises { get; set; } = new List<Exercise>();
-    public DateTime Timestamp { get; set; }
+    public int Id { get; init; }
+    public ICollection<Exercise> Exercises { get; set; } = [];
+    public DateTime Timestamp { get; init; }
 }

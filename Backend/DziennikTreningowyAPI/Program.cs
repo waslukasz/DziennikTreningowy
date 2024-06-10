@@ -1,5 +1,4 @@
 using DziennikTreningowyAPI.Data;
-using DziennikTreningowyAPI.Interfaces;
 using DziennikTreningowyAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;

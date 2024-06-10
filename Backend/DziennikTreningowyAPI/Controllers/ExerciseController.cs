@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DziennikTreningowyAPI.Dtos.Exercise;
-using DziennikTreningowyAPI.Interfaces;
 using DziennikTreningowyAPI.Models;
+using DziennikTreningowyAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DziennikTreningowyAPI.Controllers;

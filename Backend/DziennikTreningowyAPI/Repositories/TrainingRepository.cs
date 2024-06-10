@@ -1,9 +1,16 @@
 ﻿using DziennikTreningowyAPI.Data;
-using DziennikTreningowyAPI.Interfaces;
 using DziennikTreningowyAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DziennikTreningowyAPI.Repositories;
+
+public interface ITrainingRepository
+{
+    Task<List<Training>> GetAllAsync();
+    Task<Training?> GetByIdAsync(int id);
+    Task<Training> CreateAsync(Training training);
+    Task<Training?> DeleteAsync(int id);
+}
 
 public class TrainingRepository(ApplicationDbContext context) : ITrainingRepository
 {

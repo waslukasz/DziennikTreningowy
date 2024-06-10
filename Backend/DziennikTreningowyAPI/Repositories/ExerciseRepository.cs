@@ -1,12 +1,19 @@
 ﻿using DziennikTreningowyAPI.Data;
 using DziennikTreningowyAPI.Dtos.Exercise;
-using DziennikTreningowyAPI.Interfaces;
 using DziennikTreningowyAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DziennikTreningowyAPI.Repositories;
 
-// TODO: Fix Update/Create if project in request does not exist.
+public interface IExerciseRepository
+{
+    Task<List<Exercise>> GetAllAsync();
+    Task<Exercise?> GetByIdAsync(int id);
+    Task<Exercise> CreateAsync(Exercise exercise);
+    Task<Exercise?> UpdateAsync(int id, UpdateExerciseRequestDto request);
+    Task<Exercise?> DeleteAsync(int id);
+}
+
 public class ExerciseRepository(ApplicationDbContext context) : IExerciseRepository
 {
     public async Task<List<Exercise>> GetAllAsync()

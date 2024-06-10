@@ -1,4 +1,6 @@
 using DziennikTreningowyAPI.Data;
+using DziennikTreningowyAPI.Interfaces;
+using DziennikTreningowyAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -26,6 +28,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(secretConnectionString == null ? builder.Configuration.GetConnectionString("DefaultConnection") : secretConnectionString);
 });
+
+builder.Services.AddScoped<ITrainingRepository, TrainingRepository>();
+builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 
 var app = builder.Build();
 

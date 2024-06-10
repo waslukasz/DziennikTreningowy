@@ -11,6 +11,6 @@ public class AutoMapper : Profile
     {
         CreateMap<Training, TrainingDto>();
         CreateMap<Exercise, ExerciseDto>();
-        CreateMap<CreateExerciseRequest, Exercise>();
+        CreateMap<CreateExerciseRequestDto, Exercise>();
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace DziennikTreningowyAPI.Dtos.Exercise;
 
-public class CreateExerciseRequest
+public class UpdateExerciseRequestDto
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

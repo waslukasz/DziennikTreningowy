@@ -33,4 +33,15 @@ public class ExerciseController : Controller
         if (exerciseDto == null) return NotFound();
         return Ok(exerciseDto);
     }
+
+    [HttpPost]
+    public IActionResult Create([FromBody] CreateExerciseRequest dto)
+    {
+        var exerciseModel = _mapper.Map<CreateExerciseRequest, Exercise>(dto);
+        var training = _context.Trainings.FirstOrDefault((t) => t.Id == dto.TrainingId);
+        if (training == null) return NotFound(); // TODO: Training not found
+        _context.Exercises.Add(exerciseModel);
+        _context.SaveChanges();
+        return CreatedAtAction(nameof(GetById), new { id = exerciseModel.Id }, _mapper.Map<Exercise, ExerciseDto>(exerciseModel));
+    }
 }

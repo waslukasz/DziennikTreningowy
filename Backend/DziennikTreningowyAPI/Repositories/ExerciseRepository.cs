@@ -2,6 +2,7 @@
 using DziennikTreningowyAPI.Dtos.Exercise;
 using DziennikTreningowyAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DziennikTreningowyAPI.Repositories;
 
@@ -29,7 +30,7 @@ public class ExerciseRepository(ApplicationDbContext context) : IExerciseReposit
     }
 
     public async Task<Exercise> CreateAsync(Exercise exercise)
-    {
+    { 
         await context.Exercises.AddAsync(exercise);
         await context.SaveChangesAsync();
         return exercise;
@@ -40,12 +41,12 @@ public class ExerciseRepository(ApplicationDbContext context) : IExerciseReposit
         Exercise? exercise = await context.Exercises.FindAsync(id);
         if (exercise == null) return null;
         
-        exercise.Name = request.Name;
-        exercise.Description = request.Description;
-        exercise.Weight = request.Weight;
-        exercise.Repetitions = request.Repetitions;
-        exercise.Duration = request.Duration;
-        exercise.TrainingId = request.TrainingId;
+        exercise.Name = (request.Name.IsNullOrEmpty() ? exercise.Name : request.Name)!;
+        exercise.Description = (request.Description.IsNullOrEmpty() ? exercise.Description : request.Description)!;
+        exercise.Weight = request.Weight ?? exercise.Weight;
+        exercise.Repetitions = request.Repetitions ?? exercise.Repetitions;
+        exercise.Duration = request.Duration ?? exercise.Duration;
+        exercise.TrainingId = request.TrainingId ?? exercise.TrainingId;
         
         await context.SaveChangesAsync();
         return exercise;

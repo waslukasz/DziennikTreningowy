@@ -1,5 +1,6 @@
 using DziennikTreningowyAPI.Data;
 using DziennikTreningowyAPI.Repositories;
+using DziennikTreningowyAPI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -30,7 +31,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<ITrainingRepository, TrainingRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
-
+builder.Services.AddScoped<ITrainingService, TrainingService>();
+builder.Services.AddScoped<IExerciseService, ExerciseService>();
+    
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -18,12 +18,14 @@ public class ExerciseRepository(ApplicationDbContext context) : IExerciseReposit
 {
     public async Task<List<Exercise>> GetAllAsync()
     {
-        return await context.Exercises.ToListAsync();
+        List<Exercise> exercises = await context.Exercises.ToListAsync();
+        return exercises;
     }
 
     public async Task<Exercise?> GetByIdAsync(int id)
     {
-        return await context.Exercises.FirstOrDefaultAsync((e) => e.Id == id);
+        Exercise? exercise = await context.Exercises.FirstOrDefaultAsync((e) => e.Id == id);
+        return exercise;
     }
 
     public async Task<Exercise> CreateAsync(Exercise exercise)

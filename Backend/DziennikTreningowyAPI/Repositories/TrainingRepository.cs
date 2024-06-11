@@ -16,12 +16,14 @@ public class TrainingRepository(ApplicationDbContext context) : ITrainingReposit
 {
     public async Task<List<Training>> GetAllAsync()
     {
-        return await context.Trainings.Include((t) => t.Exercises).ToListAsync();
+        List<Training> trainings = await context.Trainings.Include((t) => t.Exercises).ToListAsync();
+        return trainings;
     }
 
     public async Task<Training?> GetByIdAsync(int id)
     {
-        return await context.Trainings.Include((t) => t.Exercises).FirstOrDefaultAsync((t) => t.Id == id);
+        Training? training = await context.Trainings.Include((t) => t.Exercises).FirstOrDefaultAsync((t) => t.Id == id);
+        return training;
     }
 
     public async Task<Training> CreateAsync(Training training)

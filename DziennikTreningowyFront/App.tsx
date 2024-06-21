@@ -1,12 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SQLiteProvider, useSQLiteContext } from "expo-sqlite";
+import { Text, View } from "react-native";
+import { initDatabase } from "./src/database/databaseSettings";
+
 
 export default function App() {
   return (
-    <View className='flex-1 items-center justify-center'>
-      <Text>Dziennik Treningowy!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SQLiteProvider databaseName="testDetabase.db" onInit={initDatabase}>
+      <View className="flex-1 items-center justify-center">
+        <Text>Dziennik Treningowy!</Text>
+      </View>
+    </SQLiteProvider>
   );
 }
-

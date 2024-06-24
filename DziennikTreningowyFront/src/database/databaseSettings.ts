@@ -1,5 +1,4 @@
 import { SQLiteDatabase, useSQLiteContext } from "expo-sqlite";
-import { useEffect, useState } from "react";
 export async function initDatabase(db: SQLiteDatabase) {
   const DATABASE_VERSION = 1;
   const result = await db.getFirstAsync<{ user_version: number }>(
@@ -22,19 +21,26 @@ export async function initDatabase(db: SQLiteDatabase) {
             repetitions INTEGER,
             duration TEXT,
             trainingId INTEGER,
-            timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW')),
+            timestamp TEXT DEFAULT (STRFTIME('%d/%m/%Y', 'NOW')),
             FOREIGN KEY (trainingId) REFERENCES trainings(Id)
             );
         CREATE TABLE IF NOT EXISTS Trainings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d', 'NOW'))
+            timestamp TEXT DEFAULT (STRFTIME('%d/%m/%Y', 'NOW'))
         );
-        INSERT INTO Trainings (timestamp) VALUES 
-            (STRFTIME('%Y-%m-%d', 'NOW')),
-            (STRFTIME('%Y-%m-%d', 'NOW', '-1 day')),
-            (STRFTIME('%Y-%m-%d', 'NOW', '-2 days'));
-
-        `);
+        CREATE TABLE IF NOT EXISTS BodyMeasurements (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            measurementDate TEXT DEFAULT (STRFTIME('%d/%m/%Y', 'NOW')),
+            neck INTEGER,
+            abdomen INTEGER,
+            chest INTEGER,
+            hips INTEGER,
+            bicep INTEGER,
+            thigh INTEGER,
+            waist INTEGER,
+            calf INTEGER
+        );
+       `);
       currentDbVersion = 1;
     }
     await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);

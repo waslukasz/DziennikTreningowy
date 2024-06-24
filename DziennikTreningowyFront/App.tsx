@@ -5,7 +5,7 @@ import { initDatabase } from "./src/database/databaseSettings";
 
 export default function App() {
   return (
-    <SQLiteProvider databaseName="testDetabase.db" onInit={initDatabase}>
+    <SQLiteProvider databaseName="testDatabase.db" onInit={initDatabase}>
       <View className="flex-1 items-center justify-center">
         <Text>Dziennik Treningowy!</Text>
       </View>

@@ -8,7 +8,7 @@ export async function getTrainingById(db:SQLiteDatabase,id:number) {
     return result
 }
 export async function getTrainingsByDate(db:SQLiteDatabase,timestamp:Date){
-    const dateToString=timestamp.toLocaleDateString()
+    const dateToString=timestamp.toISOString()
     const result = await db.getAllAsync<Training>('SELECT * FROM Trainings where timestamp=$value',{$value:dateToString});
     return result;
 }
@@ -20,7 +20,7 @@ export async function deleteTraining(db:SQLiteDatabase,id:number ){
     const result=await db.runAsync('DELETE FROM Trainings WHERE id = $value', { $value: id });
 }
 export async function updateTraining(db:SQLiteDatabase,training:Training){
-    const dateToString=training.timestamp.toLocaleDateString()
+    const dateToString=training.timestamp.toISOString()
     const result = await db.runAsync('UPDATE Trainings SET timestamp = ? WHERE id = ?', [dateToString, training.id]);
     return result;
 }

@@ -21,16 +21,16 @@ export async function initDatabase(db: SQLiteDatabase) {
             repetitions INTEGER,
             duration TEXT,
             trainingId INTEGER,
-            timestamp TEXT DEFAULT (STRFTIME('%d/%m/%Y', 'NOW')),
+            timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d', 'NOW')),
             FOREIGN KEY (trainingId) REFERENCES trainings(Id)
             );
         CREATE TABLE IF NOT EXISTS Trainings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT DEFAULT (STRFTIME('%d/%m/%Y', 'NOW'))
+            timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d', 'NOW'))
         );
         CREATE TABLE IF NOT EXISTS BodyMeasurements (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            measurementDate TEXT DEFAULT (STRFTIME('%d/%m/%Y', 'NOW')),
+            measurementDate TEXT DEFAULT (STRFTIME('%Y-%m-%d', 'NOW')),
             neck INTEGER,
             abdomen INTEGER,
             chest INTEGER,

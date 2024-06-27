@@ -1,9 +1,11 @@
 type Exercise = {
   id?: number;
   name: string;
-  description:string;
+  description?:string;
   weight?:number;
   repetitions?:number;
-  duration:string;
+  sets?:number;
+  duration?:string;
   trainingId:number;
+  timestamp?: Date;
 };

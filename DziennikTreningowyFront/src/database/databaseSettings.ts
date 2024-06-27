@@ -15,22 +15,23 @@ export async function initDatabase(db: SQLiteDatabase) {
         PRAGMA journal_mode = WAL;
         CREATE TABLE IF NOT EXISTS Exercises (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL CHECK(LENGTH(name) <= 30),
-            description TEXT NOT NULL CHECK(LENGTH(Description) <= 30),
+            name TEXT CHECK(LENGTH(name) <= 30),
+            description TEXT CHECK(LENGTH(Description) <= 30),
             weight INTEGER,
             repetitions INTEGER,
+            sets INTEGER,
             duration TEXT,
             trainingId INTEGER,
-            timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d', 'NOW')),
+            timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW')),
             FOREIGN KEY (trainingId) REFERENCES trainings(Id)
             );
         CREATE TABLE IF NOT EXISTS Trainings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d', 'NOW'))
+            timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW'))
         );
         CREATE TABLE IF NOT EXISTS BodyMeasurements (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            measurementDate TEXT DEFAULT (STRFTIME('%Y-%m-%d', 'NOW')),
+            measurementDate TEXT DEFAULT (STRFTIME('%Y-%m-%d %H %M %S', 'NOW')),
             neck INTEGER,
             abdomen INTEGER,
             chest INTEGER,
@@ -46,4 +47,11 @@ export async function initDatabase(db: SQLiteDatabase) {
     await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
   }
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
+}
+export default async function DropDatabase(db:SQLiteDatabase) {
+  await db.execAsync(`
+    DROP TABLE IF EXISTS Exercises;
+    DROP TABLE IF EXISTS Trainings;
+    DROP TABLE IF EXISTS BodyMeasurements;
+  `);
 }

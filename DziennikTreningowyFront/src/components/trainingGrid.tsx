@@ -17,7 +17,7 @@ export default function TrainingGrid() {
     (async () => {
       loadTrainings();
     })();
-  }, [isDatePickerVisible]);
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -44,6 +44,7 @@ export default function TrainingGrid() {
   };
   const showDatePicker = () => {
     setIsDatePickerVisible(true);
+    loadTrainings()
   };
   const hideDatePicker = () => {
     setIsDatePickerVisible(false);
@@ -88,6 +89,7 @@ export default function TrainingGrid() {
           renderItem={({ item }) => <TrainingItem training={item} />}
           keyExtractor={(item) => item.id.toString()}
         />
+       
       </View>
     </View>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { View, Text, Pressable, FlatList } from "react-native";
 import {
   createTraining,
@@ -7,6 +7,7 @@ import {
 import { useSQLiteContext } from "expo-sqlite";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import TrainingItem from "./trainingItem";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function TrainingGrid() {
   const [trainings, setTrainings] = useState<Training[]>([]);
@@ -14,14 +15,23 @@ export default function TrainingGrid() {
   const db = useSQLiteContext();
   useEffect(() => {
     (async () => {
-      const data = await getWeekTraings();
-      data.sort(
-        (a, b) =>
-          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
-      );
-      setTrainings(data);
+      loadTrainings();
     })();
   }, [isDatePickerVisible]);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadTrainings();
+    }, [])
+  );
+  const loadTrainings = async () => {
+    const data = await getWeekTraings();
+    data.sort(
+      (a, b) =>
+        new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    );
+    setTrainings(data);
+  };
   const handleCreateTraining = (date: Date) => {
     const nowDate = new Date();
     date.setHours(
@@ -61,8 +71,10 @@ export default function TrainingGrid() {
         </Pressable>
       </View>
       <DateTimePicker
+        themeVariant="light" //Problem with Calendar Display in Dark Mode (something with react navigation)
         isVisible={isDatePickerVisible}
         mode="date"
+        isDarkModeEnabled={false}
         onConfirm={handleCreateTraining}
         onCancel={hideDatePicker}
         display="inline"
@@ -73,7 +85,7 @@ export default function TrainingGrid() {
           data={trainings}
           className="flex-grow-0 mt-5 h-5/6"
           columnWrapperStyle={{ justifyContent: "space-between" }}
-          renderItem={({ item }) => <TrainingItem training={item}/>}
+          renderItem={({ item }) => <TrainingItem training={item} />}
           keyExtractor={(item) => item.id.toString()}
         />
       </View>

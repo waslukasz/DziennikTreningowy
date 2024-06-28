@@ -1,5 +1,5 @@
 import { RouteProp } from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
   Home: undefined;
@@ -7,11 +7,11 @@ export type RootStackParamList = {
   Exercises: {trainingId: number} ;
 };
 
-export type TrainingScreenProps = NativeStackScreenProps<
+export type TrainingScreenProps = NativeStackNavigationProp<
   RootStackParamList,'Training'
 >;
 
-export type ExerciseScreenProps = NativeStackScreenProps<
+export type ExerciseScreenProps = NativeStackNavigationProp<
   RootStackParamList,
   'Exercises'
 >;

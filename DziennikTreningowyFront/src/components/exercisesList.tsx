@@ -3,7 +3,7 @@ import { View,Text, FlatList } from "react-native"
 import { createExercise, getAllExercises, getExerciseById } from "../database/repositories/exercisesRepository";
 import { useSQLiteContext } from "expo-sqlite";
 import ExercieseInput from "./exercieseInput";
-import ExercieseItem from "./exerviseItem";
+import ExercieseItem from "./exerciseItem";
 interface Props{
     trainingId:number
 }

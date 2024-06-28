@@ -1,6 +1,4 @@
-import { Pressable, Text, View } from "react-native";
-import { deleteExercise } from "../database/repositories/exercisesRepository";
-import { useSQLiteContext } from "expo-sqlite";
+import {  Text, View } from "react-native";
 interface Props {
   exercise: Exercise;
 }

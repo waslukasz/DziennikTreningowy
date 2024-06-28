@@ -1,7 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import ExercisesList from "../components/exercisesList";
-import { ExerciseScreenProps, ExercisesScreenRouteProp } from "../types/navigationStackParms";
-import TrainingsScreen from "./TrainingsScreen";
+import {  ExercisesScreenRouteProp } from "../types/navigationStackParms";
 
 
 export default function ExercisesScreen() {

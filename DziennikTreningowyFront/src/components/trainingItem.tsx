@@ -1,18 +1,16 @@
-import { View, Text, Pressable } from "react-native";
-import { deleteTraining } from "../database/repositories/trainingRepository";
+import {  Text, Pressable } from "react-native";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import {
   countExercisesInTraining,
 } from "../database/repositories/exercisesRepository";
 import { useNavigation } from "@react-navigation/native";
-import { ExerciseScreenProps, RootStackParamList, TrainingScreenProps } from "../types/navigationStackParms";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import {  ExerciseScreenProps } from "../types/navigationStackParms";
 interface Props {
   training: Training;
 }
 export default function TrainingItem({ training}: Props) {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<ExerciseScreenProps>();
   const db = useSQLiteContext();
   const [exercisiesCount, setExercisesCount] = useState<number>(0);
   useEffect(() => {

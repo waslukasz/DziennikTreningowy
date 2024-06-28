@@ -3,13 +3,10 @@ import {
   Pressable,
   Text,
   TextInput,
-  ScrollView,
   View,
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { createExercise } from "../database/repositories/exercisesRepository";
-import { useSQLiteContext } from "expo-sqlite";
 interface Props {
   trainingId: number;
   handleCreateExercise: (newExervise: Exercise) => void;
@@ -40,7 +37,7 @@ export default function ExercieseInput({
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View className="px-2">
         <TextInput
-          className="text-black px-4 h-12 bg-gray-100 my-2 rounded-xl "
+          className="text-black px-4 h-12 bg-gray-50 my-2 rounded-xl "
           value={name}
           onChangeText={(text) => setName(text)}
           placeholderTextColor="#000000"
@@ -48,7 +45,7 @@ export default function ExercieseInput({
         ></TextInput>
         <View className="flex flex-row items-center  space-x-2">
           <TextInput
-            className="text-black px-4 h-12 basis-1/2 bg-gray-100  rounded-xl"
+            className="text-black px-4 h-12 basis-1/2 bg-gray-50  rounded-xl"
             value={repetition ? repetition.toString() : ""}
             onChangeText={(text) => setRepetition(parseInt(text) || 0)}
             placeholderTextColor="#000000"
@@ -57,7 +54,7 @@ export default function ExercieseInput({
           ></TextInput>
           <Text className=""> X </Text>
           <TextInput
-            className="text-black px-4 h-12 basis-1/3   bg-gray-100 rounded-xl"
+            className="text-black px-4 h-12 basis-1/3   bg-gray-50 rounded-xl"
             value={sets ? sets.toString() : ""}
             onChangeText={(text) => setSets(parseInt(text) || 0)}
             placeholderTextColor="#000000"

@@ -4,12 +4,15 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import {
   countExercisesInTraining,
-  getAllExercises,
 } from "../database/repositories/exercisesRepository";
+import { useNavigation } from "@react-navigation/native";
+import { ExerciseScreenProps, RootStackParamList, TrainingScreenProps } from "../types/navigationStackParms";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 interface Props {
   training: Training;
 }
-export default function TrainingItem({ training }: Props) {
+export default function TrainingItem({ training}: Props) {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const db = useSQLiteContext();
   const [exercisiesCount, setExercisesCount] = useState<number>(0);
   useEffect(() => {
@@ -28,8 +31,8 @@ export default function TrainingItem({ training }: Props) {
   });
   return (
     <Pressable
-      className="bg-gray-100 py-5 px-2 m-4 w-5/12  rounded-xl"
-      onPress={() => console.log("Pressable")}
+      className="bg-gray-50 py-5 px-2 m-4 w-5/12 h-24 rounded-xl"
+      onPress={()=>navigation.navigate('Exercises', { trainingId: training.id })}
     >
       <Text className=" text-xl">
         {dateFormat}

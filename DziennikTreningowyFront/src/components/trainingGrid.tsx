@@ -7,7 +7,6 @@ import {
 import { useSQLiteContext } from "expo-sqlite";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import TrainingItem from "./trainingItem";
-import { getAllExercises } from "../database/repositories/exercisesRepository";
 
 export default function TrainingGrid() {
   const [trainings, setTrainings] = useState<Training[]>([]);
@@ -52,7 +51,7 @@ export default function TrainingGrid() {
   };
   return (
     <View className="flex-1  ">
-      <View className=" mx-5 mt-20 flex-row justify-between">
+      <View className=" m-5 flex-row justify-between">
         <Text className="text-3xl ">Plan List</Text>
         <Pressable
           onPress={showDatePicker}
@@ -74,7 +73,7 @@ export default function TrainingGrid() {
           data={trainings}
           className="flex-grow-0 mt-5 h-5/6"
           columnWrapperStyle={{ justifyContent: "space-between" }}
-          renderItem={({ item }) => <TrainingItem training={item} />}
+          renderItem={({ item }) => <TrainingItem training={item}/>}
           keyExtractor={(item) => item.id.toString()}
         />
       </View>

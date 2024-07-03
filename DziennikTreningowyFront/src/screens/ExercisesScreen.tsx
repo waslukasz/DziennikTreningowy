@@ -1,5 +1,5 @@
 import { useRoute } from "@react-navigation/native";
-import ExercisesList from "../components/exercisesList";
+import ExercisesList from "../components/exercise/exercisesList";
 import {  ExercisesScreenRouteProp } from "../types/navigationStackParms";
 
 

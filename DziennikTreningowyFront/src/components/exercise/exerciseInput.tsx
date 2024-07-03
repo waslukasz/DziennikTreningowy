@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Pressable,
   Text,
@@ -9,29 +9,60 @@ import {
 } from "react-native";
 interface Props {
   trainingId: number;
+  exerciseToEdit?: Exercise | null;
+  handleCloseEditMode: () => void;
+  handleEditExercise: (updateExercise: Exercise) => void;
   handleCreateExercise: (newExervise: Exercise) => void;
 }
 export default function ExercieseInput({
   trainingId,
+  exerciseToEdit,
+  handleCloseEditMode,
   handleCreateExercise,
+  handleEditExercise,
 }: Props) {
   const [name, setName] = useState("");
   const [repetition, setRepetition] = useState<number>();
   const [sets, setSets] = useState<number>();
+  useEffect(() => {
+    if (exerciseToEdit) {
+      setName(exerciseToEdit.name);
+      setRepetition(exerciseToEdit.repetitions);
+      setSets(exerciseToEdit.sets);
+    }
+  }, [exerciseToEdit]);
   const handleCreate = () => {
     const newExercise: Exercise = {
+      id: exerciseToEdit ? exerciseToEdit?.id : undefined,
       name: name,
       repetitions: repetition,
       sets: sets,
       trainingId: trainingId,
     };
-    if (name != "" && repetition != null&&repetition!=0 && sets != null&&sets!=0) {
-      handleCreateExercise(newExercise);
-      setName("");
-      setRepetition(0);
-      setSets(0);
+    if (
+      name != "" &&
+      repetition != null &&
+      repetition != 0 &&
+      sets != null &&
+      sets != 0
+    ) {
+      if (newExercise.id) {
+        handleEditExercise(newExercise);
+        exitFromEditMode();
+      } else {
+        setName("");
+        setRepetition(0);
+        setSets(0);
+        handleCreateExercise(newExercise);
+      }
     }
     Keyboard.dismiss();
+  };
+  const exitFromEditMode = () => {
+    setName("");
+    setRepetition(0);
+    setSets(0);
+    handleCloseEditMode();
   };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -62,12 +93,20 @@ export default function ExercieseInput({
             keyboardType="number-pad"
           ></TextInput>
         </View>
-        <View className=" items-end">
+        <View className="flex-row justify-end">
+          {exerciseToEdit && (
+            <Pressable
+              className=" bg-red-400 py-2 px-5 mr-2 mt-2 rounded-xl"
+              onPress={exitFromEditMode}
+            >
+              <Text className="text-white text-xl">Cancel</Text>
+            </Pressable>
+          )}
           <Pressable
             className=" bg-green-400 py-2 px-5 mt-2 rounded-xl"
             onPress={handleCreate}
           >
-            <Text className="text-white text-xl">Save</Text>
+            <Text className="text-white text-xl">{exerciseToEdit?'Save':"Add"}</Text>
           </Pressable>
         </View>
       </View>

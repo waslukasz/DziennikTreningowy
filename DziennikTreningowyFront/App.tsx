@@ -5,11 +5,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TrainingsScreen from "./src/screens/TrainingsScreen";
 import ExercisesScreen from "./src/screens/ExercisesScreen";
 import { RootStackParamList } from "./src/types/navigationStackParms";
+import { Pressable, Text } from "react-native";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
  
   return ( 
     <SQLiteProvider databaseName="testDatabase1.2.db" onInit={initDatabase}>
+      
       <NavigationContainer  >
         <Stack.Navigator  >
           <Stack.Screen name='Training' options={{title:""}} component={TrainingsScreen} />

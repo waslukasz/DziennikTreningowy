@@ -13,13 +13,14 @@ export async function getTrainingsByDate(db:SQLiteDatabase,timestamp:Date){
     return result;
 }
 export async function getTraingsInDateRange(db:SQLiteDatabase,from:Date,to:Date) {
-    const fromToString=from.toISOString()
-    const toToString=to.toISOString()
-    const result = await db.getAllAsync<Training>('SELECT * FROM Trainings WHERE timestamp BETWEEN ? AND ?',[fromToString,toToString]);
-    return result
+    const fromDate = from.toISOString().split('T')[0];
+  const toDate = to.toISOString().split('T')[0];
+  const result = await db.getAllAsync<Training>('SELECT * FROM Trainings WHERE DATE(timestamp) BETWEEN ? AND ?', [fromDate, toDate]);
+  return result;
 }
 export async function createTraining(db:SQLiteDatabase,date:Date){
     const dateToString=date.toISOString()
+    console.log(dateToString)
     const result = await db.runAsync(`INSERT INTO Trainings (timestamp) VALUES ('${dateToString}')`);
 }
 export async function deleteTraining(db:SQLiteDatabase,id:number ){

@@ -4,8 +4,8 @@ import {
   createExercise,
   deleteExercise,
   getAllExercises,
-  getExerciseById,
-} from "../database/repositories/exercisesRepository";
+  updateExercise,
+} from "../../database/repositories/exercisesRepository";
 import { useSQLiteContext } from "expo-sqlite";
 import ExercieseInput from "./exerciseInput";
 import ExercieseItem from "./exerciseItem";
@@ -16,6 +16,7 @@ interface Props {
 }
 export default function ExercisesList({ trainingId }: Props) {
   const [exercises, setExercises] = useState<Exercise[]>([]);
+  const [exerciseToEdit, setExerciseToEdit] = useState<Exercise | null>(null);
   const db = useSQLiteContext();
   useEffect(() => {
     (async () => {
@@ -30,14 +31,23 @@ export default function ExercisesList({ trainingId }: Props) {
     await createExercise(db, newExercise);
     await getExercises();
   };
+  const handleEditExercise=async(editExercise:Exercise)=>{
+    await updateExercise(db,editExercise);
+    await getExercises();
+  }
   const handleDeleteExercise = async (id?: number) => {
     if (id) {
       await deleteExercise(db, id);
+      if(exerciseToEdit){
+        setExerciseToEdit(null)
+      }
       await getExercises();
     }
   };
-  const handleEditExercise = () => {
-    console.log("Edit");
+  const handleEditExerciseMode = (exercise: Exercise) => {
+    if (exercise != undefined) {
+      setExerciseToEdit(exercise);
+    }
   };
   const renderHiddenItem = (data: any, rowMap: any) => {
     const exercise: Exercise = data.item;
@@ -45,14 +55,19 @@ export default function ExercisesList({ trainingId }: Props) {
       <ExerciseHiddenItem
         exercise={exercise}
         handleDelete={handleDeleteExercise}
-        handleEdit={handleEditExercise}
+        handleEdit={handleEditExerciseMode}
       />
     );
   };
-
+  const closeEditMode = () => {
+    setExerciseToEdit(null);
+  };
   return (
     <View className="mt-12">
       <ExercieseInput
+      handleEditExercise={handleEditExercise}
+        handleCloseEditMode={closeEditMode}
+        exerciseToEdit={exerciseToEdit}
         trainingId={trainingId}
         handleCreateExercise={handleCreateExercise}
       ></ExercieseInput>
@@ -65,8 +80,9 @@ export default function ExercisesList({ trainingId }: Props) {
         )}
         renderHiddenItem={renderHiddenItem}
         keyExtractor={(item) => item.id!.toString()}
-        rightOpenValue={-80}
-        leftOpenValue={80}
+        rightOpenValue={-180}
+        disableRightSwipe={true}
+        stopRightSwipe={-180}
       />
     </View>
   );

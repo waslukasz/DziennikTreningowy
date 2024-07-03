@@ -1,4 +1,4 @@
-import TrainingGrid from "../components/trainingGrid";
+import TrainingGrid from "../components/training/trainingGrid";
 
 export default function TrainingsScreen(){
    

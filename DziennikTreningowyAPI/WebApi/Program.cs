@@ -1,8 +1,12 @@
+using DziennikTreningowyAPI.Application.DTOs.User;
 using DziennikTreningowyAPI.Application.Mappers;
 using DziennikTreningowyAPI.Application.Services;
+using DziennikTreningowyAPI.Application.Validators;
 using DziennikTreningowyAPI.Domain.Interfaces;
 using DziennikTreningowyAPI.Infrastructure.Data;
 using DziennikTreningowyAPI.Infrastructure.Repositories;
+using DziennikTreningowyAPI.Utilities;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,8 +17,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-
 // Database connection
+
+//// Optional connection to external database using 'user-secrets'
 string? externalDbConnectionString = builder.Configuration["DziennikTreningowy:DefaultConnectionString"];
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -32,6 +37,10 @@ builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITrainingService, TrainingService>();
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
+// Validators
+builder.Services.AddScoped<IValidator<UserCreateDto>, UserCreateDtoValidator>();
+// Utilities
+builder.Services.AddScoped<IPasswordHasher, Pbkdf2PasswordHasher>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

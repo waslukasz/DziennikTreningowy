@@ -10,11 +10,13 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
+    private readonly IPasswordHasher _hasher;
 
-    public UserService(IUserRepository userRepository, IMapper mapper)
+    public UserService(IUserRepository userRepository, IMapper mapper, IPasswordHasher hasher)
     {
         _userRepository = userRepository;
         _mapper = mapper;
+        _hasher = hasher;
     }
 
     public async Task<UserDetailsDto> GetByIdAsync(Guid userId)
@@ -46,6 +48,7 @@ public class UserService : IUserService
         var user = _mapper.Map<User>(userDto);
         user.Id = new Guid();
         user.CreatedAt = DateTime.UtcNow;
+        user.PasswordHash = _hasher.HashPassword(userDto.Password);
 
         await _userRepository.AddAsync(user);
     }

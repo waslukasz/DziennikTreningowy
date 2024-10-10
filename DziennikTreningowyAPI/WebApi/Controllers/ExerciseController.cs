@@ -2,11 +2,9 @@
 
 namespace DziennikTreningowyAPI.WebApi.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class ExerciseController : Controller
 {
-    // GET
-    public IActionResult Index()
-    {
-        return View();
-    }
+
 }

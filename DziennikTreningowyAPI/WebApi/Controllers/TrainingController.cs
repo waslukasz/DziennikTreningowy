@@ -1,5 +1,4 @@
-﻿using DziennikTreningowyAPI.Application.DTOs.Training;
-using DziennikTreningowyAPI.Domain.Exceptions.Training;
+﻿using DziennikTreningowyAPI.Domain.Exceptions.Training;
 using DziennikTreningowyAPI.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

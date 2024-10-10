@@ -10,14 +10,14 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<User, UserDetailsDto>();
-        CreateMap<User, UserCreateDto>();
-        CreateMap<User, UserUpdateDto>();
-        CreateMap<Training, TrainingDetailsDto>();
-        CreateMap<Training, TrainingCreateDto>();
-        CreateMap<Training, TrainingUpdateDto>();
-        CreateMap<Exercise, ExerciseDetailsDto>();
-        CreateMap<Exercise, ExerciseCreateDto>();
-        CreateMap<Exercise, ExerciseUpdateDto>();
+        CreateMap<User, UserDetailsDto>().ReverseMap();
+        CreateMap<User, UserCreateDto>().ReverseMap();
+        CreateMap<User, UserUpdateDto>().ReverseMap();
+        CreateMap<Training, TrainingDetailsDto>().ReverseMap();
+        CreateMap<Training, TrainingCreateDto>().ReverseMap();
+        CreateMap<Training, TrainingUpdateDto>().ReverseMap();
+        CreateMap<Exercise, ExerciseDetailsDto>().ReverseMap();
+        CreateMap<Exercise, ExerciseCreateDto>().ReverseMap();
+        CreateMap<Exercise, ExerciseUpdateDto>().ReverseMap();
     }
 }

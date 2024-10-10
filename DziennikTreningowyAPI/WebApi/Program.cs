@@ -1,5 +1,8 @@
 using DziennikTreningowyAPI.Application.Mappers;
+using DziennikTreningowyAPI.Application.Services;
+using DziennikTreningowyAPI.Domain.Interfaces;
 using DziennikTreningowyAPI.Infrastructure.Data;
+using DziennikTreningowyAPI.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +19,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(externalDbConnectionString ?? builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// Repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITrainingRepository, TrainingRepository>();
+builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+// Services
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITrainingService, TrainingService>();
+builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 
 var app = builder.Build();
 

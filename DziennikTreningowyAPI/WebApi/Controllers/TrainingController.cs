@@ -1,12 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DziennikTreningowyAPI.Application.DTOs.Training;
+using DziennikTreningowyAPI.Domain.Exceptions.Training;
+using DziennikTreningowyAPI.Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DziennikTreningowyAPI.WebApi.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class TrainingController : Controller
 {
-    // GET
-    public IActionResult Index()
+    private readonly ITrainingService _trainingService;
+
+    public TrainingController(ITrainingService trainingService)
     {
-        return View();
+        _trainingService = trainingService;
+    }
+
+    [HttpGet("{trainingId:guid}")]
+    public async Task<IActionResult> GetTrainingById(Guid trainingId)
+    {
+        try
+        {
+            var training = await _trainingService.GetByIdAsync(trainingId);
+            return Ok(training);
+        }
+        catch (TrainingNotFoundException exception)
+        {
+            return NotFound(exception.Message);
+        }
     }
 }

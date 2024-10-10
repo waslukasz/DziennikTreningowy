@@ -27,7 +27,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Domain\Exceptions\" />
       <Folder Include="Infrastructure\Configurations\" />
       <Folder Include="Tests\Mocks\" />
       <Folder Include="Tests\Repositories\" />

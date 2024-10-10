@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DziennikTreningowyAPI.Application.DTOs.Exercise;
 using DziennikTreningowyAPI.Domain.Entities;
+using DziennikTreningowyAPI.Domain.Exceptions.Exercise;
 using DziennikTreningowyAPI.Domain.Interfaces;
 
 namespace DziennikTreningowyAPI.Application.Services;
@@ -19,7 +20,7 @@ public class ExerciseService : IExerciseService
     public async Task<ExerciseDetailsDto> GetByIdAsync(Guid exerciseId)
     {
         if (await _exerciseRepository.ExistsAsync(exerciseId))
-            throw new NotImplementedException();
+            throw new ExerciseNotFoundException(exerciseId);
 
         var exercise = await _exerciseRepository.GetByIdAsync(exerciseId);
         return _mapper.Map<ExerciseDetailsDto>(exercise);
@@ -42,7 +43,7 @@ public class ExerciseService : IExerciseService
     public async Task UpdateExerciseAsync(Guid exerciseId, ExerciseUpdateDto exerciseDto)
     {
         if (await _exerciseRepository.ExistsAsync(exerciseId))
-            throw new NotImplementedException();
+            throw new ExerciseNotFoundException(exerciseId);
 
         var exercise = await _exerciseRepository.GetByIdAsync(exerciseId);
         _mapper.Map(exerciseDto, exercise);
@@ -53,7 +54,7 @@ public class ExerciseService : IExerciseService
     public async Task DeleteExerciseAsync(Guid exerciseId)
     {
         if (await _exerciseRepository.ExistsAsync(exerciseId))
-            throw new NotImplementedException();
+            throw new ExerciseNotFoundException(exerciseId);
 
         var exercise = await _exerciseRepository.GetByIdAsync(exerciseId);
 

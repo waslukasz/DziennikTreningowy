@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DziennikTreningowyAPI.Application.DTOs.Training;
 using DziennikTreningowyAPI.Domain.Entities;
+using DziennikTreningowyAPI.Domain.Exceptions.Training;
 using DziennikTreningowyAPI.Domain.Interfaces;
 
 namespace DziennikTreningowyAPI.Application.Services;
@@ -19,7 +20,7 @@ public class TrainingService : ITrainingService
     public async Task<TrainingDetailsDto> GetByIdAsync(Guid trainingId)
     {
         if (await _trainingRepository.ExistsAsync(trainingId))
-            throw new NotImplementedException();
+            throw new TrainingNotFoundException(trainingId);
 
         var training = await _trainingRepository.GetByIdAsync(trainingId);
         return _mapper.Map<TrainingDetailsDto>(training);
@@ -42,7 +43,7 @@ public class TrainingService : ITrainingService
     public async Task UpdateTrainingAsync(Guid trainingId, TrainingUpdateDto trainingDto)
     {
         if (await _trainingRepository.ExistsAsync(trainingId))
-            throw new NotImplementedException();
+            throw new TrainingNotFoundException(trainingId);
 
         var training = await _trainingRepository.GetByIdAsync(trainingId);
         _mapper.Map(trainingDto, training);
@@ -53,7 +54,7 @@ public class TrainingService : ITrainingService
     public async Task DeleteTrainingAsync(Guid trainingId)
     {
         if (await _trainingRepository.ExistsAsync(trainingId))
-            throw new NotImplementedException();
+            throw new TrainingNotFoundException(trainingId);
 
         var training = await _trainingRepository.GetByIdAsync(trainingId);
 

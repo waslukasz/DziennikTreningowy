@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DziennikTreningowyAPI.Application.DTOs.User;
 using DziennikTreningowyAPI.Domain.Entities;
+using DziennikTreningowyAPI.Domain.Exceptions.User;
 using DziennikTreningowyAPI.Domain.Interfaces;
 
 namespace DziennikTreningowyAPI.Application.Services;
@@ -19,7 +20,7 @@ public class UserService : IUserService
     public async Task<UserDetailsDto> GetByIdAsync(Guid userId)
     {
         if (await _userRepository.ExistsAsync(userId))
-            throw new NotImplementedException();
+            throw new UserNotFoundException(userId);
 
         var user = await _userRepository.GetByIdAsync(userId);
         return _mapper.Map<UserDetailsDto>(user);
@@ -28,7 +29,7 @@ public class UserService : IUserService
     public async Task<UserDetailsDto> GetByEmailAsync(string userEmail)
     {
         if (await _userRepository.ExistsAsync(userEmail))
-            throw new NotImplementedException();
+            throw new UserNotFoundException(userEmail);
 
         var user = await _userRepository.GetByEmailAsync(userEmail);
         return _mapper.Map<UserDetailsDto>(user);
@@ -52,7 +53,7 @@ public class UserService : IUserService
     public async Task UpdateUserAsync(Guid userId, UserUpdateDto userDto)
     {
         if (await _userRepository.ExistsAsync(userId))
-            throw new NotImplementedException();
+            throw new UserNotFoundException(userId);
 
         var user = await _userRepository.GetByIdAsync(userId);
         _mapper.Map(userDto, user);
@@ -64,7 +65,7 @@ public class UserService : IUserService
     public async Task DeleteUserAsync(Guid userId)
     {
         if (await _userRepository.ExistsAsync(userId))
-            throw new NotImplementedException();
+            throw new UserNotFoundException(userId);
 
         var user = await _userRepository.GetByIdAsync(userId);
 

@@ -1,3 +1,4 @@
+using DziennikTreningowyAPI.Application.Mappers;
 using DziennikTreningowyAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 string? externalDbConnectionString = builder.Configuration["DziennikTreningowy:DefaultConnectionString"];
 

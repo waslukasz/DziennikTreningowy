@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "0dZj4a/VIT/Zrx+7wY7pz8IQBJSEG6uW2OQkskWw+gvIknR5QJo8UOmgRgBel6gXX5mIJlPBjyUMyj8Wn1VKGA==",
+  "dgSpecHash": "XV/bQgl+EJnvnJPyHjZMbzT/y6TaJgBJrYj7IehdJkVkofwVcUovmQA7GgNlPqUill2Om/dlBwnE8wIGbOZxVQ==",
   "success": true,
   "projectFilePath": "D:\\JetBrains Rider\\DziennikTreningowy\\DziennikTreningowyAPI\\DziennikTreningowyAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\ljwas\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\ljwas\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\ljwas\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\ljwas\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",

@@ -4,7 +4,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DziennikTreningowyAPI.WebApi.Controllers;
+namespace DziennikTreningowyAPI.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

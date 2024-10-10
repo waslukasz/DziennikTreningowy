@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace DziennikTreningowyAPI.WebApi.Controllers;
+namespace DziennikTreningowyAPI.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

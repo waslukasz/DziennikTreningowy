@@ -2,11 +2,13 @@
 
 namespace DziennikTreningowyAPI.WebApi.Controllers;
 
+[ApiController]
+[Route("api/user")]
 public class UserController : Controller
 {
-    // GET
+    [HttpGet]
     public IActionResult Index()
     {
-        return View();
+        return Ok("test");
     }
 }

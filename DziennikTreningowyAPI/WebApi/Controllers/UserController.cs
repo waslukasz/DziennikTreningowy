@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DziennikTreningowyAPI.WebApi.Controllers;
 
 [ApiController]
-[Route("api/user")]
+[Route("api/[controller]")]
 public class UserController : Controller
 {
     private readonly IUserService _userService;

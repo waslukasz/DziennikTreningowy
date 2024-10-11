@@ -10,5 +10,5 @@ public interface IUserService
     Task AddUserAsync(UserCreateDto userDto);
     Task UpdateUserAsync(Guid userId, UserUpdateDto userDto);
     Task DeleteUserAsync(Guid userId);
-    Task AuthenticateAsync(string email, string password);
+    Task<(string accessToken, string refreshToken)> AuthenticateAsync(string email, string password);
 }

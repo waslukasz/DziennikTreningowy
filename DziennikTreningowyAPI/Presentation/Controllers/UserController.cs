@@ -1,6 +1,7 @@
-﻿using System.Security.Claims;
-using System.Text.Json;
+﻿using Azure.Core;
 using DziennikTreningowyAPI.Application.DTOs.User;
+using DziennikTreningowyAPI.Domain.Entities;
+using DziennikTreningowyAPI.Domain.Exceptions;
 using DziennikTreningowyAPI.Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.Results;
@@ -17,33 +18,18 @@ public class UserController : Controller
     private readonly IJwtTokenManager _tokenManager;
     private readonly IValidator<UserCreateDto> _userCreateDtoValidator;
     
-    public UserController(IUserService userService, IJwtTokenManager tokenManager, IValidator<UserCreateDto> userCreateDtoValidator)
+    public UserController(IUserService userService, IValidator<UserCreateDto> userCreateDtoValidator)
     {
         _userService = userService;
         _userCreateDtoValidator = userCreateDtoValidator;
-        _tokenManager = tokenManager;
     }
 
-    // TODO: Delete tests after finishing controller
-    [HttpGet("token")]
-    public async Task<IActionResult> Test()
-    {
-        var token = _tokenManager.GenerateAccessToken(Guid.NewGuid(), "email@wp.pl");
-        return Ok(token);
-    }
-    
-    [HttpGet("authorize")]
-    [Authorize]
-    public async Task<IActionResult> Test2()
-    {
-        return Ok();
-    }
-    // Lines to delete - end
-    
-    [HttpPost]
-    public async Task<IActionResult> CreateUser([FromBody] UserCreateDto userCreateDto)
+    [HttpPost("register")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Register([FromBody] UserCreateDto userCreateDto)
     {
         ValidationResult validationResult = await _userCreateDtoValidator.ValidateAsync(userCreateDto);
+        
         if (!validationResult.IsValid)
         {
             foreach (var error in validationResult.Errors)
@@ -52,8 +38,24 @@ public class UserController : Controller
             }
             return BadRequest(ModelState);
         }
-        
+
         await _userService.AddUserAsync(userCreateDto);
         return Ok();
+    }
+
+    [HttpPost("login")]
+    [AllowAnonymous]
+    public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
+    {
+        try
+        {
+            var user = await _userService.GetByEmailAsync(userLoginDto.Email);
+            var tokens = await _userService.AuthenticateAsync(userLoginDto.Email, userLoginDto.Password);
+            return Ok(new { tokens.accessToken, tokens.refreshToken});
+        }
+        catch (ApiException ex)
+        {
+            return Unauthorized(ex.Message);
+        }
     }
 }

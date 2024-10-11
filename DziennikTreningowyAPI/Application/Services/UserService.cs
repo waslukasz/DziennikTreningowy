@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DziennikTreningowyAPI.Application.DTOs.User;
 using DziennikTreningowyAPI.Domain.Entities;
+using DziennikTreningowyAPI.Domain.Exceptions.Authorization;
 using DziennikTreningowyAPI.Domain.Exceptions.User;
 using DziennikTreningowyAPI.Domain.Interfaces;
 
@@ -11,17 +12,19 @@ public class UserService : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
     private readonly IPasswordHasher _hasher;
+    private readonly IJwtTokenManager _tokenManager;
 
-    public UserService(IUserRepository userRepository, IMapper mapper, IPasswordHasher hasher)
+    public UserService(IUserRepository userRepository, IMapper mapper, IPasswordHasher hasher, IJwtTokenManager tokenManager)
     {
         _userRepository = userRepository;
         _mapper = mapper;
         _hasher = hasher;
+        _tokenManager = tokenManager;
     }
 
     public async Task<UserDetailsDto> GetByIdAsync(Guid userId)
     {
-        if (await _userRepository.ExistsAsync(userId))
+        if (!await _userRepository.ExistsAsync(userId))
             throw new UserNotFoundException(userId);
 
         var user = await _userRepository.GetByIdAsync(userId);
@@ -30,7 +33,7 @@ public class UserService : IUserService
 
     public async Task<UserDetailsDto> GetByEmailAsync(string userEmail)
     {
-        if (await _userRepository.ExistsAsync(userEmail))
+        if (!await _userRepository.ExistsAsync(userEmail))
             throw new UserNotFoundException(userEmail);
 
         var user = await _userRepository.GetByEmailAsync(userEmail);
@@ -55,7 +58,7 @@ public class UserService : IUserService
 
     public async Task UpdateUserAsync(Guid userId, UserUpdateDto userDto)
     {
-        if (await _userRepository.ExistsAsync(userId))
+        if (!await _userRepository.ExistsAsync(userId))
             throw new UserNotFoundException(userId);
 
         var user = await _userRepository.GetByIdAsync(userId);
@@ -67,7 +70,7 @@ public class UserService : IUserService
 
     public async Task DeleteUserAsync(Guid userId)
     {
-        if (await _userRepository.ExistsAsync(userId))
+        if (!await _userRepository.ExistsAsync(userId))
             throw new UserNotFoundException(userId);
 
         var user = await _userRepository.GetByIdAsync(userId);
@@ -75,8 +78,18 @@ public class UserService : IUserService
         await _userRepository.DeleteAsync(user);
     }
 
-    public async Task AuthenticateAsync(string email, string password)
+    public async Task<(string accessToken, string refreshToken)> AuthenticateAsync(string email, string password)
     {
-        throw new NotImplementedException();
+        var user = await _userRepository.GetByEmailAsync(email);
+
+        if (user == null) throw new UserNotFoundException(email);
+
+        bool isPasswordValid = _hasher.VerifyPassword(password, user.PasswordHash);
+        if (!isPasswordValid) throw new InvalidPasswordException();
+
+        var accessToken = _tokenManager.GenerateAccessToken(user.Id, user.Email);
+        var refreshToken = _tokenManager.GenerateRefreshToken(user.Id, user.Email);
+
+        return (accessToken, refreshToken.Token);
     }
 }

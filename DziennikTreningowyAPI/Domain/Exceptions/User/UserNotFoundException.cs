@@ -1,6 +1,6 @@
 ﻿namespace DziennikTreningowyAPI.Domain.Exceptions.User;
 
-public class UserNotFoundException : Exception
+public class UserNotFoundException : ApiException
 {
     public UserNotFoundException(Guid userId) : base($"User with ID '{userId}' was not found.")
     {

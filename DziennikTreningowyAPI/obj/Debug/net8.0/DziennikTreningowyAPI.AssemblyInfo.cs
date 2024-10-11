@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DziennikTreningowyAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+81d93a0c4a83c16de2c81e8de88c045b7aa20f48")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b62ea772bb45668804b445552f362d006479b343")]
 [assembly: System.Reflection.AssemblyProductAttribute("DziennikTreningowyAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DziennikTreningowyAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

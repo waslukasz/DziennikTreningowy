@@ -21,6 +21,12 @@ public static class JwtConfiguration
             options.Key = jwtSettings.Key;
             options.Issuer = jwtSettings.Issuer;
             options.Audience = jwtSettings.Audience;
+            options.ValidateIssuer = jwtSettings.ValidateIssuer;
+            options.ValidateAudience = jwtSettings.ValidateAudience;
+            options.ValidateLifetime = jwtSettings.ValidateLifetime;
+            options.ValidateIssuerSigningKey = jwtSettings.ValidateIssuerSigningKey;
+            options.AccessTokenExpiryMinutes = jwtSettings.AccessTokenExpiryMinutes;
+            options.RefreshTokenExpiryDays = jwtSettings.RefreshTokenExpiryDays;
         });
         
         // JWT Bearer configuration

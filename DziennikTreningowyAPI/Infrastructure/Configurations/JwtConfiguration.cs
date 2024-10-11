@@ -14,7 +14,9 @@ public static class JwtConfiguration
         // Using intended JwtSecret using 'user-secrets', if it does not exist, using placeholder from appsettings.json
         string? secretKey = configuration["DziennikTreningowyAPI:JwtSecret"];
         jwtSettings.Key = secretKey ?? jwtSettings.Key;
-        
+
+        Console.WriteLine($"JWT is using Key from {(secretKey == null ? "appsettings.json" : "user-secrets")}.");
+
         // Registering settings for global use
         services.Configure<JwtSettings>(options =>
         {
@@ -34,19 +36,22 @@ public static class JwtConfiguration
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
                     ValidIssuer = jwtSettings.Issuer,
                     ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
+                    ValidateIssuer = jwtSettings.ValidateIssuer,
+                    ValidateAudience = jwtSettings.ValidateAudience,
+                    ValidateLifetime = jwtSettings.ValidateLifetime,
+                    ValidateIssuerSigningKey = jwtSettings.ValidateIssuerSigningKey
                 };
             });
+
+        services.AddAuthorization();
     }
 }

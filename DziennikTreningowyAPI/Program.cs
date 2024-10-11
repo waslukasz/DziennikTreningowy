@@ -9,30 +9,23 @@ using DziennikTreningowyAPI.Infrastructure.Repositories;
 using DziennikTreningowyAPI.Utilities;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger(); // From SwaggerConfiguration.cs
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
 // Database connection
-
-//// Optional connection to external database using 'user-secrets'
-string? externalDbConnectionString = builder.Configuration["DziennikTreningowyAPI:ExternalDbConnectionString"];
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(externalDbConnectionString ?? builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
-Console.WriteLine($"API is using {(externalDbConnectionString == null ? "internal" : "external")} database connection string.");
+builder.Services.ConfigureDatabase(builder.Configuration); // From DatabaseConfiguration.cs
 
 // JwtToken
 builder.Services.AddJwtAuthentication(builder.Configuration);
-builder.Services.AddSingleton<IJwtTokenManager, JwtTokenManager>();
+builder.Services.AddScoped<IJwtTokenManager, JwtTokenManager>();
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();

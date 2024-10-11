@@ -1,7 +1,10 @@
-﻿using DziennikTreningowyAPI.Application.DTOs.User;
+﻿using System.Security.Claims;
+using System.Text.Json;
+using DziennikTreningowyAPI.Application.DTOs.User;
 using DziennikTreningowyAPI.Domain.Interfaces;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DziennikTreningowyAPI.Presentation.Controllers;
@@ -20,6 +23,22 @@ public class UserController : Controller
         _userCreateDtoValidator = userCreateDtoValidator;
         _tokenManager = tokenManager;
     }
+
+    // TODO: Delete tests after finishing controller
+    [HttpGet("token")]
+    public async Task<IActionResult> Test()
+    {
+        var token = _tokenManager.GenerateAccessToken(Guid.NewGuid(), "email@wp.pl");
+        return Ok(token);
+    }
+    
+    [HttpGet("authorize")]
+    [Authorize]
+    public async Task<IActionResult> Test2()
+    {
+        return Ok();
+    }
+    // Lines to delete - end
     
     [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody] UserCreateDto userCreateDto)

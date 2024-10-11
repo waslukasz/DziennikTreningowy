@@ -1,16 +1,14 @@
-using System.Text;
 using DziennikTreningowyAPI.Application.DTOs.User;
 using DziennikTreningowyAPI.Application.Mappers;
 using DziennikTreningowyAPI.Application.Services;
 using DziennikTreningowyAPI.Application.Validators;
 using DziennikTreningowyAPI.Domain.Interfaces;
+using DziennikTreningowyAPI.Infrastructure.Configurations;
 using DziennikTreningowyAPI.Infrastructure.Data;
 using DziennikTreningowyAPI.Infrastructure.Repositories;
 using DziennikTreningowyAPI.Utilities;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,29 +31,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 Console.WriteLine($"API is using {(externalDbConnectionString == null ? "internal" : "external")} database connection string.");
 
 // JwtToken
-
-//// Using intended JwtSecret using 'user-secrets', if it does not exist, using placeholder from appsettings.json
-string? secretKey = builder.Configuration["DziennikTreningowyAPI:JwtSecret"];
-var key = builder.Configuration["Jwt:Key"];
-
-builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    })
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey ?? key))
-        };
-    });
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddSingleton<IJwtTokenManager, JwtTokenManager>();
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -79,5 +56,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();

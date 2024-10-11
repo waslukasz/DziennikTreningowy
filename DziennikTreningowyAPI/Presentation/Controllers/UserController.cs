@@ -11,14 +11,16 @@ namespace DziennikTreningowyAPI.Presentation.Controllers;
 public class UserController : Controller
 {
     private readonly IUserService _userService;
+    private readonly IJwtTokenManager _tokenManager;
     private readonly IValidator<UserCreateDto> _userCreateDtoValidator;
     
-    public UserController(IUserService userService, IValidator<UserCreateDto> userCreateDtoValidator)
+    public UserController(IUserService userService, IJwtTokenManager tokenManager, IValidator<UserCreateDto> userCreateDtoValidator)
     {
         _userService = userService;
         _userCreateDtoValidator = userCreateDtoValidator;
+        _tokenManager = tokenManager;
     }
-
+    
     [HttpPost]
     public async Task<IActionResult> CreateUser([FromBody] UserCreateDto userCreateDto)
     {

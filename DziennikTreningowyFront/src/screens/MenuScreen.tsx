@@ -1,18 +1,52 @@
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { View,Text, Button, TouchableOpacity } from "react-native";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 
-const MenuScreen = ({ navigation }:{navigation:any}) => {
-    return (<View style={{padding:10}}>
-
-      <View style={{borderWidth:1, width:150, height:150, backgroundColor:"#fff", borderRadius:15, borderColor:"#cbcbcb"}}>
+const MenuScreen = ({ navigation }: { navigation: any }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.tile}>
         <TouchableOpacity
-          style={{width:150, height:150, display:"flex", justifyContent:"center", alignItems:"center", }}
-          onPress={() => navigation.navigate('Training')} 
-          >           
-            <Text style={{fontSize:30}}>Trainings</Text>
-          </TouchableOpacity>
+          style={styles.button}
+          onPress={() => navigation.navigate("Training")}
+        >
+          <FontAwesome6 name="dumbbell" size={54} color="black" />
+        </TouchableOpacity>
       </View>
-          </View>
-    );
-  };
-  export default MenuScreen;
+      <View style={styles.tile}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("BodyMeasurment")}
+        >
+          <FontAwesome6 name="weight-scale" size={54} color="black" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+export default MenuScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+  },
+  tile: {
+    borderWidth: 1,
+    width: 125,
+    height: 125,
+    backgroundColor: "#fff",
+    borderRadius: 15,
+    borderColor: "#cbcbcb",
+    marginBottom: 20,
+  },
+  button: {
+    width: 125,
+    height: 125,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

@@ -3,18 +3,22 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
   Menu: undefined;
+  BodyMeasurment: undefined;
   Home: undefined;
   Training: undefined;
-  Exercises: {trainingId: number} ;
+  Exercises: { trainingId: number };
 };
 
 export type TrainingScreenProps = NativeStackNavigationProp<
-  RootStackParamList,'Training'
+  RootStackParamList,
+  "Training"
 >;
 
 export type ExerciseScreenProps = NativeStackNavigationProp<
   RootStackParamList,
-  'Exercises'
+  "Exercises"
 >;
-export type ExercisesScreenRouteProp = RouteProp<RootStackParamList, 'Exercises'>;
- 
+export type ExercisesScreenRouteProp = RouteProp<
+  RootStackParamList,
+  "Exercises"
+>;

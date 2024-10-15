@@ -3,14 +3,11 @@ import { View, Text, Pressable, FlatList, ScrollView } from "react-native";
 import {
   createTraining,
   deleteTraining,
-  getAllTraingins,
   getTraingsInDateRange,
 } from "../../database/repositories/trainingRepository";
-import { useSQLiteContext } from "expo-sqlite";
+import {  useSQLiteContext } from "expo-sqlite";
 import DateTimePicker from "react-native-modal-datetime-picker";
-import TrainingItem from "./trainingItem";
 import { useFocusEffect } from "@react-navigation/native";
-import PressableButton from "./pressableButton";
 import TrainingList from "./trainingList";
 import WeekNavigation from "./weekNavigation";
 import DateRangePicker from "./dateRangePicker";

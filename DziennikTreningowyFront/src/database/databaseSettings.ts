@@ -33,13 +33,14 @@ export async function initDatabase(db: SQLiteDatabase) {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             measurementDate TEXT DEFAULT (STRFTIME('%Y-%m-%d %H %M %S', 'NOW')),
             neck INTEGER,
-            abdomen INTEGER,
+            belly INTEGER,
             chest INTEGER,
             hips INTEGER,
             bicep INTEGER,
             thigh INTEGER,
             waist INTEGER,
-            calf INTEGER
+            calf INTEGER,
+            bodyWeight INTEGER
         );
        `);
       currentDbVersion = 1;

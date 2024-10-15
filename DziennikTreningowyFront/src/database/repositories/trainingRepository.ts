@@ -20,7 +20,6 @@ export async function getTraingsInDateRange(db:SQLiteDatabase,from:Date,to:Date)
 }
 export async function createTraining(db:SQLiteDatabase,date:Date){
     const dateToString=date.toISOString()
-    console.log(dateToString)
     const result = await db.runAsync(`INSERT INTO Trainings (timestamp) VALUES ('${dateToString}')`);
 }
 export async function deleteTraining(db:SQLiteDatabase,id:number ){

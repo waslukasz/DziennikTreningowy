@@ -14,40 +14,42 @@ export async function createBodyMeasurements(
   const {
     measurementDate,
     neck,
-    abdomen,
+    belly,
     chest,
     hips,
     bicep,
     thigh,
     waist,
     calf,
+    bodyWeight,
   } = measurements;
   if (measurementDate) {
     const result = await db.runAsync(
       `
-            INSERT INTO BodyMeasurements (measurementDate, neck, abdomen, chest, hips, bicep, thigh, waist, calf)
+            INSERT INTO BodyMeasurements (measurementDate, neck, belly, chest, hips, bicep, thigh, waist, calf, bodyWeight)
             VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)
             `,
       [
         measurementDate.toISOString(),
         neck,
-        abdomen,
+        belly,
         chest,
         hips,
         bicep,
         thigh,
         waist,
         calf,
+        bodyWeight,
       ]
     );
     return result;
   }
   const result = await db.runAsync(
     `
-        INSERT INTO BodyMeasurements (neck, abdomen, chest, hips, bicep, thigh, waist, calf)
+        INSERT INTO BodyMeasurements (neck, belly, chest, hips, bicep, thigh, waist, calf, bodyWeight)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `,
-    [neck, abdomen, chest, hips, bicep, thigh, waist, calf]
+    [neck, belly, chest, hips, bicep, thigh, waist, calf, bodyWeight]
   );
   return result;
 }
@@ -76,13 +78,14 @@ export async function updateBodyMeasurements(
     id,
     measurementDate,
     neck,
-    abdomen,
+    belly,
     chest,
     hips,
     bicep,
     thigh,
     waist,
     calf,
+    bodyWeight,
   } = measurements;
   if (measurementDate == undefined) {
     console.log("error");
@@ -91,19 +94,20 @@ export async function updateBodyMeasurements(
     const result = await db.runAsync(
       `
             UPDATE BodyMeasurements 
-            SET measurementDate = ?, neck = ?, abdomen = ?, chest = ?, hips = ?, bicep = ?, thigh = ?, waist = ?, calf = ?
+            SET measurementDate = ?, neck = ?, belly = ?, chest = ?, hips = ?, bicep = ?, thigh = ?, waist = ?, calf = ?, bodyWeight = ?
             WHERE id = ?
             `,
       [
         measurementDate.toISOString(),
         neck,
-        abdomen,
+        belly,
         chest,
         hips,
         bicep,
         thigh,
         waist,
         calf,
+        bodyWeight,
         id!,
       ]
     );

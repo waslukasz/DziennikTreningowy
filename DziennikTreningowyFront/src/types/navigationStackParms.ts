@@ -4,6 +4,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 export type RootStackParamList = {
   Menu: undefined;
   BodyMeasurment: undefined;
+  AddMeasurement: undefined;
   Home: undefined;
   Training: undefined;
   Exercises: { trainingId: number };

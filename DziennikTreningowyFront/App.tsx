@@ -6,6 +6,7 @@ import TrainingsScreen from "./src/screens/TrainingsScreen";
 import ExercisesScreen from "./src/screens/ExercisesScreen";
 import MenuScreen from "./src/screens/MenuScreen";
 import BodyMeasurementsScreen from "./src/screens/BodyMeasurementScreen";
+import AddMeasurementScreen from "./src/screens/AddMeasurementScreen";
 import { RootStackParamList } from "./src/types/navigationStackParms";
 import { Pressable, Text } from "react-native";
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -30,6 +31,10 @@ export default function App() {
             component={BodyMeasurementsScreen}
           />
           <Stack.Screen name="Exercises" component={ExercisesScreen} />
+          <Stack.Screen
+            name="AddMeasurement"
+            component={AddMeasurementScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SQLiteProvider>

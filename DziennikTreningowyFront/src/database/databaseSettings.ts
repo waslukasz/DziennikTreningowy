@@ -1,17 +1,6 @@
-import { SQLiteDatabase, useSQLiteContext } from "expo-sqlite";
-export async function initDatabase(db: SQLiteDatabase) {
-  const DATABASE_VERSION = 1;
-  const result = await db.getFirstAsync<{ user_version: number }>(
-    "PRAGMA user_version"
-  );
-  if (result !== null) {
-    let { user_version: currentDbVersion } = result;
-
-    if (currentDbVersion >= DATABASE_VERSION) {
-      return;
-    }
-    if (currentDbVersion === 0) {
-      await db.execAsync(`
+import { SQLiteDatabase } from "expo-sqlite";
+export async function initDatabase(db: SQLiteDatabase) { 
+  await db.execAsync(`
         PRAGMA journal_mode = WAL;
         CREATE TABLE IF NOT EXISTS Exercises (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,13 +32,8 @@ export async function initDatabase(db: SQLiteDatabase) {
             bodyWeight INTEGER
         );
        `);
-      currentDbVersion = 1;
-    }
-    await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
-  }
-  await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
 }
-export default async function DropDatabase(db:SQLiteDatabase) {
+export default async function DropDatabase(db: SQLiteDatabase) {
   await db.execAsync(`
     DROP TABLE IF EXISTS Exercises;
     DROP TABLE IF EXISTS Trainings;

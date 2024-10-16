@@ -5,14 +5,15 @@ import {
   deleteTraining,
   getTraingsInDateRange,
 } from "../../database/repositories/trainingRepository";
-import {  useSQLiteContext } from "expo-sqlite";
+import { useSQLiteContext } from "expo-sqlite";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { useFocusEffect } from "@react-navigation/native";
 import TrainingList from "./trainingList";
 import WeekNavigation from "./weekNavigation";
 import DateRangePicker from "./dateRangePicker";
-
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 export default function TrainingGrid() {
+  const [selectedWeek, setSelectedWeek] = useState<number>(0);
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [datePickerMode, setDatePickerMode] = useState<
@@ -75,11 +76,13 @@ export default function TrainingGrid() {
 
   const handleDatePicked = async (date: Date) => {
     if (datePickerMode === "from") {
+      setSelectedWeek(4);
       if (lastDayOfWeek && date > lastDayOfWeek) {
         setLastDayOfWeek(date);
       }
       setFirstDayOfWeek(date);
     } else if (datePickerMode === "to") {
+      setSelectedWeek(4);
       if (firstDayOfWeek && date < firstDayOfWeek) {
         setFirstDayOfWeek(date);
       }
@@ -110,6 +113,7 @@ export default function TrainingGrid() {
   };
 
   const handleWeekChange = (offset: number) => {
+    setSelectedWeek(offset);
     setFirstAndLastDays(offset);
   };
 
@@ -122,7 +126,7 @@ export default function TrainingGrid() {
           onPress={() => showDatePicker("create")}
           className="bg-emerald-500 p-3 rounded-xl"
         >
-          <Text className="text-4xl text-white">+</Text>
+          <FontAwesome6 name="add" size={24} color="white" />
         </Pressable>
       </View>
 
@@ -137,8 +141,12 @@ export default function TrainingGrid() {
       />
       <View>
         <ScrollView horizontal>
-          <WeekNavigation handleWeekChange={handleWeekChange} />
+          <WeekNavigation
+            handleWeekChange={handleWeekChange}
+            selectedWeek={selectedWeek}
+          />
           <DateRangePicker
+            isSelected={selectedWeek === 4}
             showDatePicker={showDatePicker}
             from={firstDayOfWeek}
             to={lastDayOfWeek}

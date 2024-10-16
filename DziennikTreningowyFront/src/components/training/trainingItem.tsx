@@ -24,7 +24,7 @@ export default function TrainingItem({ training, handleDelete }: Props) {
   }),
     [];
   const trainingDate = new Date(training.timestamp);
-  const dateFormat = trainingDate.toLocaleDateString("pl-PL", {
+  const dateFormat = trainingDate.toLocaleDateString("en-En", {
     weekday: "short",
     day: "2-digit",
     month: "2-digit",
@@ -36,7 +36,7 @@ export default function TrainingItem({ training, handleDelete }: Props) {
   };
   return (
     <Pressable
-      className="bg-gray-50 py-5 px-2 m-4 w-5/12 h-24 rounded-xl"
+      className="bg-gray-50 py-5 shadow px-2 my-3 mx-1 w-5/12 h-24 rounded-xl "
       onLongPress={() =>
         Alert.alert(
           "",

@@ -74,7 +74,7 @@ export default function ExercisesList({ trainingId }: Props) {
       <SwipeListView
         numColumns={1}
         data={exercises}
-        className="flex-grow-0  mt-5 h-4/6"
+        className="flex-grow-0  m-2 mt-5 rounded-xl   "
         renderItem={({ item }) => (
           <ExercieseItem exercise={item}></ExercieseItem>
         )}

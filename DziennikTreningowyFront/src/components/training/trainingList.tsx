@@ -13,8 +13,9 @@ export default function TrainingList({
     <FlatList
       numColumns={2}
       data={trainings}
-      className="flex-grow-0 mt-5 h-5/6"
-      columnWrapperStyle={{ justifyContent: "space-between" }}
+
+      className="flex-grow-0 mt-1 h-5/6"
+      columnWrapperStyle={{ justifyContent: "space-evenly"  }}
       renderItem={({ item }) => (
         <TrainingItem training={item} handleDelete={handleDeleteTraining} />
       )}

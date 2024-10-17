@@ -9,6 +9,7 @@ import BodyMeasurementsScreen from "./src/screens/BodyMeasurementScreen";
 import AddMeasurementScreen from "./src/screens/AddMeasurementScreen";
 import { RootStackParamList } from "./src/types/navigationStackParms";
 import { Pressable, Text } from "react-native";
+import Toast from "react-native-toast-message";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
+      <Toast />
     </SQLiteProvider>
   );
 }

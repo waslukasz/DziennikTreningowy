@@ -1,6 +1,8 @@
 import { Pressable, Text, TextInput, View } from "react-native";
 import { createBodyMeasurements } from "../../database/repositories/bodyMeasurementRepository";
 import { useSQLiteContext } from "expo-sqlite";
+import { useState } from "react";
+import { Float } from "react-native/Libraries/Types/CodegenTypes";
 
 // type BodyMeasurements = {
 //   id?: number;
@@ -67,81 +69,130 @@ const bodyMeasurementsArray: BodyMeasurements[] = [
     bodyWeight: 96,
   },
 ];
-export default function MeasurementInput() {
+export default function MeasurementInput({ navigation }: { navigation: any }) {
+  const [neck, setNeck] = useState<string>();
+  const [belly, setBelly] = useState<string>();
+  const [chest, setChest] = useState<string>();
+  const [hips, setHips] = useState<string>();
+  const [bicep, setBicep] = useState<string>();
+  const [thigh, setThigh] = useState<string>();
+  const [waist, setWaist] = useState<string>();
+  const [calf, setCalf] = useState<string>();
+  const [bodyWeight, setBodyWeight] = useState<string>();
+
   const db = useSQLiteContext();
   const handleCreateBodyMeasurement = () => {
     createBodyMeasurements(db, test);
   };
+
   return (
     <View className="px-2 flex items-center">
       <TextInput
         className={inputStyle}
-        //value={name}
-        //onChangeText={(text) => setName(text)}
+        value={bodyWeight}
+        onChangeText={(text) => {
+          if (!isNaN(+text)) {
+            setBodyWeight(text);
+          }
+          1;
+        }}
         placeholderTextColor="gray"
         placeholder="Body weight in kilograms"
         keyboardType="number-pad"
       />
+
       <TextInput
         className={inputStyle}
-        //value={name}
-        //onChangeText={(text) => setName(text)}
+        value={neck}
+        onChangeText={(text) => {
+          if (!isNaN(+text)) {
+            setNeck(text);
+          }
+        }}
         placeholderTextColor="gray"
         placeholder="Neck circumference"
         keyboardType="number-pad"
       />
       <TextInput
         className={inputStyle}
-        //value={name}
-        //onChangeText={(text) => setName(text)}
+        value={belly}
+        onChangeText={(text) => {
+          if (!isNaN(+text)) {
+            setBelly(text);
+          }
+        }}
         placeholderTextColor="gray"
         placeholder="Belly circumference"
         keyboardType="number-pad"
       />
       <TextInput
         className={inputStyle}
-        //value={name}
-        //onChangeText={(text) => setName(text)}
+        value={chest}
+        onChangeText={(text) => {
+          if (!isNaN(+text)) {
+            setChest(text);
+          }
+        }}
         placeholderTextColor="gray"
         placeholder="Chest circumference"
         keyboardType="number-pad"
       />
       <TextInput
         className={inputStyle}
-        //value={name}
-        //onChangeText={(text) => setName(text)}
+        value={hips}
+        onChangeText={(text) => {
+          if (!isNaN(+text)) {
+            setHips(text);
+          }
+        }}
         placeholderTextColor="gray"
         placeholder="Hips circumference"
         keyboardType="number-pad"
       />
       <TextInput
         className={inputStyle}
-        //value={name}
-        //onChangeText={(text) => setName(text)}
+        value={bicep}
+        onChangeText={(text) => {
+          if (!isNaN(+text)) {
+            setBicep(text);
+          }
+        }}
         placeholderTextColor="gray"
         placeholder="Bicep circumference"
         keyboardType="number-pad"
       />
       <TextInput
         className={inputStyle}
-        //value={name}
-        //onChangeText={(text) => setName(text)}
+        value={thigh}
+        onChangeText={(text) => {
+          if (!isNaN(+text)) {
+            setThigh(text);
+          }
+        }}
         placeholderTextColor="gray"
         placeholder="Thigh circumference"
         keyboardType="number-pad"
       />
       <TextInput
         className={inputStyle}
-        //value={name}
-        //onChangeText={(text) => setName(text)}
+        value={waist}
+        onChangeText={(text) => {
+          if (!isNaN(+text)) {
+            setWaist(text);
+          }
+        }}
         placeholderTextColor="gray"
         placeholder="Waist circumference"
         keyboardType="number-pad"
       />
       <TextInput
         className={inputStyle}
-        //value={name}
-        //onChangeText={(text) => setName(text)}
+        value={calf}
+        onChangeText={(text) => {
+          if (!isNaN(+text)) {
+            setCalf(text);
+          }
+        }}
         placeholderTextColor="gray"
         placeholder="Calf circumference"
         keyboardType="number-pad"
@@ -151,7 +202,7 @@ export default function MeasurementInput() {
         {
           <Pressable
             className=" bg-red-400 py-2 px-5 mr-2 mt-2 rounded-xl"
-            //onPress={exitFromEditMode}
+            onPress={() => navigation.goBack()}
           >
             <Text className="text-white text-xl">Cancel</Text>
           </Pressable>

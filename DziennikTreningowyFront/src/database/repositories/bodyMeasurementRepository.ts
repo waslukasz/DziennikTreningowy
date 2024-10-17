@@ -27,7 +27,7 @@ export async function createBodyMeasurements(
     const result = await db.runAsync(
       `
             INSERT INTO BodyMeasurements (measurementDate, neck, belly, chest, hips, bicep, thigh, waist, calf, bodyWeight)
-            VALUES (?,?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?)
             `,
       [
         measurementDate.toISOString(),

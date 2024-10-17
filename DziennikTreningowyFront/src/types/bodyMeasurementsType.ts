@@ -1,6 +1,6 @@
 type BodyMeasurements = {
   id?: number;
-  measurementDate?:Date
+  measurementDate: Date;
   neck: number;
   belly: number;
   chest: number;
@@ -9,5 +9,5 @@ type BodyMeasurements = {
   thigh: number;
   waist: number;
   calf: number;
-  bodyWeight:number;
+  bodyWeight: number;
 };

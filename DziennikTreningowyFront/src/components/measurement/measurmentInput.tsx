@@ -1,4 +1,6 @@
 import { Pressable, Text, TextInput, View } from "react-native";
+import { createBodyMeasurements } from "../../database/repositories/bodyMeasurementRepository";
+import { useSQLiteContext } from "expo-sqlite";
 
 // type BodyMeasurements = {
 //   id?: number;
@@ -12,8 +14,64 @@ import { Pressable, Text, TextInput, View } from "react-native";
 //   waist: number;
 //   calf: number;
 // };circumference
-
+const test: BodyMeasurements = {
+  measurementDate: new Date("2024-10-14"),
+  neck: 55.2,
+  belly: 234.1,
+  chest: 122.5,
+  hips: 111.6,
+  bicep: 54.5,
+  thigh: 75.3,
+  waist: 45.7,
+  calf: 49.2,
+  bodyWeight: 90.13,
+};
+const bodyMeasurementsArray: BodyMeasurements[] = [
+  {
+    id: 1,
+    measurementDate: new Date("2024-10-14"),
+    neck: 35.2,
+    belly: 90.1,
+    chest: 102.5,
+    hips: 95.6,
+    bicep: 34.5,
+    thigh: 55.3,
+    waist: 85.7,
+    calf: 39.2,
+    bodyWeight: 80,
+  },
+  {
+    id: 2,
+    measurementDate: new Date("2024-10-13"),
+    neck: 36.4,
+    belly: 89.7,
+    chest: 103.3,
+    hips: 96.2,
+    bicep: 35.1,
+    thigh: 54.9,
+    waist: 84.3,
+    calf: 38.5,
+    bodyWeight: 90,
+  },
+  {
+    id: 3,
+    measurementDate: new Date("2024-10-12"),
+    neck: 34.8,
+    belly: 91.0,
+    chest: 101.9,
+    hips: 94.5,
+    bicep: 33.9,
+    thigh: 55.0,
+    waist: 86.1,
+    calf: 39.0,
+    bodyWeight: 96,
+  },
+];
 export default function MeasurementInput() {
+  const db = useSQLiteContext();
+  const handleCreateBodyMeasurement = () => {
+    createBodyMeasurements(db, test);
+  };
   return (
     <View className="px-2 flex items-center">
       <TextInput
@@ -102,7 +160,12 @@ export default function MeasurementInput() {
           className=" bg-green-400 py-2 px-5 mt-2 rounded-xl"
           // onPress={handleCreate}
         >
-          <Text className="text-white text-xl">Add</Text>
+          <Text
+            className="text-white text-xl"
+            onPress={handleCreateBodyMeasurement}
+          >
+            Add
+          </Text>
         </Pressable>
       </View>
     </View>

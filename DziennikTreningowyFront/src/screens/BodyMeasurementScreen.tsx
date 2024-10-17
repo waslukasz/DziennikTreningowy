@@ -1,33 +1,9 @@
-// type BodyMeasurements = {
-//   id?: number;
-//   measurementDate?: Date;
-//   neck: number;
-//   abdomen: number;
-//   chest: number;
-//   hips: number;
-//   bicep: number;
-//   thigh: number;
-//   waist: number;
-//   calf: number;
-// };
-
 import { Pressable, ScrollView, Text, View } from "react-native";
 import Chart from "../components/measurement/Chart";
 import { useSQLiteContext } from "expo-sqlite";
 import { getAllBodyMeasurements } from "../database/repositories/bodyMeasurementRepository";
-import { useEffect, useState } from "react";
-
-enum BodyMeasurementType {
-  neck = "neck",
-  belly = "belly",
-  chest = "chest",
-  hips = "hips",
-  bicep = "bicep",
-  thigh = "thigh",
-  waist = "waist",
-  calf = "calf",
-  bodyWeight = "bodyWeight",
-}
+import { useCallback, useEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
 const BodyMeasurementScreen = ({ navigation }: { navigation: any }) => {
   const db = useSQLiteContext();
@@ -43,27 +19,32 @@ const BodyMeasurementScreen = ({ navigation }: { navigation: any }) => {
   const [bodyWeightData, setBodyWeightData] = useState<chartDataType[] | null>(
     null
   );
-
   const [loading, setLoading] = useState<boolean>(true);
   const fetchData = async () => {
     try {
       const result = await getAllBodyMeasurements(db);
-      setData(result);
+      setData(result.reverse());
     } catch (error) {
       console.error("Error fetching data: ", error);
     } finally {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
     if (data) {
       convertData();
     }
   }, [data]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   const convertData = () => {
     const convertNeckData = () => {

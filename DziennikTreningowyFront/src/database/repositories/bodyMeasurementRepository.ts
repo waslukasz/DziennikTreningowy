@@ -2,7 +2,8 @@ import { SQLiteDatabase } from "expo-sqlite";
 
 export async function getAllBodyMeasurements(db: SQLiteDatabase) {
   const result = await db.getAllAsync<BodyMeasurements>(
-    "SELECT * FROM BodyMeasurements"
+    "SELECT * FROM BodyMeasurements ORDER BY measurementDate DESC LIMIT 10"
+    // "SELECT * FROM BodyMeasurements"
   );
   return result;
 }

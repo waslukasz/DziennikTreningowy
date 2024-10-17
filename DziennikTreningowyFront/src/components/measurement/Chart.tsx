@@ -31,7 +31,7 @@ export default function Chart({
         }}
         width={Dimensions.get("window").width - 20}
         height={300}
-        yAxisSuffix="cm"
+        yAxisSuffix={name == "Body Weight" ? "kg" : "cm"}
         yAxisInterval={1}
         xLabelsOffset={1}
         fromZero

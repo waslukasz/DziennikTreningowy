@@ -2,7 +2,7 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import { createBodyMeasurements } from "../../database/repositories/bodyMeasurementRepository";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
-import { Float } from "react-native/Libraries/Types/CodegenTypes";
+import Toast from "react-native-toast-message";
 
 // type BodyMeasurements = {
 //   id?: number;
@@ -70,19 +70,60 @@ const bodyMeasurementsArray: BodyMeasurements[] = [
   },
 ];
 export default function MeasurementInput({ navigation }: { navigation: any }) {
-  const [neck, setNeck] = useState<string>();
-  const [belly, setBelly] = useState<string>();
-  const [chest, setChest] = useState<string>();
-  const [hips, setHips] = useState<string>();
-  const [bicep, setBicep] = useState<string>();
-  const [thigh, setThigh] = useState<string>();
-  const [waist, setWaist] = useState<string>();
-  const [calf, setCalf] = useState<string>();
-  const [bodyWeight, setBodyWeight] = useState<string>();
+  const [neck, setNeck] = useState<string>("");
+  const [belly, setBelly] = useState<string>("");
+  const [chest, setChest] = useState<string>("");
+  const [hips, setHips] = useState<string>("");
+  const [bicep, setBicep] = useState<string>("");
+  const [thigh, setThigh] = useState<string>("");
+  const [waist, setWaist] = useState<string>("");
+  const [calf, setCalf] = useState<string>("");
+  const [bodyWeight, setBodyWeight] = useState<string>("");
 
   const db = useSQLiteContext();
+
+  const fieldsContentChecker = () => {
+    if (
+      neck &&
+      belly &&
+      chest &&
+      hips &&
+      bicep &&
+      thigh &&
+      waist &&
+      calf &&
+      bodyWeight
+    ) {
+      handleCreateBodyMeasurement();
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Invalid Input",
+        text2: "Please fill all fields!",
+      });
+    }
+  };
+
   const handleCreateBodyMeasurement = () => {
-    createBodyMeasurements(db, test);
+    const newMeasurement: BodyMeasurements = {
+      measurementDate: new Date(),
+      neck: parseFloat(neck),
+      belly: parseFloat(belly),
+      chest: parseFloat(chest),
+      hips: parseFloat(hips),
+      bicep: parseFloat(bicep),
+      thigh: parseFloat(thigh),
+      waist: parseFloat(waist),
+      calf: parseFloat(calf),
+      bodyWeight: parseFloat(bodyWeight),
+    };
+    createBodyMeasurements(db, newMeasurement);
+    Toast.show({
+      type: "success",
+      text1: "Success",
+      text2: "Successfully added measurements!",
+    });
+    navigation.navigate("BodyMeasurment");
   };
 
   return (
@@ -100,7 +141,6 @@ export default function MeasurementInput({ navigation }: { navigation: any }) {
         placeholder="Body weight in kilograms"
         keyboardType="number-pad"
       />
-
       <TextInput
         className={inputStyle}
         value={neck}
@@ -209,12 +249,9 @@ export default function MeasurementInput({ navigation }: { navigation: any }) {
         }
         <Pressable
           className=" bg-green-400 py-2 px-5 mt-2 rounded-xl"
-          // onPress={handleCreate}
+          // onPress={() => showToast()}
         >
-          <Text
-            className="text-white text-xl"
-            onPress={handleCreateBodyMeasurement}
-          >
+          <Text className="text-white text-xl" onPress={fieldsContentChecker}>
             Add
           </Text>
         </Pressable>

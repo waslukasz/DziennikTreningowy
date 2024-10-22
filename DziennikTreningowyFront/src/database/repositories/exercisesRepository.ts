@@ -1,12 +1,13 @@
-import { SQLiteDatabase } from "expo-sqlite";
-export async function getAllExercises(db: SQLiteDatabase, trainingId: number) {
+import { db } from "../databaseSettings";
+
+export async function getAllExercises( trainingId: number) {
   const result = await db.getAllAsync<Exercise>(
     "SELECT * FROM Exercises WHERE trainingId = $value",
     { $value: trainingId }
   );
   return result;
 }
-export async function countExercisesInTraining(db:SQLiteDatabase,trainingId:number){
+export async function countExercisesInTraining(trainingId:number){
   interface CountResult {
     count: number;
   }
@@ -19,14 +20,14 @@ export async function countExercisesInTraining(db:SQLiteDatabase,trainingId:numb
     return result.count;
   }
 }
-export async function getExerciseById(db: SQLiteDatabase, id: number) {
+export async function getExerciseById( id: number) {
   const result = await db.getFirstAsync<Exercise>(
     "SELECT * FROM Exercises WHERE id = $value",
     { $value: id }
   );
   return result;
 }
-export async function createExercise(db: SQLiteDatabase, exercise: Exercise) {
+export async function createExercise( exercise: Exercise) {
   const { name, description, weight, repetitions, sets, duration, trainingId } =
     exercise;
   const result = await db.runAsync(
@@ -47,14 +48,14 @@ export async function createExercise(db: SQLiteDatabase, exercise: Exercise) {
   return result;
 }
 
-export async function deleteExercise(db: SQLiteDatabase, id: number) {
+export async function deleteExercise( id: number) {
   const result = await db.runAsync("DELETE FROM Exercises WHERE id = $value", {
     $value: id,
   });
   return result;
 }
 
-export async function updateExercise(db: SQLiteDatabase, exercise: Exercise) {
+export async function updateExercise( exercise: Exercise) {
   const {
     id,
     name,

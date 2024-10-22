@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { View, Text, Pressable, FlatList, ScrollView } from "react-native";
+import { View, Text, Pressable, ScrollView } from "react-native";
 import {
   createTraining,
   deleteTraining,
   getTraingsInDateRange,
 } from "../../database/repositories/trainingRepository";
-import { useSQLiteContext } from "expo-sqlite";
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { useFocusEffect } from "@react-navigation/native";
 import TrainingList from "./trainingList";
@@ -21,7 +20,6 @@ export default function TrainingGrid() {
   >("create");
   const [firstDayOfWeek, setFirstDayOfWeek] = useState<Date>();
   const [lastDayOfWeek, setLastDayOfWeek] = useState<Date>();
-  const db = useSQLiteContext();
   useEffect(() => {
     (async () => {
       if (!firstDayOfWeek && !lastDayOfWeek) {
@@ -68,7 +66,7 @@ export default function TrainingGrid() {
       nowDate.getMinutes(),
       nowDate.getSeconds()
     );
-    createTraining(db, date);
+    createTraining(date);
     loadTrainings();
     setIsDatePickerVisible(false);
   };
@@ -103,11 +101,11 @@ export default function TrainingGrid() {
 
   const getWeekTraings = async () => {
     if (firstDayOfWeek && lastDayOfWeek)
-      return await getTraingsInDateRange(db, firstDayOfWeek, lastDayOfWeek);
+      return await getTraingsInDateRange( firstDayOfWeek, lastDayOfWeek);
   };
 
   const handleDeleteTraining = async (id: number) => {
-    await deleteTraining(db, id);
+    await deleteTraining( id);
     await loadTrainings();
   };
 

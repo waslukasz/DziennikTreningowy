@@ -1,35 +1,24 @@
-import { SQLiteDatabase } from "expo-sqlite";
 import { BodyMeasurements } from "../../types/bodyMeasurementsType";
 import { BodyPartEnum } from "../../types/bodyPartEnum";
+import { db } from "../databaseSettings";
 
-export async function getAllBodyMeasurements(db: SQLiteDatabase) {
+export async function getAllBodyMeasurements() {
   const result = await db.getAllAsync<BodyMeasurements>(
     //"SELECT * FROM BodyMeasurements ORDER BY measurementDate DESC LIMIT 10"
-     "SELECT * FROM BodyMeasurements"
+    "SELECT * FROM BodyMeasurements"
   );
   return result;
 }
 
-export async function createBodyMeasurements(
-  db: SQLiteDatabase,
-  measurements: BodyMeasurements
-) {
-  const {
-    date,
-    bodyPart,
-    value,
-  } = measurements;
+export async function createBodyMeasurements(measurements: BodyMeasurements) {
+  const { date, bodyPart, value } = measurements;
   if (date) {
     const result = await db.runAsync(
       `
             INSERT INTO BodyMeasurements (date, bodyPart, value)
             VALUES (?,?,?)
             `,
-      [
-        date.toISOString(),
-        bodyPart,
-        value,
-      ]
+      [date.toISOString(), bodyPart, value]
     );
     return result;
   }
@@ -42,7 +31,7 @@ export async function createBodyMeasurements(
   );
   return result;
 }
-export async function getBodyMeasurementsByBodyType(db:SQLiteDatabase,bodyPart:BodyPartEnum) {
+export async function getBodyMeasurementsByBodyType(bodyPart: BodyPartEnum) {
   const result = await db.getFirstAsync<BodyMeasurements>(
     "SELECT * FROM BodyMeasurements WHERE bodyType = ?",
     [bodyPart]
@@ -50,7 +39,7 @@ export async function getBodyMeasurementsByBodyType(db:SQLiteDatabase,bodyPart:B
   return result;
 }
 
-export async function getBodyMeasurementsById(db: SQLiteDatabase, id: number) {
+export async function getBodyMeasurementsById(id: number) {
   const result = await db.getFirstAsync<BodyMeasurements>(
     "SELECT * FROM BodyMeasurements WHERE id = ?",
     [id]
@@ -58,7 +47,7 @@ export async function getBodyMeasurementsById(db: SQLiteDatabase, id: number) {
   return result;
 }
 
-export async function deleteBodyMeasurements(db: SQLiteDatabase, id: number) {
+export async function deleteBodyMeasurements(id: number) {
   const result = await db.runAsync(
     "DELETE FROM BodyMeasurements WHERE id = ?",
     [id]
@@ -66,16 +55,8 @@ export async function deleteBodyMeasurements(db: SQLiteDatabase, id: number) {
   return result;
 }
 
-export async function updateBodyMeasurements(
-  db: SQLiteDatabase,
-  measurements: BodyMeasurements
-) {
-  const {
-    id,
-    date,
-    bodyPart,
-    value,
-   } = measurements;
+export async function updateBodyMeasurements(measurements: BodyMeasurements) {
+  const { id, date, bodyPart, value } = measurements;
   if (date == undefined) {
     console.log("error");
     return;
@@ -86,12 +67,7 @@ export async function updateBodyMeasurements(
             SET date = ?, bodyPart = ?, value = ?
             WHERE id = ?
             `,
-      [
-        date.toISOString(),
-        bodyPart,
-        value,
-        id!,
-      ]
+      [date.toISOString(), bodyPart, value, id!]
     );
     return result;
   }

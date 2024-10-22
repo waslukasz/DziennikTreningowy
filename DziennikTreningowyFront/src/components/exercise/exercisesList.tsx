@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { View, Text, FlatList } from "react-native";
+import { View,  } from "react-native";
 import {
   createExercise,
   deleteExercise,
   getAllExercises,
   updateExercise,
 } from "../../database/repositories/exercisesRepository";
-import { useSQLiteContext } from "expo-sqlite";
 import ExercieseInput from "./exerciseInput";
 import ExercieseItem from "./exerciseItem";
 import { SwipeListView } from "react-native-swipe-list-view";
@@ -17,27 +16,26 @@ interface Props {
 export default function ExercisesList({ trainingId }: Props) {
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [exerciseToEdit, setExerciseToEdit] = useState<Exercise | null>(null);
-  const db = useSQLiteContext();
   useEffect(() => {
     (async () => {
       getExercises();
     })();
   }, []);
   const getExercises = async () => {
-    const data = await getAllExercises(db, trainingId);
+    const data = await getAllExercises( trainingId);
     setExercises(data);
   };
   const handleCreateExercise = async (newExercise: Exercise) => {
-    await createExercise(db, newExercise);
+    await createExercise( newExercise);
     await getExercises();
   };
   const handleEditExercise=async(editExercise:Exercise)=>{
-    await updateExercise(db,editExercise);
+    await updateExercise(editExercise);
     await getExercises();
   }
   const handleDeleteExercise = async (id?: number) => {
     if (id) {
-      await deleteExercise(db, id);
+      await deleteExercise( id);
       if(exerciseToEdit){
         setExerciseToEdit(null)
       }

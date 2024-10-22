@@ -22,7 +22,6 @@ export default function TrainingGrid() {
   const [firstDayOfWeek, setFirstDayOfWeek] = useState<Date>();
   const [lastDayOfWeek, setLastDayOfWeek] = useState<Date>();
   const db = useSQLiteContext();
-
   useEffect(() => {
     (async () => {
       if (!firstDayOfWeek && !lastDayOfWeek) {

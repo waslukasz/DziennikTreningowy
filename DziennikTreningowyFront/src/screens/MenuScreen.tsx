@@ -2,6 +2,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { View, TouchableOpacity as Pressable, StyleSheet } from "react-native";
 
 const MenuScreen = ({ navigation }: { navigation: any }) => {
+  
   return (
     <View className="p-2.5 flex flex-row flex-wrap justify-around">
       <View className="border w-32 h-32 bg-white rounded-lg border-gray-300 mb-5">

@@ -1,13 +1,9 @@
-type BodyMeasurements = {
+import { BodyPartEnum } from "./bodyPartEnum";
+
+export type BodyMeasurements = {
   id?: number;
-  measurementDate: Date;
-  neck: number;
-  belly: number;
-  chest: number;
-  hips: number;
-  bicep: number;
-  thigh: number;
-  waist: number;
-  calf: number;
-  bodyWeight: number;
+  date?: Date;
+  bodyPart: BodyPartEnum;
+  value: number;
 };
+

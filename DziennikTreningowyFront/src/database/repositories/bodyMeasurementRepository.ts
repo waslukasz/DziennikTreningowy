@@ -1,9 +1,11 @@
 import { SQLiteDatabase } from "expo-sqlite";
+import { BodyMeasurements } from "../../types/bodyMeasurementsType";
+import { BodyPartEnum } from "../../types/bodyPartEnum";
 
 export async function getAllBodyMeasurements(db: SQLiteDatabase) {
   const result = await db.getAllAsync<BodyMeasurements>(
-    "SELECT * FROM BodyMeasurements ORDER BY measurementDate DESC LIMIT 10"
-    // "SELECT * FROM BodyMeasurements"
+    //"SELECT * FROM BodyMeasurements ORDER BY measurementDate DESC LIMIT 10"
+     "SELECT * FROM BodyMeasurements"
   );
   return result;
 }
@@ -13,44 +15,37 @@ export async function createBodyMeasurements(
   measurements: BodyMeasurements
 ) {
   const {
-    measurementDate,
-    neck,
-    belly,
-    chest,
-    hips,
-    bicep,
-    thigh,
-    waist,
-    calf,
-    bodyWeight,
+    date,
+    bodyPart,
+    value,
   } = measurements;
-  if (measurementDate) {
+  if (date) {
     const result = await db.runAsync(
       `
-            INSERT INTO BodyMeasurements (measurementDate, neck, belly, chest, hips, bicep, thigh, waist, calf, bodyWeight)
-            VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO BodyMeasurements (date, bodyPart, value)
+            VALUES (?,?,?)
             `,
       [
-        measurementDate.toISOString(),
-        neck,
-        belly,
-        chest,
-        hips,
-        bicep,
-        thigh,
-        waist,
-        calf,
-        bodyWeight,
+        date.toISOString(),
+        bodyPart,
+        value,
       ]
     );
     return result;
   }
   const result = await db.runAsync(
     `
-        INSERT INTO BodyMeasurements (neck, belly, chest, hips, bicep, thigh, waist, calf, bodyWeight)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO BodyMeasurements (bodyPart, value)
+        VALUES (?, ?)
         `,
-    [neck, belly, chest, hips, bicep, thigh, waist, calf, bodyWeight]
+    [bodyPart, value]
+  );
+  return result;
+}
+export async function getBodyMeasurementsByBodyType(db:SQLiteDatabase,bodyPart:BodyPartEnum) {
+  const result = await db.getFirstAsync<BodyMeasurements>(
+    "SELECT * FROM BodyMeasurements WHERE bodyType = ?",
+    [bodyPart]
   );
   return result;
 }
@@ -77,38 +72,24 @@ export async function updateBodyMeasurements(
 ) {
   const {
     id,
-    measurementDate,
-    neck,
-    belly,
-    chest,
-    hips,
-    bicep,
-    thigh,
-    waist,
-    calf,
-    bodyWeight,
-  } = measurements;
-  if (measurementDate == undefined) {
+    date,
+    bodyPart,
+    value,
+   } = measurements;
+  if (date == undefined) {
     console.log("error");
     return;
   } else {
     const result = await db.runAsync(
       `
             UPDATE BodyMeasurements 
-            SET measurementDate = ?, neck = ?, belly = ?, chest = ?, hips = ?, bicep = ?, thigh = ?, waist = ?, calf = ?, bodyWeight = ?
+            SET date = ?, bodyPart = ?, value = ?
             WHERE id = ?
             `,
       [
-        measurementDate.toISOString(),
-        neck,
-        belly,
-        chest,
-        hips,
-        bicep,
-        thigh,
-        waist,
-        calf,
-        bodyWeight,
+        date.toISOString(),
+        bodyPart,
+        value,
         id!,
       ]
     );

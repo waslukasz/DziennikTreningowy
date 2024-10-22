@@ -8,12 +8,12 @@ import MenuScreen from "./src/screens/MenuScreen";
 import BodyMeasurementsScreen from "./src/screens/BodyMeasurementScreen";
 import AddMeasurementScreen from "./src/screens/AddMeasurementScreen";
 import { RootStackParamList } from "./src/types/navigationStackParms";
-import { Pressable, Text } from "react-native";
 import Toast from "react-native-toast-message";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
+
   return (
-    <SQLiteProvider databaseName="testDatabase1.2.db" onInit={initDatabase}>
+    <SQLiteProvider databaseName="testDatabase1.222.db" onInit={initDatabase}>
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen

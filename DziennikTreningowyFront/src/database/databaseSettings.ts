@@ -19,17 +19,11 @@ export async function initDatabase(db: SQLiteDatabase) {
             timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW'))
         );
         CREATE TABLE IF NOT EXISTS BodyMeasurements (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            measurementDate TEXT DEFAULT (STRFTIME('%Y-%m-%d %H %M %S', 'NOW')),
-            neck INTEGER,
-            belly INTEGER,
-            chest INTEGER,
-            hips INTEGER,
-            bicep INTEGER,
-            thigh INTEGER,
-            waist INTEGER,
-            calf INTEGER,
-            bodyWeight INTEGER
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          date TEXT DEFAULT (STRFTIME('%Y-%m-%d %H %M %S', 'NOW')),
+          bodyPart TEXT NOT NULL,
+          value INTEGER,
+          CHECK (bodyPart IN ('neck', 'belly', 'chest', 'hips', 'bicep', 'thigh', 'waist', 'calf', 'bodyWeight'))
         );
        `);
 }

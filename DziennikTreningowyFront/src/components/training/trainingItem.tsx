@@ -10,11 +10,10 @@ interface Props {
 }
 export default function TrainingItem({ training, handleDelete }: Props) {
   const navigation = useNavigation<ExerciseScreenProps>();
-  const db = useSQLiteContext();
   const [exercisiesCount, setExercisesCount] = useState<number>(0);
   useEffect(() => {
     (async () => {
-      const data = await countExercisesInTraining(db, training.id);
+      const data = await countExercisesInTraining( training.id);
       if (data) {
         setExercisesCount(data);
       } else {

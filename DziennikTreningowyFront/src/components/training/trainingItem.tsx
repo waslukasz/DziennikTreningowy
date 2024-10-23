@@ -1,19 +1,22 @@
 import { Text, Pressable, Alert } from "react-native";
-import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { countExercisesInTraining } from "../../database/repositories/exercisesRepository";
+import {
+  ExerciseScreenNavigateProp,
+  ExerciseScreenProps,
+  TrainingScreenProps,
+} from "../../types/navigationStackParms";
 import { useNavigation } from "@react-navigation/native";
-import { ExerciseScreenProps } from "../../types/navigationStackParms";
 interface Props {
   training: Training;
   handleDelete: (id: number) => void;
 }
 export default function TrainingItem({ training, handleDelete }: Props) {
-  const navigation = useNavigation<ExerciseScreenProps>();
+  const navigation = useNavigation<ExerciseScreenNavigateProp>();
   const [exercisiesCount, setExercisesCount] = useState<number>(0);
   useEffect(() => {
     (async () => {
-      const data = await countExercisesInTraining( training.id);
+      const data = await countExercisesInTraining(training.id);
       if (data) {
         setExercisesCount(data);
       } else {
@@ -27,8 +30,8 @@ export default function TrainingItem({ training, handleDelete }: Props) {
     weekday: "short",
     day: "2-digit",
     month: "2-digit",
-   // hour: "2-digit",
-   // minute: "2-digit",
+    // hour: "2-digit",
+    // minute: "2-digit",
   });
   const handleDeleteTraining = () => {
     handleDelete(training.id);

@@ -11,25 +11,34 @@ export async function getAllBodyMeasurements() {
 }
 
 export async function createBodyMeasurements(measurements: BodyMeasurements) {
-  const { date, bodyPart, value } = measurements;
-  if (date) {
+  try {
+    const { date, bodyPart, value } = measurements;
+    if (date) {
+      const result = await db.runAsync(
+        `
+      INSERT INTO BodyMeasurements (date, bodyPart, value)
+      VALUES (?,?,?)
+      `,
+        [date.toISOString(), bodyPart, value]
+      );
+      return result;
+    }
     const result = await db.runAsync(
       `
-            INSERT INTO BodyMeasurements (date, bodyPart, value)
-            VALUES (?,?,?)
-            `,
-      [date.toISOString(), bodyPart, value]
+    INSERT INTO BodyMeasurements (bodyPart, value)
+    VALUES (?, ?)
+    `,
+      [bodyPart, value]
     );
-    return result;
+    if (result.changes && result.changes > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("create BodyMeasurements issue");
+    return false;
   }
-  const result = await db.runAsync(
-    `
-        INSERT INTO BodyMeasurements (bodyPart, value)
-        VALUES (?, ?)
-        `,
-    [bodyPart, value]
-  );
-  return result;
 }
 export async function getBodyMeasurementsByBodyType(bodyPart: BodyPartEnum) {
   const result = await db.getFirstAsync<BodyMeasurements>(
@@ -48,27 +57,45 @@ export async function getBodyMeasurementsById(id: number) {
 }
 
 export async function deleteBodyMeasurements(id: number) {
-  const result = await db.runAsync(
-    "DELETE FROM BodyMeasurements WHERE id = ?",
-    [id]
-  );
-  return result;
+  try {
+    const result = await db.runAsync(
+      "DELETE FROM BodyMeasurements WHERE id = ?",
+      [id]
+    );
+    if (result.changes && result.changes > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log("delete BodyMeasurements issue");
+    return false;
+  }
 }
 
 export async function updateBodyMeasurements(measurements: BodyMeasurements) {
-  const { id, date, bodyPart, value } = measurements;
-  if (date == undefined) {
-    console.log("error");
-    return;
-  } else {
-    const result = await db.runAsync(
-      `
-            UPDATE BodyMeasurements 
-            SET date = ?, bodyPart = ?, value = ?
-            WHERE id = ?
-            `,
-      [date.toISOString(), bodyPart, value, id!]
-    );
-    return result;
+  try {
+    const { id, date, bodyPart, value } = measurements;
+    if (date == undefined) {
+      console.log("error");
+      return;
+    } else {
+      const result = await db.runAsync(
+        `
+        UPDATE BodyMeasurements 
+        SET date = ?, bodyPart = ?, value = ?
+        WHERE id = ?
+        `,
+        [date.toISOString(), bodyPart, value, id!]
+      );
+      if (result.changes && result.changes > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  } catch (error) {
+    console.log("update BodyMeasurements issue");
+    return false;
   }
 }

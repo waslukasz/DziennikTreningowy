@@ -3,72 +3,9 @@ import { createBodyMeasurements } from "../../database/repositories/bodyMeasurem
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
 import Toast from "react-native-toast-message";
+import { BodyMeasurements } from "../../types/bodyMeasurementsType";
+import { BodyPartEnum } from "../../types/bodyPartEnum";
 
-// type BodyMeasurements = {
-//   id?: number;
-//   measurementDate?: Date;
-//   neck: number;
-//   abdomen: belly;
-//   chest: number;
-//   hips: number;
-//   bicep: number;
-//   thigh: number;
-//   waist: number;
-//   calf: number;
-// };circumference
-const test: BodyMeasurements = {
-  measurementDate: new Date("2024-10-14"),
-  neck: 55.2,
-  belly: 234.1,
-  chest: 122.5,
-  hips: 111.6,
-  bicep: 54.5,
-  thigh: 75.3,
-  waist: 45.7,
-  calf: 49.2,
-  bodyWeight: 90.13,
-};
-const bodyMeasurementsArray: BodyMeasurements[] = [
-  {
-    id: 1,
-    measurementDate: new Date("2024-10-14"),
-    neck: 35.2,
-    belly: 90.1,
-    chest: 102.5,
-    hips: 95.6,
-    bicep: 34.5,
-    thigh: 55.3,
-    waist: 85.7,
-    calf: 39.2,
-    bodyWeight: 80,
-  },
-  {
-    id: 2,
-    measurementDate: new Date("2024-10-13"),
-    neck: 36.4,
-    belly: 89.7,
-    chest: 103.3,
-    hips: 96.2,
-    bicep: 35.1,
-    thigh: 54.9,
-    waist: 84.3,
-    calf: 38.5,
-    bodyWeight: 90,
-  },
-  {
-    id: 3,
-    measurementDate: new Date("2024-10-12"),
-    neck: 34.8,
-    belly: 91.0,
-    chest: 101.9,
-    hips: 94.5,
-    bicep: 33.9,
-    thigh: 55.0,
-    waist: 86.1,
-    calf: 39.0,
-    bodyWeight: 96,
-  },
-];
 export default function MeasurementInput({ navigation }: { navigation: any }) {
   const [neck, setNeck] = useState<string>("");
   const [belly, setBelly] = useState<string>("");
@@ -83,41 +20,91 @@ export default function MeasurementInput({ navigation }: { navigation: any }) {
   const db = useSQLiteContext();
 
   const fieldsContentChecker = () => {
-    if (
-      neck &&
-      belly &&
-      chest &&
-      hips &&
-      bicep &&
-      thigh &&
-      waist &&
-      calf &&
-      bodyWeight
-    ) {
-      handleCreateBodyMeasurement();
-    } else {
-      Toast.show({
-        type: "error",
-        text1: "Invalid Input",
-        text2: "Please fill all fields!",
-      });
-    }
+    handleCreateBodyMeasurement();
   };
 
   const handleCreateBodyMeasurement = () => {
-    const newMeasurement: BodyMeasurements = {
-      measurementDate: new Date(),
-      neck: parseFloat(neck),
-      belly: parseFloat(belly),
-      chest: parseFloat(chest),
-      hips: parseFloat(hips),
-      bicep: parseFloat(bicep),
-      thigh: parseFloat(thigh),
-      waist: parseFloat(waist),
-      calf: parseFloat(calf),
-      bodyWeight: parseFloat(bodyWeight),
-    };
-    createBodyMeasurements(db, newMeasurement);
+    if (neck) {
+      let newMeasurement: BodyMeasurements = {
+        date: new Date(),
+        bodyPart: BodyPartEnum.neck,
+        value: parseFloat(neck),
+      };
+      createBodyMeasurements(newMeasurement);
+    }
+
+    if (belly) {
+      let newMeasurement: BodyMeasurements = {
+        date: new Date(),
+        bodyPart: BodyPartEnum.belly,
+        value: parseFloat(belly),
+      };
+      createBodyMeasurements(newMeasurement);
+    }
+
+    if (chest) {
+      let newMeasurement: BodyMeasurements = {
+        date: new Date(),
+        bodyPart: BodyPartEnum.chest,
+        value: parseFloat(chest),
+      };
+      createBodyMeasurements(newMeasurement);
+    }
+
+    if (hips) {
+      let newMeasurement: BodyMeasurements = {
+        date: new Date(),
+        bodyPart: BodyPartEnum.hips,
+        value: parseFloat(hips),
+      };
+      createBodyMeasurements(newMeasurement);
+    }
+
+    if (bicep) {
+      let newMeasurement: BodyMeasurements = {
+        date: new Date(),
+        bodyPart: BodyPartEnum.bicep,
+        value: parseFloat(bicep),
+      };
+      createBodyMeasurements(newMeasurement);
+    }
+
+    if (thigh) {
+      let newMeasurement: BodyMeasurements = {
+        date: new Date(),
+        bodyPart: BodyPartEnum.thigh,
+        value: parseFloat(thigh),
+      };
+      createBodyMeasurements(newMeasurement);
+    }
+
+    if (waist) {
+      let newMeasurement: BodyMeasurements = {
+        date: new Date(),
+        bodyPart: BodyPartEnum.waist,
+        value: parseFloat(waist),
+      };
+      createBodyMeasurements(newMeasurement);
+    }
+
+    if (calf) {
+      let newMeasurement: BodyMeasurements = {
+        date: new Date(),
+        bodyPart: BodyPartEnum.calf,
+        value: parseFloat(calf),
+      };
+      createBodyMeasurements(newMeasurement);
+    }
+
+    if (bodyWeight) {
+      let newMeasurement: BodyMeasurements = {
+        date: new Date(),
+        bodyPart: BodyPartEnum.bodyWeight,
+        value: parseFloat(bodyWeight),
+      };
+      createBodyMeasurements(newMeasurement);
+    }
+
     Toast.show({
       type: "success",
       text1: "Success",
@@ -247,10 +234,7 @@ export default function MeasurementInput({ navigation }: { navigation: any }) {
             <Text className="text-white text-xl">Cancel</Text>
           </Pressable>
         }
-        <Pressable
-          className=" bg-green-400 py-2 px-5 mt-2 rounded-xl"
-          // onPress={() => showToast()}
-        >
+        <Pressable className=" bg-green-400 py-2 px-5 mt-2 rounded-xl">
           <Text className="text-white text-xl" onPress={fieldsContentChecker}>
             Add
           </Text>

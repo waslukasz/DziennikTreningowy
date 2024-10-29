@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import {
   LineChart,
   BarChart,
@@ -15,15 +15,26 @@ import { BodyMeasurements } from "../../types/bodyMeasurementsType";
 export default function Chart({
   data,
   name,
+  navigation,
 }: {
   data: BodyMeasurements[];
   name: string;
+  navigation: any;
 }) {
   const [selectedPoint, setSelectedPoint] = useState<string>();
 
   return (
     <View className="p-4 flex items-center">
-      <Text className="text-center text-xl">{name}</Text>
+      <Pressable
+        onPress={() =>
+          navigation.navigate("MeasurementDetails", {
+            data: data.reverse(),
+            title: name,
+          })
+        }
+      >
+        <Text className="text-center text-3xl">{name}</Text>
+      </Pressable>
       {selectedPoint ? (
         <View className="bg-white p-1 w-24 rounded-md shadow-sm shadow-black">
           <Text className="text-center text-xl ">{selectedPoint}</Text>
@@ -79,7 +90,7 @@ export default function Chart({
           bezier
           style={{
             marginVertical: 8,
-            marginLeft: -13,
+            marginLeft: 0,
             padding: 0,
           }}
         />

@@ -86,7 +86,7 @@ export async function updateBodyMeasurements(measurements: BodyMeasurements) {
         SET date = ?, bodyPart = ?, value = ?
         WHERE id = ?
         `,
-        [date.toISOString(), bodyPart, value, id!]
+        [new Date(date).toISOString(), bodyPart, value, id!]
       );
       if (result.changes && result.changes > 0) {
         return true;
@@ -95,7 +95,7 @@ export async function updateBodyMeasurements(measurements: BodyMeasurements) {
       }
     }
   } catch (error) {
-    console.log("update BodyMeasurements issue");
+    console.log("update BodyMeasurements issue" + error);
     return false;
   }
 }

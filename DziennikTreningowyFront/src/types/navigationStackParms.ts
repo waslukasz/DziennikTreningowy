@@ -11,6 +11,7 @@ export type RootStackParamList = {
   Home: undefined;
   Training: undefined;
   Exercises: { trainingId: number };
+  MeasurementDetails: undefined;
 };
 export type TrainingScreenProps = NativeStackScreenProps<
   RootStackParamList,

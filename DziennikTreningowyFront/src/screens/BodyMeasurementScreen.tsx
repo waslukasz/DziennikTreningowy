@@ -1,6 +1,5 @@
 import { Pressable, ScrollView, Text, View } from "react-native";
 import Chart from "../components/measurement/Chart";
-import { useSQLiteContext } from "expo-sqlite";
 import { getAllBodyMeasurements } from "../database/repositories/bodyMeasurementRepository";
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
@@ -75,7 +74,7 @@ const BodyMeasurementScreen = ({ navigation }: { navigation: any }) => {
   };
   return (
     <ScrollView className="flex">
-      <View className=" m-5 flex-row justify-between items-center">
+      <View className=" m-5 flex-row justify-around items-center">
         <Text className="text-2xl ">Add measurement</Text>
 
         <Pressable
@@ -89,16 +88,36 @@ const BodyMeasurementScreen = ({ navigation }: { navigation: any }) => {
       {data ? (
         <>
           {bodyWeightData ? (
-            <Chart data={bodyWeightData} name="Body Weight" />
+            <Chart
+              data={bodyWeightData}
+              name="Body Weight"
+              navigation={navigation}
+            />
           ) : null}
-          {neckData ? <Chart data={neckData} name="Neck" /> : null}
-          {bellyData ? <Chart data={bellyData} name="Belly" /> : null}
-          {chestData ? <Chart data={chestData} name="Chest" /> : null}
-          {hipsData ? <Chart data={hipsData} name="Hips" /> : null}
-          {bicepData ? <Chart data={bicepData} name="Bicep" /> : null}
-          {thighData ? <Chart data={thighData} name="Thigh" /> : null}
-          {waistData ? <Chart data={waistData} name="Waist" /> : null}
-          {calfData ? <Chart data={calfData} name="Calf" /> : null}
+          {neckData ? (
+            <Chart data={neckData} name="Neck" navigation={navigation} />
+          ) : null}
+          {bellyData ? (
+            <Chart data={bellyData} name="Belly" navigation={navigation} />
+          ) : null}
+          {chestData ? (
+            <Chart data={chestData} name="Chest" navigation={navigation} />
+          ) : null}
+          {hipsData ? (
+            <Chart data={hipsData} name="Hips" navigation={navigation} />
+          ) : null}
+          {bicepData ? (
+            <Chart data={bicepData} name="Bicep" navigation={navigation} />
+          ) : null}
+          {thighData ? (
+            <Chart data={thighData} name="Thigh" navigation={navigation} />
+          ) : null}
+          {waistData ? (
+            <Chart data={waistData} name="Waist" navigation={navigation} />
+          ) : null}
+          {calfData ? (
+            <Chart data={calfData} name="Calf" navigation={navigation} />
+          ) : null}
         </>
       ) : (
         <Text>Loading data...</Text>

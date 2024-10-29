@@ -122,7 +122,6 @@ export default function MeasurementInput({ navigation }: { navigation: any }) {
           if (!isNaN(+text)) {
             setBodyWeight(text);
           }
-          1;
         }}
         placeholderTextColor="gray"
         placeholder="Body weight in kilograms"
@@ -226,14 +225,13 @@ export default function MeasurementInput({ navigation }: { navigation: any }) {
       />
 
       <View className="flex-row justify-end">
-        {
-          <Pressable
-            className=" bg-red-400 py-2 px-5 mr-2 mt-2 rounded-xl"
-            onPress={() => navigation.goBack()}
-          >
-            <Text className="text-white text-xl">Cancel</Text>
-          </Pressable>
-        }
+        <Pressable
+          className=" bg-red-400 py-2 px-5 mr-2 mt-2 rounded-xl"
+          onPress={() => navigation.goBack()}
+        >
+          <Text className="text-white text-xl">Cancel</Text>
+        </Pressable>
+
         <Pressable className=" bg-green-400 py-2 px-5 mt-2 rounded-xl">
           <Text className="text-white text-xl" onPress={fieldsContentChecker}>
             Add

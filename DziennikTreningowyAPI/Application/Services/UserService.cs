@@ -92,4 +92,13 @@ public class UserService : IUserService
 
         return (accessToken, refreshToken.Token);
     }
+
+    public (string accessToken, string refreshToken) RefreshTokens(string refreshToken)
+    {
+        var tokens =  _tokenManager.RefreshTokens(refreshToken);
+        
+        if (tokens == null) throw new InvalidRefreshTokenException();
+
+        return (tokens.Value.accessToken, tokens.Value.refreshToken.Token);
+    }
 }

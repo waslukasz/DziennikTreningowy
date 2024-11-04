@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DziennikTreningowyAPI.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/training")]
 public class TrainingController : Controller
 {
     private readonly ITrainingService _trainingService;

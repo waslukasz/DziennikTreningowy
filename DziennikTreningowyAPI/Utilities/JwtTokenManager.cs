@@ -69,7 +69,7 @@ public class JwtTokenManager : IJwtTokenManager
             CreatedAt = DateTime.UtcNow,
             IsRevoked = false
         };
-
+        
         _context.RefreshTokens.AddAsync(refreshToken);
         _context.SaveChanges();
 

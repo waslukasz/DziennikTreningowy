@@ -3,7 +3,7 @@
 namespace DziennikTreningowyAPI.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/exercise")]
 public class ExerciseController : Controller
 {
 

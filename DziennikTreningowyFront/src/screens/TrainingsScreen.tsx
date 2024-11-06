@@ -14,6 +14,7 @@ import DateRangePicker from "../components/training/dateRangePicker";
 import TrainingList from "../components/training/trainingList";
 import { TrainingScreenProps } from "../types/navigationStackParms";
 import Toast from "react-native-toast-message";
+import { LinearGradient } from "expo-linear-gradient";
 export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
   const [selectedWeek, setSelectedWeek] = useState<number>(0);
   const [trainings, setTrainings] = useState<Training[]>([]);
@@ -59,7 +60,7 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
           new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
       );
       setTrainings(data);
-    }else{
+    } else {
       Toast.show({
         type: "error",
         text1: "Error",
@@ -116,19 +117,18 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
   const getWeekTraings = async () => {
     if (firstDayOfWeek && lastDayOfWeek)
       return await getTraingsInDateRange(firstDayOfWeek, lastDayOfWeek);
-
   };
 
   const handleDeleteTraining = async (id: number) => {
-    const result=await deleteTraining(id);
-    if(result){
+    const result = await deleteTraining(id);
+    if (result) {
       await loadTrainings();
       Toast.show({
         type: "success",
         text1: "Success",
         text2: "Successfully deleted training!",
       });
-    }else{
+    } else {
       Toast.show({
         type: "error",
         text1: "Error",
@@ -143,18 +143,38 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
   };
 
   return (
-    <View className="flex-1  ">
-      <View className=" m-5 flex-row justify-between">
-        <Text className="text-3xl ">Plan List</Text>
-
-        <Pressable
-          onPress={() => showDatePicker("create")}
-          className="bg-emerald-500 p-3 rounded-xl"
+    <View className="flex-1   ">
+      <View className=" ">
+        <LinearGradient 
+        colors={['#1C3113', '#40933A']}
         >
-          <FontAwesome6 name="add" size={24} color="white" />
-        </Pressable>
-      </View>
+          <View className=" mb-5 mx-5 mt-10 flex-row justify-between">
+            <Text className="text-3xl text-white">Plan List</Text>
 
+            <Pressable
+              onPress={() => showDatePicker("create")}
+              className="bg-emerald-500 p-3 border border-green-700 rounded-xl"
+            >
+              <FontAwesome6 name="add" size={24} color="white" />
+            </Pressable>
+          </View>
+
+          <View>
+            <ScrollView horizontal>
+              <WeekNavigation
+                handleWeekChange={handleWeekChange}
+                selectedWeek={selectedWeek}
+              />
+              <DateRangePicker
+                isSelected={selectedWeek === 4}
+                showDatePicker={showDatePicker}
+                from={firstDayOfWeek}
+                to={lastDayOfWeek}
+              />
+            </ScrollView>
+          </View>
+        </LinearGradient>
+      </View>
       <DateTimePicker
         themeVariant="light" // Problem with Calendar Display in Dark Mode (something with react navigation)
         isVisible={isDatePickerVisible}
@@ -164,21 +184,7 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
         onCancel={hideDatePicker}
         display="inline"
       />
-      <View>
-        <ScrollView horizontal>
-          <WeekNavigation
-            handleWeekChange={handleWeekChange}
-            selectedWeek={selectedWeek}
-          />
-          <DateRangePicker
-            isSelected={selectedWeek === 4}
-            showDatePicker={showDatePicker}
-            from={firstDayOfWeek}
-            to={lastDayOfWeek}
-          />
-        </ScrollView>
-      </View>
-      <View>
+      <View className="">
         <TrainingList
           trainings={trainings}
           handleDeleteTraining={handleDeleteTraining}

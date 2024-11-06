@@ -1,3 +1,4 @@
+import Checkbox from "expo-checkbox";
 import { useEffect, useState } from "react";
 import {
   Pressable,
@@ -39,6 +40,7 @@ export default function ExercieseInput({
       repetitions: repetition,
       sets: sets,
       trainingId: trainingId,
+      isDone:false,
     };
     if (
       name != "" &&
@@ -72,17 +74,17 @@ export default function ExercieseInput({
     handleCloseEditMode();
   };
   return (
-    <View className="px-2">
+    <View className=" px-2">
       <TextInput
-        className="text-black px-4 h-12 bg-gray-50 my-2 rounded-xl "
+        className="text-black border border-gray-300 px-4 h-12 bg-gray-50 my-2 rounded-xl "
         value={name}
         onChangeText={(text) => setName(text)}
         placeholderTextColor="#000000"
         placeholder="Name"
       ></TextInput>
-      <View className="flex flex-row items-center  space-x-2">
+      <View className=" flex-row w-full  justify-center items-center  space-x-2">
         <TextInput
-          className="text-black px-4 h-12 basis-1/2 bg-gray-50  rounded-xl"
+          className="flex-1 text-black px-4 border border-gray-300 h-12   bg-gray-50  rounded-xl"
           value={repetition ? repetition.toString() : ""}
           onChangeText={(text) => setRepetition(parseInt(text) || 0)}
           placeholderTextColor="#000000"
@@ -91,7 +93,7 @@ export default function ExercieseInput({
         ></TextInput>
         <Text className=""> X </Text>
         <TextInput
-          className="text-black px-4 h-12 basis-1/3   bg-gray-50 rounded-xl"
+          className="w-2/5 text-black px-4 h-12     border border-gray-300  bg-gray-50 rounded-xl"
           value={sets ? sets.toString() : ""}
           onChangeText={(text) => setSets(parseInt(text) || 0)}
           placeholderTextColor="#000000"

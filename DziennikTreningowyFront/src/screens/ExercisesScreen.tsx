@@ -5,6 +5,7 @@ import {
   createExercise,
   deleteExercise,
   getAllExercises,
+  setDoneStatusInExercise,
   updateExercise,
 } from "../database/repositories/exercisesRepository";
 import ExerciseHiddenItem from "../components/exercise/exerciseHiddenItem";
@@ -102,6 +103,10 @@ export default function ExercisesScreen({
   const closeEditMode = () => {
     setExerciseToEdit(null);
   };
+  const setExerciseToDone = async (id: number,isDone:boolean) => {
+    const result = await setDoneStatusInExercise(id,isDone);
+    await getExercises();
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="mt-12 flex-1">
@@ -115,9 +120,12 @@ export default function ExercisesScreen({
         <SwipeListView
           numColumns={1}
           data={exercises}
-          className="flex-grow-0  m-2 mt-5 rounded-xl   "
+          className="flex-grow-0 flex-1  m-2 mt-5 rounded-xl   "
           renderItem={({ item }) => (
-            <ExercieseItem exercise={item}></ExercieseItem>
+            <ExercieseItem
+              exercise={item}
+              setExerciseToDone={setExerciseToDone}
+            ></ExercieseItem>
           )}
           renderHiddenItem={renderHiddenItem}
           keyExtractor={(item) => item.id!.toString()}

@@ -27,6 +27,14 @@ export async function getExerciseById(id: number) {
   );
   return result;
 }
+export async function setDoneStatusInExercise(id: number, isDone: boolean) {
+  const isDoneNumber = isDone ? 1 : 0;
+  const result = await db.runAsync(
+    "UPDATE Exercises SET isDone = $isDoneNumber WHERE id = $value",
+    { $value: id,$isDoneNumber:!isDoneNumber }
+  );
+  return result;
+}
 export async function createExercise(exercise: Exercise) {
   try {
     const {
@@ -94,11 +102,12 @@ export async function updateExercise(exercise: Exercise) {
       sets,
       duration,
       trainingId,
+      isDone,
     } = exercise;
     const result = await db.runAsync(
       `
         UPDATE Exercises 
-        SET name = ?, description = ?, weight = ?, repetitions = ?,sets=?, duration = ?, trainingId = ?
+        SET name = ?, description = ?, weight = ?, repetitions = ?,sets=?, duration = ?, trainingId = ?, isDone=?
         WHERE id = ?
     `,
       [
@@ -109,6 +118,7 @@ export async function updateExercise(exercise: Exercise) {
         sets || null,
         duration || null,
         trainingId,
+        isDone ? 1 : 0,
         id!,
       ]
     );

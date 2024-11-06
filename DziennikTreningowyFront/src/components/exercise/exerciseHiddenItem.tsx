@@ -18,7 +18,7 @@ export default function ExerciseHiddenItem({
     handleEdit(exercise);
   };
   return (
-    <View className=" flex-1 flex-row my-2 items-center justify-end">
+    <View className="flex-1 mb-1  flex-row  items-center justify-end">
       <Pressable
         className="bg-blue-500 flex items-center h-full justify-center w-24 "
         onPress={handleEditExercise}

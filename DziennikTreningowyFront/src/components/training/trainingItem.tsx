@@ -1,12 +1,9 @@
-import { Text, Pressable, Alert } from "react-native";
+import { Text, Pressable, Alert, View, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import { countExercisesInTraining } from "../../database/repositories/exercisesRepository";
-import {
-  ExerciseScreenNavigateProp,
-  ExerciseScreenProps,
-  TrainingScreenProps,
-} from "../../types/navigationStackParms";
+import { ExerciseScreenNavigateProp } from "../../types/navigationStackParms";
 import { useNavigation } from "@react-navigation/native";
+import { isTrainingCompleted } from "../../database/repositories/trainingRepository";
 interface Props {
   training: Training;
   handleDelete: (id: number) => void;
@@ -14,9 +11,11 @@ interface Props {
 export default function TrainingItem({ training, handleDelete }: Props) {
   const navigation = useNavigation<ExerciseScreenNavigateProp>();
   const [exercisiesCount, setExercisesCount] = useState<number>(0);
+  const [isTrainingDone,setIsTrainingDone]=useState<boolean>(false);
   useEffect(() => {
     (async () => {
       const data = await countExercisesInTraining(training.id);
+      setIsTrainingDone(await isTrainingCompleted(training.id))
       if (data) {
         setExercisesCount(data);
       } else {
@@ -26,19 +25,27 @@ export default function TrainingItem({ training, handleDelete }: Props) {
   }),
     [];
   const trainingDate = new Date(training.timestamp);
-  const dateFormat = trainingDate.toLocaleDateString("en-En", {
-    weekday: "short",
-    day: "2-digit",
-    month: "2-digit",
-    // hour: "2-digit",
-    // minute: "2-digit",
-  });
+  const dateFormat = trainingDate
+    .toLocaleDateString("us-US", {
+      weekday: "long",
+      day: "2-digit",
+      month: "2-digit",
+      // hour: "2-digit",
+      // minute: "2-digit",
+    })
+    .replace(" ", "\n");
   const handleDeleteTraining = () => {
     handleDelete(training.id);
   };
   return (
     <Pressable
-      className="bg-gray-50 py-5 shadow px-2 my-3 mx-1 w-5/12 h-24 rounded-xl "
+      style={({ pressed }) => [
+        {
+          opacity: pressed ? 0.3 : 1, // Zmienna opacity na podstawie stanu 'pressed'
+        },
+        styles.button,
+        isTrainingDone ? styles.completedButton : styles.inProgressButton,
+      ]}
       onLongPress={() =>
         Alert.alert(
           "",
@@ -58,10 +65,32 @@ export default function TrainingItem({ training, handleDelete }: Props) {
         navigation.navigate("Exercises", { trainingId: training.id })
       }
     >
-      <Text className=" text-xl">{dateFormat}</Text>
+      <Text style={{ textAlign: "center", fontSize: 18 }}>{dateFormat}</Text>
       {exercisiesCount > 0 && (
-        <Text className="text-sm ">{exercisiesCount} exercises</Text>
+        <Text style={{ textAlign: "center" }}>{exercisiesCount} exercises</Text>
       )}
     </Pressable>
   );
 }
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor:'#f9fafb',
+    justifyContent: "center",
+    padding: 10,
+    borderWidth: 1,
+    borderColor: "#d1d5db",
+    shadowOpacity: 0.2,
+    shadowOffset:{width:3,height:-3},
+    marginVertical: 12,
+    marginHorizontal: 4,
+    width: "45%",
+    height: 96,
+    borderRadius: 16,
+  },
+  completedButton: {
+    borderColor:'green'
+  },
+  inProgressButton: {
+    borderColor: "#d1d5db",
+  },
+});

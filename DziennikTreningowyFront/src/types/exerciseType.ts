@@ -8,4 +8,5 @@ type Exercise = {
   duration?:string;
   trainingId:number;
   timestamp?: Date;
+  isDone:boolean;
 };

@@ -14,6 +14,7 @@ export async function initDatabase() {
             duration TEXT,
             trainingId INTEGER,
             timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW')),
+            isDone INTEGER DEFAULT 0,
             FOREIGN KEY (trainingId) REFERENCES trainings(Id)
             );
         CREATE TABLE IF NOT EXISTS Trainings (

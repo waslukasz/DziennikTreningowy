@@ -86,3 +86,23 @@ export async function updateTraining(training: Training) {
     return false;
   }
 }
+export async function isTrainingCompleted(trainingId: number): Promise<boolean> {
+  try {
+    const result = await db.getFirstAsync<{ isTrainingDone: number }>(
+      `
+      SELECT CASE 
+        WHEN COUNT(*) = SUM(isDone) THEN 1 
+        ELSE 0 
+      END AS isTrainingDone
+      FROM Exercises
+      WHERE trainingId = $trainingId
+      `,
+      { $trainingId: trainingId }
+    );
+
+    return result?.isTrainingDone === 1;
+  } catch (error) {
+    console.log("isTrainingCompleted issue", error);
+    return false;
+  }
+}

@@ -1,6 +1,6 @@
 import { SQLiteProvider } from "expo-sqlite";
-import { databaseName, initDatabase } from "./src/database/databaseSettings";
-import { NavigationContainer } from "@react-navigation/native";
+import DropDatabase, { databaseName, initDatabase } from "./src/database/databaseSettings";
+import { NavigationContainer,DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TrainingsScreen from "./src/screens/TrainingsScreen";
 import ExercisesScreen from "./src/screens/ExercisesScreen";
@@ -10,10 +10,19 @@ import AddMeasurementScreen from "./src/screens/AddMeasurementScreen";
 import { RootStackParamList } from "./src/types/navigationStackParms";
 import Toast from "react-native-toast-message";
 const Stack = createNativeStackNavigator<RootStackParamList>();
+
 export default function App() {
+// const MyTheme = {
+//   ...DefaultTheme,
+//   colors: {
+//     ...DefaultTheme.colors,
+//     primary: 'rgb(0, 255, 00)',
+    
+//   },
+// };
   return (
     <SQLiteProvider databaseName={databaseName} onInit={initDatabase}>
-      <NavigationContainer>
+      <NavigationContainer >
         <Stack.Navigator>
           <Stack.Screen
             name="Menu"

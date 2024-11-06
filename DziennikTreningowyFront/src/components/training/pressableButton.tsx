@@ -11,7 +11,7 @@ export default function PressableButton({ text, onPress,isSelected }: Props) {
   return (
     <Pressable
       onPress={handleOnPress}
-      className={` p-5 rounded-t-xl mx-1 text-center   ${isSelected? " bg-emerald-500 ":"bg-gray-50"}`}
+      className={` p-4 justify-center rounded-t-xl ml-1 text-center   ${isSelected? "  bg-emerald-500":"bg-gray-50 border border-gray-300 border-b-0"}`}
     >
       <Text className={`${isSelected ?"text-white":""}`}>{text}</Text>
     </Pressable>

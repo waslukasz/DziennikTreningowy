@@ -8,7 +8,7 @@ type Props = {
 };
 export default function DateRangePicker({ showDatePicker, from, to,isSelected }: Props) {
   return (
-    <View className={` flex justify-center shadow-2xl  rounded-t-xl mx-2 ${isSelected? " bg-emerald-500 ":"bg-gray-50"}`}>
+    <View className={` flex justify-center shadow-2xl  rounded-t-xl mx-1 ${isSelected? " bg-emerald-500 ":"bg-gray-50 border border-gray-300 border-b-0"}`}>
       <View className="items-center">
         <Text className={`${isSelected? " text-white":""}`}>Choose your date</Text>
       </View>

@@ -1,4 +1,4 @@
 type chartDataType = {
   date: string;
-  circumference: number;
+  value: number;
 };

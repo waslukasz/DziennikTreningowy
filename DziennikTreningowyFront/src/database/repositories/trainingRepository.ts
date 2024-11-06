@@ -13,13 +13,27 @@ export async function getTrainingById(id: number) {
 }
 export async function getTrainingsByDate(timestamp: Date) {
   try {
-    const dateToString = timestamp.toISOString();
+    const dateToString = timestamp.toISOString().split("T")[0];
     const result = await db.getAllAsync<Training>(
-      "SELECT * FROM Trainings where timestamp=$value",
+      "SELECT * FROM Trainings where DATE(timestamp) BETWEEN $value AND $value",
       { $value: dateToString }
     );
     return result;
   } catch (error) {
+    return false;
+  }
+}
+export async function getTrainingIdInDateRange(from:Date,to:Date) {
+  try {
+    const fromDate = from.toISOString().split("T")[0];
+    const toDate = to.toISOString().split("T")[0];
+    const result = await db.getAllAsync<Training>(
+      "SELECT id FROM Trainings WHERE DATE(timestamp) BETWEEN ? AND ?",
+      [fromDate, toDate]
+    );
+    return result;
+  } catch (error) {
+    console.log("getTrainingIdInDateRange training issue");
     return false;
   }
 }

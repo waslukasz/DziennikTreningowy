@@ -15,11 +15,12 @@ export default function ExercieseItem({ exercise, setExerciseToDone }: Props) {
   return (
     <View className="bg-gray-50 mb-1 p-2 border shadow border-gray-300   rounded-xl ">
       <View className="flex flex-row justify-between">
-        <Text className="font-bold p-1">{exercise.name}</Text>
+        <Text className="font-bold pl-1">{exercise.name}</Text>
         <Checkbox
           value={!!exercise.isDone}
           color={"green"}
           className=" rounded-2xl"
+           
           onValueChange={handleExerciseSetToDone}
         ></Checkbox>
       </View>

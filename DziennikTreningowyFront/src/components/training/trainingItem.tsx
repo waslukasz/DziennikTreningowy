@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor:'#f9fafb',
     justifyContent: "center",
     padding: 10,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "#d1d5db",
     shadowOpacity: 0.2,
     shadowOffset:{width:3,height:-3},
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   completedButton: {
-    borderColor:'green'
+    borderColor:'#10b981',
   },
   inProgressButton: {
     borderColor: "#d1d5db",

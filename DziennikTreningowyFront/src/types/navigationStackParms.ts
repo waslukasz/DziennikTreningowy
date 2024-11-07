@@ -12,6 +12,8 @@ export type RootStackParamList = {
   Training: undefined;
   Exercises: { trainingId: number };
   MeasurementDetails: undefined;
+  Calculators: undefined;
+  BmiCalculator: undefined;
 };
 export type TrainingScreenProps = NativeStackScreenProps<
   RootStackParamList,

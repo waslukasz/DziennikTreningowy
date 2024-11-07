@@ -1,7 +1,7 @@
-import * as SQLite from 'expo-sqlite';
-export const databaseName='DziennikTreningowy-v1.1'
-export const db= SQLite.openDatabaseSync(databaseName);
-export async function initDatabase() { 
+import * as SQLite from "expo-sqlite";
+export const databaseName = "DziennikTreningowy-v1.2";
+export const db = SQLite.openDatabaseSync(databaseName);
+export async function initDatabase() {
   await db.execAsync(`
         PRAGMA journal_mode = WAL;
         CREATE TABLE IF NOT EXISTS Exercises (

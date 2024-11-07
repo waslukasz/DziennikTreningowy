@@ -18,7 +18,6 @@ const OneRepMaxCalculator = ({ navigation }: { navigation: any }) => {
 
   function calculateMax() {
     if (weight && reps && parseFloat(weight) > 0 && parseFloat(reps) > 0) {
-      //1RM=W×(1+0.0333×R)
       let oneRepMaxTemp = parseFloat(weight) * (1 + 0.0333 * parseFloat(reps));
       setOneRepMax(oneRepMaxTemp);
     } else {

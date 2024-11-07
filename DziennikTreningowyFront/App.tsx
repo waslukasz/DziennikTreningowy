@@ -16,6 +16,7 @@ import Toast from "react-native-toast-message";
 import CalculatorsScreen from "./src/screens/CalculatorsScreen";
 import BmiCalculatorScreen from "./src/screens/BmiCalculatorScreen";
 import OneRepMaxCalculator from "./src/screens/OneRepMaxCalculatorScreen";
+import BmrCalculatorScreen from "./src/screens/BmrCalculatorScreen";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
@@ -61,6 +62,7 @@ export default function App() {
             name="OneRepMaxCalculator"
             component={OneRepMaxCalculator}
           />
+          <Stack.Screen name="BmrCalculator" component={BmrCalculatorScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />

@@ -15,6 +15,7 @@ import { RootStackParamList } from "./src/types/navigationStackParms";
 import Toast from "react-native-toast-message";
 import CalculatorsScreen from "./src/screens/CalculatorsScreen";
 import BmiCalculatorScreen from "./src/screens/BmiCalculatorScreen";
+import OneRepMaxCalculator from "./src/screens/OneRepMaxCalculatorScreen";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
@@ -56,6 +57,10 @@ export default function App() {
           />
           <Stack.Screen name="Calculators" component={CalculatorsScreen} />
           <Stack.Screen name="BmiCalculator" component={BmiCalculatorScreen} />
+          <Stack.Screen
+            name="OneRepMaxCalculator"
+            component={OneRepMaxCalculator}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />

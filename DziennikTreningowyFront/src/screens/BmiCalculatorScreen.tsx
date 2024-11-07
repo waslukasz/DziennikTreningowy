@@ -3,8 +3,8 @@ import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
 
 const BmiCalculatorScreen = ({ navigation }: { navigation: any }) => {
-  const [bodyWeight, setBodyWeight] = useState<string>();
-  const [height, setHeight] = useState<string>();
+  const [bodyWeight, setBodyWeight] = useState<string>("");
+  const [height, setHeight] = useState<string>("");
   const [bmi, setBmi] = useState(0);
 
   useEffect(() => {
@@ -71,9 +71,12 @@ const BmiCalculatorScreen = ({ navigation }: { navigation: any }) => {
       </View>
       <View className="bg-white my-10">
         {bmi ? (
-          <Text className="text-center text-xl p-8">
-            Your bmi: {bmi.toFixed(2)}
-          </Text>
+          <>
+            <Text className="text-center text-xl pt-4">Your bmi:</Text>
+            <Text className="text-xl font-bold text-center pb-4">
+              {bmi.toFixed(2)}
+            </Text>
+          </>
         ) : null}
         <View className="w-full h-0.5 bg-black opacity-10" />
         <View

@@ -16,6 +16,7 @@ export type RootStackParamList = {
   BmiCalculator: undefined;
   OneRepMaxCalculator: undefined;
   BmrCalculator: undefined;
+  WilksCalculator: undefined;
 };
 export type TrainingScreenProps = NativeStackScreenProps<
   RootStackParamList,

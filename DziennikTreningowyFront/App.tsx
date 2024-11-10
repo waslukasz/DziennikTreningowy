@@ -17,6 +17,7 @@ import CalculatorsScreen from "./src/screens/CalculatorsScreen";
 import BmiCalculatorScreen from "./src/screens/BmiCalculatorScreen";
 import OneRepMaxCalculator from "./src/screens/OneRepMaxCalculatorScreen";
 import BmrCalculatorScreen from "./src/screens/BmrCalculatorScreen";
+import WilksCalculatorScreen from "./src/screens/WilksCalculatorScreen";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
@@ -63,6 +64,10 @@ export default function App() {
             component={OneRepMaxCalculator}
           />
           <Stack.Screen name="BmrCalculator" component={BmrCalculatorScreen} />
+          <Stack.Screen
+            name="WilksCalculator"
+            component={WilksCalculatorScreen}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />

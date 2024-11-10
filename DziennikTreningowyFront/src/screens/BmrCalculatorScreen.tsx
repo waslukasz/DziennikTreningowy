@@ -12,7 +12,7 @@ const BmrCalculatorScreen = ({ navigation }: { navigation: any }) => {
 
   useEffect(() => {
     navigation.setOptions({
-      title: "Basal metabolic rate calculator",
+      title: "Basal Metabolic Rate calculator",
     });
   }, []);
 

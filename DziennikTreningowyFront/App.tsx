@@ -18,6 +18,8 @@ import BmiCalculatorScreen from "./src/screens/BmiCalculatorScreen";
 import OneRepMaxCalculator from "./src/screens/OneRepMaxCalculatorScreen";
 import BmrCalculatorScreen from "./src/screens/BmrCalculatorScreen";
 import WilksCalculatorScreen from "./src/screens/WilksCalculatorScreen";
+import { Button, Pressable, Text } from "react-native";
+import LoginScreen from "./src/screens/LoginScreen";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
@@ -32,7 +34,17 @@ export default function App() {
   return (
     <SQLiteProvider databaseName={databaseName} onInit={initDatabase}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={({ navigation }) => ({
+            headerRight: () => (
+              <Button
+                onPress={() => navigation.navigate("Login")}
+                title="Login"
+                color="#000" // Dostosuj kolor przycisku
+              />
+            ),
+          })}
+        >
           <Stack.Screen
             name="Menu"
             options={{ title: "MENU" }}
@@ -67,6 +79,10 @@ export default function App() {
           <Stack.Screen
             name="WilksCalculator"
             component={WilksCalculatorScreen}
+          />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
           />
         </Stack.Navigator>
       </NavigationContainer>

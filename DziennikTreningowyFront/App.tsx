@@ -20,6 +20,7 @@ import BmrCalculatorScreen from "./src/screens/BmrCalculatorScreen";
 import WilksCalculatorScreen from "./src/screens/WilksCalculatorScreen";
 import { Button, Pressable, Text } from "react-native";
 import LoginScreen from "./src/screens/LoginScreen";
+import HRMaxCalculator from "./src/screens/HRMaxCalculatorScreen";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
@@ -80,10 +81,8 @@ export default function App() {
             name="WilksCalculator"
             component={WilksCalculatorScreen}
           />
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-          />
+          <Stack.Screen name="HRMax" component={HRMaxCalculator} />
+          <Stack.Screen name="Login" component={LoginScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />

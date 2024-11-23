@@ -20,6 +20,7 @@ export type RootStackParamList = {
   Login: undefined;
   SingUp: undefined;
   HRMax: undefined;
+  VO2Max: undefined;
 };
 export type TrainingScreenProps = NativeStackScreenProps<
   RootStackParamList,

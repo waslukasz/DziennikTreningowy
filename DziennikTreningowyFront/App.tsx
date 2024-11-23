@@ -13,14 +13,15 @@ import AddMeasurementScreen from "./src/screens/AddMeasurementScreen";
 import MeasurementDetailsScreen from "./src/screens/MesasurementDetailsScreen";
 import { RootStackParamList } from "./src/types/navigationStackParms";
 import Toast from "react-native-toast-message";
-import CalculatorsScreen from "./src/screens/CalculatorsScreen";
-import BmiCalculatorScreen from "./src/screens/BmiCalculatorScreen";
-import OneRepMaxCalculator from "./src/screens/OneRepMaxCalculatorScreen";
-import BmrCalculatorScreen from "./src/screens/BmrCalculatorScreen";
-import WilksCalculatorScreen from "./src/screens/WilksCalculatorScreen";
+import CalculatorsScreen from "./src/screens/CalculatorScreens/CalculatorsScreen";
+import BmiCalculatorScreen from "./src/screens/CalculatorScreens/BmiCalculatorScreen";
+import OneRepMaxCalculator from "./src/screens/CalculatorScreens/OneRepMaxCalculatorScreen";
+import BmrCalculatorScreen from "./src/screens/CalculatorScreens/BmrCalculatorScreen";
+import WilksCalculatorScreen from "./src/screens/CalculatorScreens/WilksCalculatorScreen";
 import { Button, Pressable, Text } from "react-native";
 import LoginScreen from "./src/screens/LoginScreen";
-import HRMaxCalculator from "./src/screens/HRMaxCalculatorScreen";
+import HRMaxCalculator from "./src/screens/CalculatorScreens/HRMaxCalculatorScreen";
+import VO2Calculator from "./src/screens/CalculatorScreens/VO2MaxCalculatorScreen";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
@@ -82,6 +83,7 @@ export default function App() {
             component={WilksCalculatorScreen}
           />
           <Stack.Screen name="HRMax" component={HRMaxCalculator} />
+          <Stack.Screen name="VO2Max" component={VO2Calculator} />
           <Stack.Screen name="Login" component={LoginScreen} />
         </Stack.Navigator>
       </NavigationContainer>

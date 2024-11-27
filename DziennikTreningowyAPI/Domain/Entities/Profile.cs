@@ -2,7 +2,7 @@
 
 public class Profile
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? Gender { get; set; }
@@ -12,4 +12,5 @@ public class Profile
     
     public Guid AccountId { get; set; }
     public Account Account { get; set; }
+    public ICollection<Training> Trainings { get; set; } = new List<Training>();
 }

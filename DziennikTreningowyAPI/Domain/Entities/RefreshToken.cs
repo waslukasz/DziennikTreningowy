@@ -2,11 +2,12 @@
 
 public class RefreshToken
 {
-    public Guid Id { get; set; }
-    public Guid UserId { get; set; }
-    public string Email { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string Token { get; set; }
+    public bool IsRevoked { get; set; } = false;
     public DateTime ExpiryDate { get; set; }
-    public bool IsRevoked { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    
+    public Guid AccountId { get; set; }
+    public Account Account { get; set; }
 }

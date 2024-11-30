@@ -4,7 +4,10 @@ import DropDatabase, {
   initDatabase,
 } from "./src/database/databaseSettings";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationOptions,
+} from "@react-navigation/native-stack";
 import TrainingsScreen from "./src/screens/TrainingsScreen";
 import ExercisesScreen from "./src/screens/ExercisesScreen";
 import MenuScreen from "./src/screens/MenuScreen";
@@ -22,7 +25,118 @@ import { Button, Pressable, Text } from "react-native";
 import LoginScreen from "./src/screens/LoginScreen";
 import HRMaxCalculator from "./src/screens/CalculatorScreens/HRMaxCalculatorScreen";
 import VO2Calculator from "./src/screens/CalculatorScreens/VO2MaxCalculatorScreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator();
+
+function LoginButton({ navigation }: { navigation: any }) {
+  return (
+    <Button
+      onPress={() => navigation.navigate("Login")}
+      title="Login"
+      color="#000" // Dostosuj kolor przycisku
+    />
+  );
+}
+
+const MeasurementStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={({ route, navigation }) => ({
+        headerRight: () => <LoginButton navigation={navigation} />,
+      })}
+    >
+      <Stack.Screen
+        name="BodyMeasurment"
+        options={{ title: "" }}
+        component={BodyMeasurementsScreen}
+      />
+      <Stack.Screen
+        name="AddMeasurement"
+        options={{ title: "" }}
+        component={AddMeasurementScreen}
+      />
+      <Stack.Screen
+        name="MeasurementDetails"
+        options={{ title: "" }}
+        component={MeasurementDetailsScreen}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const CalculatorStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={({ route, navigation }) => ({
+        headerRight: () => <LoginButton navigation={navigation} />,
+      })}
+    >
+      <Stack.Screen
+        name="Calculators"
+        component={CalculatorsScreen}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="BmiCalculator"
+        component={BmiCalculatorScreen}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="OneRepMaxCalculator"
+        component={OneRepMaxCalculator}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="BmrCalculator"
+        component={BmrCalculatorScreen}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="WilksCalculator"
+        component={WilksCalculatorScreen}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="HRMax"
+        component={HRMaxCalculator}
+        options={{ title: "" }}
+      />
+      <Stack.Screen
+        name="VO2Max"
+        component={VO2Calculator}
+        options={{ title: "" }}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const TrainingStack = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={({ route, navigation }) => ({
+        headerRight: () => <LoginButton navigation={navigation} />,
+      })}
+    >
+      <Stack.Screen
+        name="Training"
+        options={{
+          title: "",
+        }}
+        component={TrainingsScreen}
+      />
+      <Stack.Screen
+        name="Exercises"
+        options={{
+          title: "",
+        }}
+        component={ExercisesScreen}
+      />
+    </Stack.Navigator>
+  );
+};
 
 export default function App() {
   // const MyTheme = {
@@ -36,56 +150,67 @@ export default function App() {
   return (
     <SQLiteProvider databaseName={databaseName} onInit={initDatabase}>
       <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={({ navigation }) => ({
-            headerRight: () => (
-              <Button
-                onPress={() => navigation.navigate("Login")}
-                title="Login"
-                color="#000" // Dostosuj kolor przycisku
-              />
-            ),
+        <Tab.Navigator
+          screenOptions={({ route, navigation }) => ({
+            tabBarIcon: ({ focused, color, size }) => {
+              let iconName: string = "";
+
+              if (route.name === "Menu") {
+                iconName = "house";
+              } else if (route.name === "TrainingStack") {
+                iconName = "dumbbell";
+              } else if (route.name === "CalculatorsStack") {
+                iconName = "calculator";
+              } else if (route.name === "BodyMeasurmentStack") {
+                iconName = "weight-scale";
+              }
+              return (
+                <FontAwesome6
+                  name={iconName}
+                  size={24}
+                  color={focused ? "tomato" : "gray"}
+                />
+              );
+            },
           })}
         >
-          <Stack.Screen
+          <Tab.Screen
             name="Menu"
-            options={{ title: "MENU" }}
+            options={({ navigation }) => ({
+              headerRightContainerStyle: {
+                paddingRight: 16,
+              },
+              title: "",
+              tabBarShowLabel: false,
+              headerRight: () => <LoginButton navigation={navigation} />,
+            })}
             component={MenuScreen}
           />
-          <Stack.Screen
-            name="Training"
-            options={{ title: "" }}
-            component={TrainingsScreen}
+          <Tab.Screen
+            name="TrainingStack"
+            options={{
+              tabBarShowLabel: false,
+              title: "",
+              headerShown: false,
+            }}
+            component={TrainingStack}
           />
-          <Stack.Screen
-            name="BodyMeasurment"
-            options={{ title: "" }}
-            component={BodyMeasurementsScreen}
+          <Tab.Screen
+            name="BodyMeasurmentStack"
+            options={{ title: "", tabBarShowLabel: false, headerShown: false }}
+            component={MeasurementStack}
           />
-          <Stack.Screen name="Exercises" component={ExercisesScreen} />
-          <Stack.Screen
-            name="AddMeasurement"
-            component={AddMeasurementScreen}
+          <Tab.Screen
+            name="CalculatorsStack"
+            options={{ title: "", tabBarShowLabel: false, headerShown: false }}
+            component={CalculatorStack}
           />
-          <Stack.Screen
-            name="MeasurementDetails"
-            component={MeasurementDetailsScreen}
+          <Tab.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ tabBarButton: () => null }}
           />
-          <Stack.Screen name="Calculators" component={CalculatorsScreen} />
-          <Stack.Screen name="BmiCalculator" component={BmiCalculatorScreen} />
-          <Stack.Screen
-            name="OneRepMaxCalculator"
-            component={OneRepMaxCalculator}
-          />
-          <Stack.Screen name="BmrCalculator" component={BmrCalculatorScreen} />
-          <Stack.Screen
-            name="WilksCalculator"
-            component={WilksCalculatorScreen}
-          />
-          <Stack.Screen name="HRMax" component={HRMaxCalculator} />
-          <Stack.Screen name="VO2Max" component={VO2Calculator} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-        </Stack.Navigator>
+        </Tab.Navigator>
       </NavigationContainer>
       <Toast />
     </SQLiteProvider>

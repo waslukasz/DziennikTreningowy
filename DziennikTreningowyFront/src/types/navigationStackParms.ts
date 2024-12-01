@@ -5,10 +5,9 @@ import {
 } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
-  Menu: undefined;
+  Home: undefined;
   BodyMeasurment: undefined;
   AddMeasurement: undefined;
-  Home: undefined;
   Training: undefined;
   Exercises: { trainingId: number };
   MeasurementDetails: undefined;
@@ -21,6 +20,8 @@ export type RootStackParamList = {
   SingUp: undefined;
   HRMax: undefined;
   VO2Max: undefined;
+  FirstLaunchScreen: undefined;
+  mainApp: undefined;
 };
 export type TrainingScreenProps = NativeStackScreenProps<
   RootStackParamList,

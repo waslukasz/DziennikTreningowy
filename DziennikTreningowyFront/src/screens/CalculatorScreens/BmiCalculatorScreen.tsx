@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
@@ -21,6 +22,7 @@ const BmiCalculatorScreen = ({ navigation }: { navigation: any }) => {
     ) {
       let heightInMeters = parseFloat(height!) / 100;
       let bmiTemp = parseFloat(bodyWeight!) / heightInMeters ** 2;
+      AsyncStorage.removeItem("hasSeenLaunchScreen");
       setBmi(bmiTemp);
     } else {
       Toast.show({

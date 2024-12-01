@@ -2,7 +2,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { View, TouchableOpacity as Pressable, Text } from "react-native";
 import WeekTrainings from "../components/menu/weekTrainings";
 
-const MenuScreen = ({ navigation }: { navigation: any }) => {
+const HomeScreen = ({ navigation }: { navigation: any }) => {
   return (
     <View className="p-2.5 flex flex-row flex-wrap justify-around">
       <View className="border w-32 h-32 bg-white rounded-lg border-gray-300 mb-5 mx-5">
@@ -35,4 +35,4 @@ const MenuScreen = ({ navigation }: { navigation: any }) => {
     </View>
   );
 };
-export default MenuScreen;
+export default HomeScreen;

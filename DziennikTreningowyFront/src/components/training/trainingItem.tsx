@@ -41,7 +41,7 @@ export default function TrainingItem({ training, handleDelete }: Props) {
     <Pressable
       style={({ pressed }) => [
         {
-          opacity: pressed ? 0.3 : 1, // Zmienna opacity na podstawie stanu 'pressed'
+          opacity: pressed ? 0.3 : 1, 
         },
         styles.button,
         isTrainingDone ? styles.completedButton : styles.inProgressButton,

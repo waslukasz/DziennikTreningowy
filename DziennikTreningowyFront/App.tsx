@@ -20,6 +20,7 @@ import BmrCalculatorScreen from "./src/screens/BmrCalculatorScreen";
 import WilksCalculatorScreen from "./src/screens/WilksCalculatorScreen";
 import { Button, Pressable, Text } from "react-native";
 import LoginScreen from "./src/screens/LoginScreen";
+import SingUp from "./src/screens/SignUpScreen";
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
@@ -40,7 +41,7 @@ export default function App() {
               <Button
                 onPress={() => navigation.navigate("Login")}
                 title="Login"
-                color="#000" // Dostosuj kolor przycisku
+                color="#000"
               />
             ),
           })}
@@ -80,10 +81,8 @@ export default function App() {
             name="WilksCalculator"
             component={WilksCalculatorScreen}
           />
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-          />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="SignUp" component={SingUp} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />

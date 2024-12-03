@@ -17,14 +17,18 @@ export type RootStackParamList = {
   OneRepMaxCalculator: undefined;
   BmrCalculator: undefined;
   WilksCalculator: undefined;
-  Login:undefined,
-  SingUp:undefined,
+  Login: undefined;
+  SignUp: undefined;
 };
 export type TrainingScreenProps = NativeStackScreenProps<
   RootStackParamList,
   "Training"
 >;
 
+export type LoginScreenProps = NativeStackNavigationProp<
+  RootStackParamList,
+  "Login","SignUp"
+>;
 export type ExerciseScreenProps = NativeStackScreenProps<
   RootStackParamList,
   "Exercises"

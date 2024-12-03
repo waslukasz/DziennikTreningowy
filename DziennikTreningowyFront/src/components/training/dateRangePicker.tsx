@@ -4,22 +4,24 @@ type Props = {
   showDatePicker: (mode: "from" | "to") => void;
   from: Date | undefined;
   to: Date | undefined;
-  isSelected:boolean;
 };
-export default function DateRangePicker({ showDatePicker, from, to,isSelected }: Props) {
+export default function DateRangePicker({
+  showDatePicker,
+  from,
+  to,
+}: Props) {
   return (
-    <View className={` flex justify-center shadow-2xl  rounded-t-xl mx-1 ${isSelected? " bg-emerald-500 ":"bg-gray-50 border border-gray-300 border-b-0"}`}>
-      <View className="items-center">
-        <Text className={`${isSelected? " text-white":""}`}>Choose your date</Text>
-      </View>
-      <View className=" flex-row">
+    <View
+      className={` flex-1 py-3 justify-center shadow-2xl mx-1 rounded-t-xl bg-emerald-500
+          `}
+    >
+      <View className=" flex-row  justify-evenly">
         <Pressable
           onPress={() => showDatePicker("from")}
-          className=" px-5 py-1 items-center"
+          className=""
         >
-          <Text className={`${isSelected? " text-white":""}`}>From</Text>
           {from && (
-            <Text className={`${isSelected? " text-white":""}`}>
+            <Text className={`text-lg text-white`}>
               {from.toLocaleDateString("pl-PL", {
                 day: "2-digit",
                 month: "2-digit",
@@ -30,13 +32,13 @@ export default function DateRangePicker({ showDatePicker, from, to,isSelected }:
             </Text>
           )}
         </Pressable>
+        <Text className={`text-lg text-white`}>-</Text>
         <Pressable
           onPress={() => showDatePicker("to")}
-          className=" px-5 py-1 items-center "
+          className=" "
         >
-          <Text className={`${isSelected? " text-white":""}`}>To</Text>
           {to && (
-            <Text className={`${isSelected? " text-white":""}`}>
+            <Text className={`text-lg text-white`}>
               {to.toLocaleDateString("pl-PL", {
                 day: "2-digit",
                 month: "2-digit",

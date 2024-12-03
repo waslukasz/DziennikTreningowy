@@ -9,14 +9,13 @@ import {
   deleteTraining,
   getTraingsInDateRange,
 } from "../database/repositories/trainingRepository";
-import WeekNavigation from "../components/training/weekNavigation";
 import DateRangePicker from "../components/training/dateRangePicker";
 import TrainingList from "../components/training/trainingList";
 import { TrainingScreenProps } from "../types/navigationStackParms";
 import Toast from "react-native-toast-message";
 import { LinearGradient } from "expo-linear-gradient";
 export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
-  const [selectedWeek, setSelectedWeek] = useState<number>(0);
+  const [selectedWeek, setSelectedWeek] = useState(0);
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [datePickerMode, setDatePickerMode] = useState<
@@ -24,6 +23,7 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
   >("create");
   const [firstDayOfWeek, setFirstDayOfWeek] = useState<Date>();
   const [lastDayOfWeek, setLastDayOfWeek] = useState<Date>();
+
   useEffect(() => {
     (async () => {
       if (!firstDayOfWeek && !lastDayOfWeek) {
@@ -40,9 +40,9 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
     }, [firstDayOfWeek, lastDayOfWeek])
   );
 
-  const setFirstAndLastDays = (offsetWeeks = 0) => {
+  const setFirstAndLastDays = (offset: number = 0) => {
     const curr = new Date();
-    curr.setDate(curr.getDate() + offsetWeeks * 7);
+    curr.setDate(curr.getDate() + offset * 7);
     const first =
       curr.getDate() - curr.getDay() + (curr.getDay() === 0 ? -6 : 1);
     const last = first + 6;
@@ -88,13 +88,14 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
 
   const handleDatePicked = async (date: Date) => {
     if (datePickerMode === "from") {
-      setSelectedWeek(4);
       if (lastDayOfWeek && date > lastDayOfWeek) {
         setLastDayOfWeek(date);
       }
+      const newSelectedWeek = calculateSelectedWeek(date);
+      console.log(newSelectedWeek);
+      setSelectedWeek(newSelectedWeek);
       setFirstDayOfWeek(date);
     } else if (datePickerMode === "to") {
-      setSelectedWeek(4);
       if (firstDayOfWeek && date < firstDayOfWeek) {
         setFirstDayOfWeek(date);
       }
@@ -136,18 +137,42 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
       });
     }
   };
-
-  const handleWeekChange = (offset: number) => {
-    setSelectedWeek(offset);
-    setFirstAndLastDays(offset);
+  const handleWeekChange = (mode: "+" | "-") => {
+    let newWeek = selectedWeek;
+    if (firstDayOfWeek && lastDayOfWeek) {
+      if (mode == "+") {
+        newWeek++;
+      } else if (mode == "-") {
+        newWeek--;
+      }
+    }
+    setSelectedWeek(newWeek);
+    setFirstAndLastDays(newWeek);
   };
-
+  const calculateSelectedWeek = (selectedDate: Date) => {
+    const today = new Date();
+    const todayStartOfWeek = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1)
+    );
+    const selectedStartOfWeek = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      selectedDate.getDate() -
+        selectedDate.getDay() +
+        (selectedDate.getDay() === 0 ? -6 : 1)
+    );
+    const diffInDays = Math.floor(
+      (selectedStartOfWeek.getTime() - todayStartOfWeek.getTime()) /
+        (1000 * 60 * 60 * 24)
+    );
+    return Math.floor(diffInDays / 7);
+  };
   return (
     <View className="flex-1   ">
       <View className=" ">
-        <LinearGradient 
-        colors={['#1C3113', '#40933A']}
-        >
+        <LinearGradient colors={["#1C3113", "#40933A"]}>
           <View className=" mb-5 mx-5 mt-10 flex-row justify-between">
             <Text className="text-3xl text-white">Plan List</Text>
 
@@ -159,19 +184,33 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
             </Pressable>
           </View>
 
-          <View>
-            <ScrollView horizontal>
-              <WeekNavigation
-                handleWeekChange={handleWeekChange}
-                selectedWeek={selectedWeek}
+          <View className="flex-row  justify-center w-full">
+            <Pressable
+              onPress={() => handleWeekChange("-")}
+              className={` w-1/6 p-4 justify-center items-center  rounded-t-xl ml-1 bg-gray-50 border border-gray-300 border-b-0`}
+            >
+              <FontAwesome6
+                name="angle-left"
+                size={25}
+                // color={}
+              />{" "}
+            </Pressable>
+
+            <DateRangePicker
+              showDatePicker={showDatePicker}
+              from={firstDayOfWeek}
+              to={lastDayOfWeek}
+            />
+            <Pressable
+              onPress={() => handleWeekChange("+")}
+              className={`w-1/6 p-4 justify-center items-center  rounded-t-xl mr-1 bg-gray-50 border border-gray-300 border-b-0 `}
+            >
+              <FontAwesome6
+                name="angle-right"
+                size={25}
+                // color={}
               />
-              <DateRangePicker
-                isSelected={selectedWeek === 4}
-                showDatePicker={showDatePicker}
-                from={firstDayOfWeek}
-                to={lastDayOfWeek}
-              />
-            </ScrollView>
+            </Pressable>
           </View>
         </LinearGradient>
       </View>

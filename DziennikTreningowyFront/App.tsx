@@ -40,7 +40,7 @@ export default function App() {
       <Button
         onPress={() => navigation.navigate("Login")}
         title="Login"
-        color="#000" // Dostosuj kolor przycisku
+        color="#000"
       />
     );
   }

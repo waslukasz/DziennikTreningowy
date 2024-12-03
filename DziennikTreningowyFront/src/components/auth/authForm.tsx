@@ -26,9 +26,11 @@ export default function AuthForm({ isLogin, onSubmit }: Props) {
 
   const handleChangeScreen = () => {
     if (isLogin) {
-      navigation.replace("SignUp");
+      navigation.replace("mainApp", { screen: "SignUp" });
+
     } else {
-      navigation.replace("Login");
+      navigation.replace("mainApp", { screen: "Login" });
+      
     }
   };
   const updateInputValueHandler = (

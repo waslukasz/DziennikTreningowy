@@ -193,7 +193,7 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
                 name="angle-left"
                 size={25}
                 // color={}
-              />{" "}
+              />
             </Pressable>
 
             <DateRangePicker

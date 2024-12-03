@@ -30,6 +30,8 @@ import FirstLaunchScreen from "./src/screens/FirstLaunchScreen";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "./src/screens/HomeScreen";
+import SingUp from "./src/screens/SignUpScreen";
+import SignUpScreen from "./src/screens/SignUpScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -181,7 +183,6 @@ export default function App() {
           })}
           component={HomeScreen}
         />
-
         <Tab.Screen
           name="TrainingStack"
           options={{
@@ -212,6 +213,11 @@ export default function App() {
         <Tab.Screen
           name="Login"
           component={LoginScreen}
+          options={{ tabBarButton: () => null }}
+        />
+        <Tab.Screen
+          name="SignUp"
+          component={SignUpScreen}
           options={{ tabBarButton: () => null }}
         />
       </Tab.Navigator>

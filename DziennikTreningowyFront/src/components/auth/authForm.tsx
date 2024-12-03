@@ -30,7 +30,6 @@ export default function AuthForm({ isLogin, onSubmit }: Props) {
 
     } else {
       navigation.replace("mainApp", { screen: "Login" });
-      
     }
   };
   const updateInputValueHandler = (
@@ -148,7 +147,8 @@ export default function AuthForm({ isLogin, onSubmit }: Props) {
                     })
                   : "Date of Birth"}
               </Text>
-              <DateTimePicker
+             
+              <DateTimePicker // Error with DefaultProps 
                 themeVariant="light" // Problem with Calendar Display in Dark Mode (something with react navigation)
                 isVisible={isDatePickerVisible}
                 mode="date"

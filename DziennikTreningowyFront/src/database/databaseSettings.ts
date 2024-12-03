@@ -21,19 +21,25 @@ export async function initDatabase() {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW'))
         );
+        CREATE TABLE IF NOT EXISTS User (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          firstName TEXT,
+          height INTEGER,
+          weight REAL
+        );
         CREATE TABLE IF NOT EXISTS BodyMeasurements (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           date TEXT DEFAULT (STRFTIME('%Y-%m-%d %H %M %S', 'NOW')),
           bodyPart TEXT NOT NULL,
           value INTEGER,
           CHECK (bodyPart IN ('neck', 'belly', 'chest', 'hips', 'bicep', 'thigh', 'waist', 'calf', 'bodyWeight'))
-        );
-       `);
+        );`);
 }
-export default async function DropDatabase() {
+export async function DropDatabase() {
   await db.execAsync(`
     DROP TABLE IF EXISTS Exercises;
     DROP TABLE IF EXISTS Trainings;
     DROP TABLE IF EXISTS BodyMeasurements;
+    Drop TABLE IF EXISTS User;
   `);
 }

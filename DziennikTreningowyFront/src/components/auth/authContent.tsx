@@ -9,7 +9,6 @@ import {
 import AuthForm from "./authForm";
 import { LinearGradient } from "expo-linear-gradient";
 import Toast from "react-native-toast-message";
-import { CreateUser, Login } from "../../services/auth";
 type Props = {
   isLogin: boolean;
   onAuthenticate: (

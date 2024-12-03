@@ -1,12 +1,7 @@
 import { SQLiteProvider } from "expo-sqlite";
-import DropDatabase, {
-  databaseName,
-  initDatabase,
-} from "./src/database/databaseSettings";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import {
   createNativeStackNavigator,
-  NativeStackNavigationOptions,
 } from "@react-navigation/native-stack";
 import TrainingsScreen from "./src/screens/TrainingsScreen";
 import ExercisesScreen from "./src/screens/ExercisesScreen";
@@ -30,8 +25,8 @@ import FirstLaunchScreen from "./src/screens/FirstLaunchScreen";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "./src/screens/HomeScreen";
-import SingUp from "./src/screens/SignUpScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
+import { databaseName, initDatabase } from "./src/database/databaseSettings";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();

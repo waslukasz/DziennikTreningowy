@@ -11,10 +11,9 @@ import {
 } from "../database/repositories/trainingRepository";
 import DateRangePicker from "../components/training/dateRangePicker";
 import TrainingList from "../components/training/trainingList";
-import { TrainingScreenProps } from "../types/navigationStackParms";
 import Toast from "react-native-toast-message";
 import { LinearGradient } from "expo-linear-gradient";
-export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
+export default function TrainingsScreen() {
   const [selectedWeek, setSelectedWeek] = useState(0);
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
@@ -92,7 +91,6 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
         setLastDayOfWeek(date);
       }
       const newSelectedWeek = calculateSelectedWeek(date);
-      console.log(newSelectedWeek);
       setSelectedWeek(newSelectedWeek);
       setFirstDayOfWeek(date);
     } else if (datePickerMode === "to") {
@@ -192,11 +190,11 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
               <FontAwesome6
                 name="angle-left"
                 size={25}
-                // color={}
+                
               />
             </Pressable>
 
-            <DateRangePicker
+            <DateRangePicker // Error with DefaultProps
               showDatePicker={showDatePicker}
               from={firstDayOfWeek}
               to={lastDayOfWeek}
@@ -214,7 +212,7 @@ export default function TrainingsScreen({ navigation }: TrainingScreenProps) {
           </View>
         </LinearGradient>
       </View>
-      <DateTimePicker
+      <DateTimePicker // Error with DefaultProps
         themeVariant="light" // Problem with Calendar Display in Dark Mode (something with react navigation)
         isVisible={isDatePickerVisible}
         mode="date"

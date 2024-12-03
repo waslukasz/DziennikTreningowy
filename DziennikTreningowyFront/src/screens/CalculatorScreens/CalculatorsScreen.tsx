@@ -37,6 +37,22 @@ const CalculatorsScreen = ({ navigation }: { navigation: any }) => {
           <Text className="text-4xl font-bold">WILKS</Text>
         </Pressable>
       </View>
+      <View className="border w-32 h-32 bg-white rounded-lg border-gray-300 mb-5 mx-5">
+        <Pressable
+          className="w-32 h-32 flex justify-center items-center"
+          onPress={() => navigation.navigate("HRMax")}
+        >
+          <Text className="text-4xl font-bold">HRMax</Text>
+        </Pressable>
+      </View>
+      <View className="border w-32 h-32 bg-white rounded-lg border-gray-300 mb-5 mx-5">
+        <Pressable
+          className="w-32 h-32 flex justify-center items-center"
+          onPress={() => navigation.navigate("VO2Max")}
+        >
+          <Text className="text-4xl font-bold">VO2</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };

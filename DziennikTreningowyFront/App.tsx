@@ -239,56 +239,6 @@ export default function App() {
   return (
     <SQLiteProvider databaseName={databaseName} onInit={initDatabase}>
       <NavigationContainer>
-<<<<<<< HEAD
-        <Stack.Navigator
-          screenOptions={({ navigation }) => ({
-            headerRight: () => (
-              <Button
-                onPress={() => navigation.navigate("Login")}
-                title="Login"
-                color="#000"
-              />
-            ),
-          })}
-        >
-          <Stack.Screen
-            name="Menu"
-            options={{ title: "MENU" }}
-            component={MenuScreen}
-          />
-          <Stack.Screen
-            name="Training"
-            options={{ title: "" }}
-            component={TrainingsScreen}
-          />
-          <Stack.Screen
-            name="BodyMeasurment"
-            options={{ title: "" }}
-            component={BodyMeasurementsScreen}
-          />
-          <Stack.Screen name="Exercises" component={ExercisesScreen} />
-          <Stack.Screen
-            name="AddMeasurement"
-            component={AddMeasurementScreen}
-          />
-          <Stack.Screen
-            name="MeasurementDetails"
-            component={MeasurementDetailsScreen}
-          />
-          <Stack.Screen name="Calculators" component={CalculatorsScreen} />
-          <Stack.Screen name="BmiCalculator" component={BmiCalculatorScreen} />
-          <Stack.Screen
-            name="OneRepMaxCalculator"
-            component={OneRepMaxCalculator}
-          />
-          <Stack.Screen name="BmrCalculator" component={BmrCalculatorScreen} />
-          <Stack.Screen
-            name="WilksCalculator"
-            component={WilksCalculatorScreen}
-          />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="SignUp" component={SingUp} />
-=======
         <Stack.Navigator screenOptions={{ title: "", headerShown: false }}>
           {isFirstTime ? (
             <Stack.Screen
@@ -297,7 +247,6 @@ export default function App() {
             />
           ) : null}
           <Stack.Screen name="mainApp" component={TabNavigator} />
->>>>>>> b7c92a8d447403e50039ab2c699d8ee6c6047e7d
         </Stack.Navigator>
       </NavigationContainer>
       <Toast />

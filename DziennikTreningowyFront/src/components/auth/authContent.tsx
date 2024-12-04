@@ -1,8 +1,5 @@
-import { useState } from "react";
 import {
   Keyboard,
-  Pressable,
-  Text,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -14,7 +11,6 @@ type Props = {
   onAuthenticate: (
     email: string,
     password: string,
-    dateOfBirth?: Date
   ) => void;
 };
 export default function AuthContent({ isLogin,onAuthenticate }: Props) {
@@ -22,7 +18,6 @@ export default function AuthContent({ isLogin,onAuthenticate }: Props) {
     email: string,
     password: string,
     confirmPassword: string,
-    dateOdBirth?:Date
   ) => {
     const emailIsValid = email.includes("@");
     const passwordIsValid = password.length > 6;
@@ -35,7 +30,7 @@ export default function AuthContent({ isLogin,onAuthenticate }: Props) {
       });
       return;
     }
-    onAuthenticate(email, password,dateOdBirth);
+    onAuthenticate(email, password);
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

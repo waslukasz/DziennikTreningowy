@@ -1,8 +1,6 @@
 import { SQLiteProvider } from "expo-sqlite";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import {
-  createNativeStackNavigator,
-} from "@react-navigation/native-stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TrainingsScreen from "./src/screens/TrainingsScreen";
 import ExercisesScreen from "./src/screens/ExercisesScreen";
 import BodyMeasurementsScreen from "./src/screens/BodyMeasurementScreen";
@@ -22,24 +20,39 @@ import VO2Calculator from "./src/screens/CalculatorScreens/VO2MaxCalculatorScree
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FirstLaunchScreen from "./src/screens/FirstLaunchScreen";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "./src/screens/HomeScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
 import { databaseName, initDatabase } from "./src/database/databaseSettings";
+import AuthContextProvider, {
+  AuthContext,
+} from "./src/components/auth/authContext";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+
   function LoginButton({ navigation }: { navigation: any }) {
-    return (
-      <Button
-        onPress={() => navigation.navigate("Login")}
-        title="Login"
-        color="#000"
-      />
-    );
+    const authCtx = useContext(AuthContext);
+    if (!authCtx.isAuthenticated) {
+      return (
+        <Button
+          onPress={() => navigation.navigate("Login")}
+          title="Login"
+          color="#000"
+        />
+      );
+    }else{
+      return (
+        <Button
+          onPress={authCtx.logout}
+          title="Logout"
+          color="#000"
+        />
+      );
+    }
   }
 
   const MeasurementStack = () => {
@@ -220,6 +233,7 @@ export default function App() {
   };
 
   const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
+  const authCtx=useContext(AuthContext) 
   useEffect(() => {
     async function firstLaunch() {
       const hasSeenLaunchScreen = await AsyncStorage.getItem(
@@ -228,6 +242,14 @@ export default function App() {
       setIsFirstTime(hasSeenLaunchScreen === null);
     }
     firstLaunch();
+  }, []);
+  useEffect(() => {
+    (async () => {
+      const storedToken = await AsyncStorage.getItem("token");
+      if (storedToken) {
+        authCtx.authenticate(storedToken);
+      }
+    })();
   }, []);
   // const MyTheme = {
   //   ...DefaultTheme,
@@ -239,18 +261,20 @@ export default function App() {
   // };
   return (
     <SQLiteProvider databaseName={databaseName} onInit={initDatabase}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ title: "", headerShown: false }}>
-          {isFirstTime ? (
-            <Stack.Screen
-              name="FirstLaunchScreen"
-              component={FirstLaunchScreen}
-            />
-          ) : null}
-          <Stack.Screen name="mainApp" component={TabNavigator} />
-        </Stack.Navigator>
-      </NavigationContainer>
-      <Toast />
+      <AuthContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ title: "", headerShown: false }}>
+            {isFirstTime ? (
+              <Stack.Screen
+                name="FirstLaunchScreen"
+                component={FirstLaunchScreen}
+              />
+            ) : null}
+            <Stack.Screen name="mainApp" component={TabNavigator} />
+          </Stack.Navigator>
+        </NavigationContainer>
+        <Toast />
+      </AuthContextProvider>
     </SQLiteProvider>
   );
 }

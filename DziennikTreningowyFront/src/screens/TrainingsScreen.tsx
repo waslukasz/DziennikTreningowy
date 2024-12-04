@@ -220,6 +220,7 @@ export default function TrainingsScreen() {
         onConfirm={handleDatePicked}
         onCancel={hideDatePicker}
         display="inline"
+        date={new Date()}
       />
       <View className="">
         <TrainingList

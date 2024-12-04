@@ -30,7 +30,12 @@ export type TrainingScreenProps = NativeStackScreenProps<
 
 export type LoginScreenProps = NativeStackNavigationProp<
   RootStackParamList,
-  "Login","SignUp"
+  "Login",
+  "SignUp"
+>;
+export type SignUpScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  "SignUp"
 >;
 export type ExerciseScreenProps = NativeStackScreenProps<
   RootStackParamList,

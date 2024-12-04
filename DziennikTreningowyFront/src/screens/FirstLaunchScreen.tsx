@@ -3,6 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import { View, Text, TextInput } from "react-native";
 import Toast from "react-native-toast-message";
+import { createUser } from "../database/repositories/userRepository";
 
 const FirstLaunchScreen = ({ navigation }: { navigation: any }) => {
   const inputStyle =
@@ -14,9 +15,21 @@ const FirstLaunchScreen = ({ navigation }: { navigation: any }) => {
   async function handleButton() {
     if (height && weight && name) {
       await AsyncStorage.setItem("hasSeenLaunchScreen", "true");
-      navigation.replace("mainApp", { screen: "Home" });
-
-      ///DODANIE DANYCH DO BAZY + PRZYCISK DO USUWANIA W BMI
+      let user: User = {
+        firstName: name,
+        height: parseFloat(height),
+        weight: parseFloat(weight),
+      };
+      const response = await createUser(user);
+      if (response) {
+        navigation.replace("mainApp", { screen: "Home" });
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Failed to save data",
+        });
+      }
     } else {
       Toast.show({
         type: "error",
@@ -28,9 +41,8 @@ const FirstLaunchScreen = ({ navigation }: { navigation: any }) => {
 
   return (
     <LinearGradient
-      //   colors={["#2E3192", "#1BFFFF"]} // Kolory gradientu
-      colors={["#11998E", "#38EF7D"]} // Kolory gradientu
-      start={{ x: 0, y: 0 }} // Punkt początkowy gradientu
+      colors={["#11998E", "#38EF7D"]}
+      start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
       <View className="h-full">

@@ -2,6 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
+import {
+  deleteUser,
+  getUser,
+} from "../../database/repositories/userRepository";
 
 const BmiCalculatorScreen = ({ navigation }: { navigation: any }) => {
   const [bodyWeight, setBodyWeight] = useState<string>("");
@@ -12,6 +16,14 @@ const BmiCalculatorScreen = ({ navigation }: { navigation: any }) => {
     navigation.setOptions({
       title: "BMI calculator",
     });
+    async function getUserData() {
+      let user = await getUser();
+      if (user) {
+        setHeight(user.height.toString());
+        setBodyWeight(user.weight.toString());
+      }
+    }
+    getUserData();
   }, []);
   function calculateBmi() {
     if (
@@ -23,6 +35,7 @@ const BmiCalculatorScreen = ({ navigation }: { navigation: any }) => {
       let heightInMeters = parseFloat(height!) / 100;
       let bmiTemp = parseFloat(bodyWeight!) / heightInMeters ** 2;
       AsyncStorage.removeItem("hasSeenLaunchScreen");
+      deleteUser(2);
       setBmi(bmiTemp);
     } else {
       Toast.show({

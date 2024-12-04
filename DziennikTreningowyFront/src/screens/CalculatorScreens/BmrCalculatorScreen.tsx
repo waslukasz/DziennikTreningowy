@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { getUser } from "../../database/repositories/userRepository";
 
 const BmrCalculatorScreen = ({ navigation }: { navigation: any }) => {
   const [bodyWeight, setBodyWeight] = useState<string>("");
@@ -14,6 +15,14 @@ const BmrCalculatorScreen = ({ navigation }: { navigation: any }) => {
     navigation.setOptions({
       title: "Basal Metabolic Rate calculator",
     });
+    async function getUserData() {
+      let user = await getUser();
+      if (user) {
+        setHeight(user.height.toString());
+        setBodyWeight(user.weight.toString());
+      }
+    }
+    getUserData();
   }, []);
 
   const maleStyle = `${

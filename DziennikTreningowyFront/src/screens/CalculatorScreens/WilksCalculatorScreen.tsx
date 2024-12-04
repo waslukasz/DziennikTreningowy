@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { getUser } from "../../database/repositories/userRepository";
 
 const WilksCalculatorScreen = ({ navigation }: { navigation: any }) => {
   const [benchPressWeight, setBenchPressWeight] = useState<string>("");
@@ -23,6 +24,13 @@ const WilksCalculatorScreen = ({ navigation }: { navigation: any }) => {
     navigation.setOptions({
       title: "Wilks Score calculator",
     });
+    async function getUserData() {
+      let user = await getUser();
+      if (user) {
+        setBodyWeight(user.weight.toString());
+      }
+    }
+    getUserData();
   }, []);
 
   function calculateWilks() {

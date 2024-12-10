@@ -1,5 +1,5 @@
 ﻿using DziennikTreningowyAPI.Domain.Entities;
-using DziennikTreningowyAPI.Domain.Interfaces;
+using DziennikTreningowyAPI.Domain.Interfaces.Exercise;
 using DziennikTreningowyAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,11 +14,43 @@ public class ExerciseRepository : IExerciseRepository
         _context = context;
     }
 
-    public async Task<Exercise?> GetByIdAsync(Guid exerciseId)
+    public async Task<Exercise?> GetByIdAsync(Guid id)
     {
         return await _context.Exercises
             .AsNoTracking()
-            .FirstOrDefaultAsync(exercise => exercise.Id == exerciseId);
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<IEnumerable<Exercise>> GetAllAsync()
+    {
+        return await _context.Exercises
+            .AsNoTracking()
+            .ToListAsync();
+    }
+
+    public async Task AddAsync(Exercise entity)
+    {
+        await _context.Exercises.AddAsync(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAsync(Exercise entity)
+    {
+        _context.Exercises.Update(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteAsync(Exercise entity)
+    {
+        _context.Exercises.Remove(entity);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<bool> ExistsAsync(Guid id)
+    {
+        return await _context.Exercises
+            .AsNoTracking()
+            .AnyAsync(exercise => exercise.Id == id);
     }
 
     public async Task<IEnumerable<Exercise>> GetAllByTrainingIdAsync(Guid trainingId)
@@ -27,28 +59,5 @@ public class ExerciseRepository : IExerciseRepository
             .AsNoTracking()
             .Where(exercise => exercise.TrainingId == trainingId)
             .ToListAsync();
-    }
-
-    public async Task AddAsync(Exercise exercise)
-    {
-        await _context.Exercises.AddAsync(exercise);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(Exercise exercise)
-    {
-        _context.Exercises.Update(exercise);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task DeleteAsync(Exercise exercise)
-    {
-        _context.Exercises.Remove(exercise);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task<bool> ExistsAsync(Guid exerciseId)
-    {
-        return await _context.Exercises.AnyAsync(exercise => exercise.Id == exerciseId);
     }
 }

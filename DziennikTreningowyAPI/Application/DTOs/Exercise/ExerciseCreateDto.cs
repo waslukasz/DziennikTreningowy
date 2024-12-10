@@ -2,6 +2,7 @@
 
 public class ExerciseCreateDto
 {
+    public Guid Id { get; set; }
     public Guid TrainingId { get; set; }
     public string Name { get; set; }
     public int Sets { get; set; }

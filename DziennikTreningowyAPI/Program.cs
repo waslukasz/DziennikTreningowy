@@ -1,15 +1,16 @@
-using DziennikTreningowyAPI.Application.DTOs.User;
+using DziennikTreningowyAPI.Application.DTOs.Account;
 using DziennikTreningowyAPI.Application.Mappers;
 using DziennikTreningowyAPI.Application.Services;
 using DziennikTreningowyAPI.Application.Validators;
 using DziennikTreningowyAPI.Domain.Interfaces;
+using DziennikTreningowyAPI.Domain.Interfaces.Account;
+using DziennikTreningowyAPI.Domain.Interfaces.Exercise;
+using DziennikTreningowyAPI.Domain.Interfaces.Profile;
+using DziennikTreningowyAPI.Domain.Interfaces.Training;
 using DziennikTreningowyAPI.Infrastructure.Configurations;
-using DziennikTreningowyAPI.Infrastructure.Data;
 using DziennikTreningowyAPI.Infrastructure.Repositories;
 using DziennikTreningowyAPI.Utilities;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,15 +29,17 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddScoped<IJwtTokenManager, JwtTokenManager>();
 
 // Repositories
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<ITrainingRepository, TrainingRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 // Services
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ITrainingService, TrainingService>();
-builder.Services.AddScoped<IExerciseService, ExerciseService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
+/*builder.Services.AddScoped<ITrainingService, TrainingService>();
+builder.Services.AddScoped<IExerciseService, ExerciseService>();*/
 // Validators
-builder.Services.AddScoped<IValidator<UserCreateDto>, UserCreateDtoValidator>();
+builder.Services.AddScoped<IValidator<AccountRegisterDto>, AccountRegisterDtoValidator>();
 // Utilities
 builder.Services.AddScoped<IPasswordHasher, Pbkdf2PasswordHasher>();
 

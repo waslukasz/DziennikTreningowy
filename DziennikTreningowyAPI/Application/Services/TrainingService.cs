@@ -1,8 +1,9 @@
-﻿using AutoMapper;
+﻿/*using AutoMapper;
 using DziennikTreningowyAPI.Application.DTOs.Training;
 using DziennikTreningowyAPI.Domain.Entities;
 using DziennikTreningowyAPI.Domain.Exceptions.Training;
 using DziennikTreningowyAPI.Domain.Interfaces;
+using DziennikTreningowyAPI.Domain.Interfaces.Training;
 
 namespace DziennikTreningowyAPI.Application.Services;
 
@@ -60,4 +61,4 @@ public class TrainingService : ITrainingService
 
         await _trainingRepository.DeleteAsync(training);
     }
-}
+}*/

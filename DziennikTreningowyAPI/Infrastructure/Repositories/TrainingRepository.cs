@@ -1,5 +1,5 @@
 ﻿using DziennikTreningowyAPI.Domain.Entities;
-using DziennikTreningowyAPI.Domain.Interfaces;
+using DziennikTreningowyAPI.Domain.Interfaces.Training;
 using DziennikTreningowyAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,41 +14,50 @@ public class TrainingRepository : ITrainingRepository
         _context = context;
     }
 
-    public async Task<Training?> GetByIdAsync(Guid trainingId)
+    public async Task<Training?> GetByIdAsync(Guid id)
     {
         return await _context.Trainings
             .AsNoTracking()
-            .FirstOrDefaultAsync(training => training.Id == trainingId);
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IEnumerable<Training>> GetAllByUserAsync(Guid userId)
+    public async Task<IEnumerable<Training>> GetAllAsync()
     {
         return await _context.Trainings
             .AsNoTracking()
-            .Where(training => training.UserId == userId)
             .ToListAsync();
     }
 
-    public async Task AddAsync(Training training)
+    public async Task AddAsync(Training entity)
     {
-        await _context.Trainings.AddAsync(training);
+        await _context.Trainings.AddAsync(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Training training)
+    public async Task UpdateAsync(Training entity)
     {
-        _context.Trainings.Update(training);
+        _context.Trainings.Update(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(Training training)
+    public async Task DeleteAsync(Training entity)
     {
-        _context.Trainings.Remove(training);
+        _context.Trainings.Remove(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<bool> ExistsAsync(Guid trainingId)
+    public async Task<bool> ExistsAsync(Guid id)
     {
-        return await _context.Trainings.AnyAsync(training => training.Id == trainingId);
+        return await _context.Trainings
+            .AsNoTracking()
+            .AnyAsync(training => training.Id == id);
+    }
+
+    public async Task<IEnumerable<Training>> GetAllByProfileAsync(Guid profileId)
+    {
+        return await _context.Trainings
+            .AsNoTracking()
+            .Where(training => training.ProfileId == profileId)
+            .ToListAsync();
     }
 }

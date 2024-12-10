@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿/*using AutoMapper;
 using DziennikTreningowyAPI.Application.DTOs.User;
 using DziennikTreningowyAPI.Domain.Entities;
 using DziennikTreningowyAPI.Domain.Exceptions.Authorization;
@@ -101,4 +101,4 @@ public class UserService : IUserService
 
         return (tokens.Value.accessToken, tokens.Value.refreshToken.Token);
     }
-}
+}*/

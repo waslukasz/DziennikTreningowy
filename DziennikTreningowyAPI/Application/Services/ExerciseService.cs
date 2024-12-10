@@ -3,6 +3,7 @@ using DziennikTreningowyAPI.Application.DTOs.Exercise;
 using DziennikTreningowyAPI.Domain.Entities;
 using DziennikTreningowyAPI.Domain.Exceptions.Exercise;
 using DziennikTreningowyAPI.Domain.Interfaces;
+using DziennikTreningowyAPI.Domain.Interfaces.Exercise;
 
 namespace DziennikTreningowyAPI.Application.Services;
 
@@ -32,7 +33,7 @@ public class ExerciseService : IExerciseService
         return _mapper.Map<IEnumerable<ExerciseDetailsDto>>(exercises);
     }
 
-    public async Task AddExerciseAsync(ExerciseCreateDto exerciseDto)
+    public async Task AddAsync(ExerciseCreateDto exerciseDto)
     {
         var exercise = _mapper.Map<Exercise>(exerciseDto);
         exercise.Id = new Guid();
@@ -40,18 +41,18 @@ public class ExerciseService : IExerciseService
         await _exerciseRepository.AddAsync(exercise);
     }
 
-    public async Task UpdateExerciseAsync(Guid exerciseId, ExerciseUpdateDto exerciseDto)
+    public async Task UpdateAsync(ExerciseUpdateDto dto)
     {
-        if (await _exerciseRepository.ExistsAsync(exerciseId))
-            throw new ExerciseNotFoundException(exerciseId);
+        if (await _exerciseRepository.ExistsAsync(dto.Id))
+            throw new ExerciseNotFoundException(dto.Id);
 
-        var exercise = await _exerciseRepository.GetByIdAsync(exerciseId);
-        _mapper.Map(exerciseDto, exercise);
+        var exercise = await _exerciseRepository.GetByIdAsync(dto.Id);
+        _mapper.Map(dto, exercise);
 
         await _exerciseRepository.UpdateAsync(exercise);
     }
 
-    public async Task DeleteExerciseAsync(Guid exerciseId)
+    public async Task DeleteAsync(Guid exerciseId)
     {
         if (await _exerciseRepository.ExistsAsync(exerciseId))
             throw new ExerciseNotFoundException(exerciseId);

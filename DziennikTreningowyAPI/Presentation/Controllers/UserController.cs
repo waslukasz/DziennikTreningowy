@@ -1,4 +1,4 @@
-﻿using Azure.Core;
+﻿/*using Azure.Core;
 using DziennikTreningowyAPI.Application.DTOs.User;
 using DziennikTreningowyAPI.Domain.Entities;
 using DziennikTreningowyAPI.Domain.Exceptions;
@@ -20,4 +20,4 @@ public class UserController : Controller
     {
         _userService = userService;
     }
-}
+}*/

@@ -1,5 +1,6 @@
 ﻿using DziennikTreningowyAPI.Domain.Exceptions.Training;
 using DziennikTreningowyAPI.Domain.Interfaces;
+using DziennikTreningowyAPI.Domain.Interfaces.Training;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DziennikTreningowyAPI.Presentation.Controllers;

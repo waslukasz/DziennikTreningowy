@@ -6,6 +6,7 @@ using DziennikTreningowyAPI.Domain.Entities;
 using DziennikTreningowyAPI.Domain.Interfaces;
 using DziennikTreningowyAPI.Infrastructure.Configurations;
 using DziennikTreningowyAPI.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -22,7 +23,7 @@ public class JwtTokenManager : IJwtTokenManager
         _jwtSettings = jwtSettings.Value;
     }
 
-    public string GenerateAccessToken(Guid userId, string email)
+    public string GenerateAccessToken(Guid userId)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var keyBytes = Encoding.UTF8.GetBytes(_jwtSettings.Key);
@@ -30,7 +31,6 @@ public class JwtTokenManager : IJwtTokenManager
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
@@ -49,7 +49,7 @@ public class JwtTokenManager : IJwtTokenManager
         return tokenHandler.WriteToken(accessToken);
     }
 
-    public RefreshToken GenerateRefreshToken(Guid userId, string userEmail)
+    public async Task<RefreshToken> GenerateRefreshTokenAsync(Guid accountId)
     {
         var randomNumber = new byte[32];
         using (var rng = RandomNumberGenerator.Create())
@@ -61,17 +61,15 @@ public class JwtTokenManager : IJwtTokenManager
 
         var refreshToken = new RefreshToken()
         {
-            Id = Guid.NewGuid(),
-            UserId = userId,
-            Email = userEmail,
             Token = refreshTokenString,
+            AccountId = accountId,
             ExpiryDate = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpiryDays),
             CreatedAt = DateTime.UtcNow,
             IsRevoked = false
         };
         
-        _context.RefreshTokens.AddAsync(refreshToken);
-        _context.SaveChanges();
+        await _context.RefreshTokens.AddAsync(refreshToken);
+        await _context.SaveChangesAsync();
 
         return refreshToken;
     }
@@ -102,21 +100,28 @@ public class JwtTokenManager : IJwtTokenManager
         }
     }
 
-    public (string accessToken, RefreshToken refreshToken)? RefreshTokens(string refreshToken)
+    public async Task<(string accessToken, RefreshToken refreshToken)?> RefreshTokensAsync(string refreshToken)
     {
         var existingToken =
-            _context.RefreshTokens.FirstOrDefault(token => token.Token == refreshToken && !token.IsRevoked);
+            await _context.RefreshTokens.FirstOrDefaultAsync(token => token.Token == refreshToken && !token.IsRevoked);
 
         if (existingToken == null || existingToken.ExpiryDate <= DateTime.UtcNow)
         {
             return null;
+            // TODO: Exception RefreshToken invalid or smth
         }
 
-        var newAccessToken = GenerateAccessToken(existingToken.UserId, existingToken.Email);
-        var newRefreshToken = GenerateRefreshToken(existingToken.UserId, existingToken.Email);
-        _context.RefreshTokens.Remove(existingToken);
-        _context.SaveChanges();
+        if (await _context.Accounts.AnyAsync(account => account.Id == existingToken.AccountId))
+        {
+            return null;
+            // TODO: Exception User do not exist. Think if this is possible. 
+        }
 
+        var newAccessToken = GenerateAccessToken(existingToken.AccountId);
+        var newRefreshToken = await GenerateRefreshTokenAsync(existingToken.AccountId);
+        existingToken.IsRevoked = true;
+        await _context.SaveChangesAsync();
+        
         return (newAccessToken, newRefreshToken);
     }
 }

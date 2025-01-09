@@ -1,5 +1,12 @@
 import { db } from "../databaseSettings";
 
+export async function getLastTraining() {
+  const result = await db.getFirstAsync<Training>(
+    `SELECT * FROM Trainings ORDER BY timestamp DESC LIMIT 1`
+  );
+  return result;
+}
+
 export async function getAllTraingins() {
   const result = await db.getAllAsync<Training>("SELECT * FROM Trainings");
   return result;
@@ -23,7 +30,7 @@ export async function getTrainingsByDate(timestamp: Date) {
     return false;
   }
 }
-export async function getTrainingIdInDateRange(from:Date,to:Date) {
+export async function getTrainingIdInDateRange(from: Date, to: Date) {
   try {
     const fromDate = from.toISOString().split("T")[0];
     const toDate = to.toISOString().split("T")[0];
@@ -100,7 +107,9 @@ export async function updateTraining(training: Training) {
     return false;
   }
 }
-export async function isTrainingCompleted(trainingId: number): Promise<boolean> {
+export async function isTrainingCompleted(
+  trainingId: number
+): Promise<boolean> {
   try {
     const result = await db.getFirstAsync<{ isTrainingDone: number }>(
       `

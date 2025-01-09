@@ -75,6 +75,7 @@ export default function TrainingsScreen() {
       nowDate.getMinutes(),
       nowDate.getSeconds()
     );
+    console.log(date);
     createTraining(date);
     loadTrainings();
     setIsDatePickerVisible(false);
@@ -187,11 +188,7 @@ export default function TrainingsScreen() {
               onPress={() => handleWeekChange("-")}
               className={` w-1/6 p-4 justify-center items-center  rounded-t-xl ml-1 bg-gray-50 border border-gray-300 border-b-0`}
             >
-              <FontAwesome6
-                name="angle-left"
-                size={25}
-                
-              />
+              <FontAwesome6 name="angle-left" size={25} />
             </Pressable>
 
             <DateRangePicker // Error with DefaultProps

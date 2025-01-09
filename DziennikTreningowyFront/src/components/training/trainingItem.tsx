@@ -11,11 +11,11 @@ interface Props {
 export default function TrainingItem({ training, handleDelete }: Props) {
   const navigation = useNavigation<ExerciseScreenNavigateProp>();
   const [exercisiesCount, setExercisesCount] = useState<number>(0);
-  const [isTrainingDone,setIsTrainingDone]=useState<boolean>(false);
+  const [isTrainingDone, setIsTrainingDone] = useState<boolean>(false);
   useEffect(() => {
     (async () => {
       const data = await countExercisesInTraining(training.id);
-      setIsTrainingDone(await isTrainingCompleted(training.id))
+      setIsTrainingDone(await isTrainingCompleted(training.id));
       if (data) {
         setExercisesCount(data);
       } else {
@@ -41,7 +41,7 @@ export default function TrainingItem({ training, handleDelete }: Props) {
     <Pressable
       style={({ pressed }) => [
         {
-          opacity: pressed ? 0.3 : 1, 
+          opacity: pressed ? 0.3 : 1,
         },
         styles.button,
         isTrainingDone ? styles.completedButton : styles.inProgressButton,
@@ -74,13 +74,13 @@ export default function TrainingItem({ training, handleDelete }: Props) {
 }
 const styles = StyleSheet.create({
   button: {
-    backgroundColor:'#f9fafb',
+    backgroundColor: "#f9fafb",
     justifyContent: "center",
     padding: 10,
     borderWidth: 2,
     borderColor: "#d1d5db",
     shadowOpacity: 0.2,
-    shadowOffset:{width:3,height:-3},
+    shadowOffset: { width: 3, height: -3 },
     marginVertical: 12,
     marginHorizontal: 4,
     width: "45%",
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
   },
   completedButton: {
-    borderColor:'#10b981',
+    borderColor: "#10b981",
   },
   inProgressButton: {
     borderColor: "#d1d5db",

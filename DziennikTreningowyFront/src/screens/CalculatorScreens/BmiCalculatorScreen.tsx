@@ -34,8 +34,6 @@ const BmiCalculatorScreen = ({ navigation }: { navigation: any }) => {
     ) {
       let heightInMeters = parseFloat(height!) / 100;
       let bmiTemp = parseFloat(bodyWeight!) / heightInMeters ** 2;
-      AsyncStorage.removeItem("hasSeenLaunchScreen");
-      deleteUser(2);
       setBmi(bmiTemp);
     } else {
       Toast.show({

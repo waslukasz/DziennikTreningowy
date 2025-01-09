@@ -33,7 +33,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-
   function LoginButton({ navigation }: { navigation: any }) {
     const authCtx = useContext(AuthContext);
     if (!authCtx.isAuthenticated) {
@@ -44,14 +43,8 @@ export default function App() {
           color="#000"
         />
       );
-    }else{
-      return (
-        <Button
-          onPress={authCtx.logout}
-          title="Logout"
-          color="#000"
-        />
-      );
+    } else {
+      return <Button onPress={authCtx.logout} title="Logout" color="#000" />;
     }
   }
 
@@ -200,6 +193,7 @@ export default function App() {
           }}
           component={TrainingStack}
         />
+
         <Tab.Screen
           name="BodyMeasurmentStack"
           options={{
@@ -233,7 +227,7 @@ export default function App() {
   };
 
   const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
-  const authCtx=useContext(AuthContext) 
+  const authCtx = useContext(AuthContext);
   useEffect(() => {
     async function firstLaunch() {
       const hasSeenLaunchScreen = await AsyncStorage.getItem(

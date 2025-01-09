@@ -96,7 +96,10 @@ const FirstLaunchScreen = ({ navigation }: { navigation: any }) => {
         <View className="bottom-5 absolute w-full">
           <Text
             className="text-center text-2xl font-bold text-white mb-10"
-            onPress={() => navigation.replace("mainApp", { screen: "Home" })}
+            onPress={() => {
+              AsyncStorage.setItem("hasSeenLaunchScreen", "true");
+              navigation.replace("mainApp", { screen: "Home" });
+            }}
           >
             Skip
           </Text>

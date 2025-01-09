@@ -10,6 +10,13 @@ export async function getAllBodyMeasurements() {
   return result;
 }
 
+export async function getLastMeasurement() {
+  const result = await db.getFirstAsync<BodyMeasurements>(
+    "SELECT * FROM BodyMeasurements ORDER BY date DESC LIMIT 1"
+  );
+  return result;
+}
+
 export async function createBodyMeasurements(measurements: BodyMeasurements) {
   try {
     const { date, bodyPart, value } = measurements;

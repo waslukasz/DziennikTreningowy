@@ -6,6 +6,7 @@ import {
   deleteUser,
   getUser,
 } from "../../database/repositories/userRepository";
+import React from "react";
 
 const BmiCalculatorScreen = ({ navigation }: { navigation: any }) => {
   const [bodyWeight, setBodyWeight] = useState<string>("");

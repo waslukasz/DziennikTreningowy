@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import { BodyMeasurements } from "../../types/bodyMeasurementsType";
+import React from "react";
 
 export default function MeasurementDetailsItem({
   item,

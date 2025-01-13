@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import React from "react";
 
 const OneRepMaxCalculator = ({ navigation }: { navigation: any }) => {
   useEffect(() => {

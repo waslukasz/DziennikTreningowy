@@ -11,6 +11,7 @@ import {
 import { Dimensions } from "react-native";
 import { useState } from "react";
 import { BodyMeasurements } from "../../types/bodyMeasurementsType";
+import { BodyPartEnum } from "../../types/bodyPartEnum";
 
 export default function Chart({
   data,
@@ -24,22 +25,43 @@ export default function Chart({
   const [selectedPoint, setSelectedPoint] = useState<string>();
 
   return (
-    <View className="p-4 flex items-center">
-      <Pressable
-        onPress={() =>
-          navigation.navigate("MeasurementDetails", {
-            data: data.reverse(),
-            title: name,
-          })
-        }
-      >
-        <Text className="text-center text-3xl">{name}</Text>
-      </Pressable>
-      {selectedPoint ? (
-        <View className="bg-white p-1 w-24 rounded-md shadow-sm shadow-black">
-          <Text className="text-center text-xl ">{selectedPoint}</Text>
+    <View className="p-4 flex items-center bg-white border-b border-gray-200 mb-5">
+      <View className="flex-row items-center flex w-full justify-center">
+        <Pressable
+          onPress={() => {
+            if (data.length == 0) {
+              let part =
+                name === "Body Weight" ? "bodyWeight" : name.toLowerCase();
+              navigation.navigate("AddMeasurement", {
+                measurementPart:
+                  BodyPartEnum[part as keyof typeof BodyPartEnum],
+              });
+            } else {
+              navigation.navigate("MeasurementDetails", {
+                data: data.reverse(),
+                title: name,
+              });
+            }
+          }}
+        >
+          <Text className="text-center text-3xl">{name}</Text>
+        </Pressable>
+        <View className="w-1/6 justify-center items-center">
+          <Pressable
+            onPress={() => {
+              let part =
+                name === "Body Weight" ? "bodyWeight" : name.toLowerCase();
+              navigation.navigate("AddMeasurement", {
+                measurementPart:
+                  BodyPartEnum[part as keyof typeof BodyPartEnum],
+              });
+            }}
+            className="bg-emerald-500 rounded-md w-8 h-8 flex justify-center"
+          >
+            <Text className=" text-2xl text-white text-center">+</Text>
+          </Pressable>
         </View>
-      ) : null}
+      </View>
       {data.length > 0 ? (
         <LineChart
           data={{
@@ -94,11 +116,12 @@ export default function Chart({
             padding: 0,
           }}
         />
-      ) : (
-        <View className="w-100 bg-white h-16 rounded-md flex items-center justify-center shadow-xl shadow-black">
-          <Text className="text-lg">No history of {name} measurements </Text>
+      ) : null}
+      {selectedPoint ? (
+        <View className="bg-white p-1 w-24 rounded-md shadow-sm shadow-black">
+          <Text className="text-center text-xl ">{selectedPoint}</Text>
         </View>
-      )}
+      ) : null}
     </View>
   );
 }

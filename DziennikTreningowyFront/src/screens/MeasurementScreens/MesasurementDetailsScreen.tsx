@@ -1,14 +1,14 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Pressable, Text, TextInput, View } from "react-native";
-import { BodyMeasurements } from "../types/bodyMeasurementsType";
-import MeasurementDetailsItem from "../components/measurement/MeasurementDetailsItem";
+import { BodyMeasurements } from "../../types/bodyMeasurementsType";
+import MeasurementDetailsItem from "../../components/measurement/MeasurementDetailsItem";
 import { SwipeListView } from "react-native-swipe-list-view";
-import MeasurementDetailsHiddenItem from "../components/measurement/MeasurementDetailsHiddenItem";
+import MeasurementDetailsHiddenItem from "../../components/measurement/MeasurementDetailsHiddenItem";
 import {
   deleteBodyMeasurements,
   updateBodyMeasurements,
-} from "../database/repositories/bodyMeasurementRepository";
+} from "../../database/repositories/bodyMeasurementRepository";
 import Toast from "react-native-toast-message";
 
 type RouteParams = {

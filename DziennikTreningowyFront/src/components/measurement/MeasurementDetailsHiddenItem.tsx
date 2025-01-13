@@ -2,6 +2,7 @@ import { Pressable, Text, View } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { BodyMeasurements } from "../../types/bodyMeasurementsType";
 import { useState } from "react";
+import React from "react";
 
 export default function MeasurementDetailsHiddenItem({
   item,

@@ -3,6 +3,7 @@ import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { getUser } from "../../database/repositories/userRepository";
+import React from "react";
 
 const WilksCalculatorScreen = ({ navigation }: { navigation: any }) => {
   const [benchPressWeight, setBenchPressWeight] = useState<string>("");

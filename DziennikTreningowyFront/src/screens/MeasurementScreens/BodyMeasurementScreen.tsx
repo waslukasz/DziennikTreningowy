@@ -1,10 +1,11 @@
 import { Pressable, ScrollView, Text, View } from "react-native";
-import Chart from "../components/measurement/Chart";
-import { getAllBodyMeasurements } from "../database/repositories/bodyMeasurementRepository";
+import Chart from "../../components/measurement/Chart";
+import { getAllBodyMeasurements } from "../../database/repositories/bodyMeasurementRepository";
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { BodyMeasurements } from "../types/bodyMeasurementsType";
-import { BodyPartEnum } from "../types/bodyPartEnum";
+import { BodyMeasurements } from "../../types/bodyMeasurementsType";
+import { BodyPartEnum } from "../../types/bodyPartEnum";
+import React from "react";
 
 const BodyMeasurementScreen = ({ navigation }: { navigation: any }) => {
   const [data, setData] = useState<BodyMeasurements[] | null>(null);
@@ -74,17 +75,6 @@ const BodyMeasurementScreen = ({ navigation }: { navigation: any }) => {
   };
   return (
     <ScrollView className="flex">
-      <View className=" m-5 flex-row justify-around items-center">
-        <Text className="text-2xl ">Add measurement</Text>
-
-        <Pressable
-          onPress={() => navigation.navigate("AddMeasurement")}
-          className="bg-emerald-500 p-3 rounded-xl w-14 h-14 flex justify-center"
-        >
-          <Text className="text-3xl text-white text-center">+</Text>
-        </Pressable>
-      </View>
-
       {data ? (
         <>
           {bodyWeightData ? (

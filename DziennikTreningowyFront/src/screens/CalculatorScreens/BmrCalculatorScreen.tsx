@@ -3,6 +3,9 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { getUser } from "../../database/repositories/userRepository";
+import React from "react";
+import CalculatorInput from "../../components/calculator/CalculatorInput";
+import { useColorScheme } from "nativewind";
 
 const BmrCalculatorScreen = ({ navigation }: { navigation: any }) => {
   const [bodyWeight, setBodyWeight] = useState<string>("");
@@ -10,7 +13,7 @@ const BmrCalculatorScreen = ({ navigation }: { navigation: any }) => {
   const [age, setAge] = useState<string>("");
   const [gender, setGender] = useState<"male" | "female">("male");
   const [bmr, setBmr] = useState<number>();
-
+  const { colorScheme } = useColorScheme();
   useEffect(() => {
     navigation.setOptions({
       title: "Basal Metabolic Rate calculator",
@@ -66,44 +69,24 @@ const BmrCalculatorScreen = ({ navigation }: { navigation: any }) => {
   }
 
   return (
-    <>
+    <View className="bg-zinc-100 dark:bg-zinc-500 min-h-screen">
       <View className="p-5 flex items-center">
-        <TextInput
-          className={inputStyle}
+        <CalculatorInput
           value={bodyWeight}
-          onChangeText={(text) => {
-            if (!isNaN(+text)) {
-              setBodyWeight(text);
-            }
-          }}
-          placeholderTextColor="gray"
-          placeholder="Body weight in kilograms"
-          keyboardType="number-pad"
+          setValue={setBodyWeight}
+          placeholderText={"Body weight in kilograms"}
         />
-        <TextInput
-          className={inputStyle}
+        <CalculatorInput
           value={height}
-          onChangeText={(text) => {
-            if (!isNaN(+text)) {
-              setHeight(text);
-            }
-          }}
-          placeholderTextColor="gray"
-          placeholder="Height in centimeters"
-          keyboardType="number-pad"
+          setValue={setHeight}
+          placeholderText={"Height in centimeters"}
         />
-        <TextInput
-          className={inputStyle}
+        <CalculatorInput
           value={age}
-          onChangeText={(text) => {
-            if (!isNaN(+text)) {
-              setAge(text);
-            }
-          }}
-          placeholderTextColor="gray"
-          placeholder="Age"
-          keyboardType="number-pad"
+          setValue={setAge}
+          placeholderText={"Age"}
         />
+
         <View className="flex content-center flex-row">
           <Pressable className={maleStyle} onPress={() => setGender("male")}>
             <Text className="text-center text-lg">Male</Text>
@@ -118,30 +101,34 @@ const BmrCalculatorScreen = ({ navigation }: { navigation: any }) => {
           </Pressable>
         </View>
         <Pressable
-          className=" bg-green-400 py-2 px-5 my-5 rounded-xl"
+          className=" bg-green-400 py-2 px-5 my-5 rounded-xl dark:bg-green-700"
           onPress={calculateBmr}
         >
           <Text className="text-white text-xl">Calculate</Text>
         </Pressable>
       </View>
-      <View className="bg-white">
+      <View className="bg-white my-10 dark:bg-zinc-400">
         {bmr ? (
           <>
-            <Text className="text-center text-xl pt-4">
+            <Text className="text-center text-xl pt-4 text-black dark:text-white">
               Your basal metabolic rate:
             </Text>
-            <Text className="text-xl font-bold text-center pb-4">
+            <Text className="text-xl font-bold text-center pb-4 text-black dark:text-white">
               {bmr.toFixed(0)} kcal
             </Text>
           </>
         ) : null}
-        <View className="w-full h-0.5 bg-black opacity-10" />
+        <View className="w-full h-0.5 bg-zinc-200" />
 
         <View className="px-10 py-5">
           <View className="flex items-center mb-5">
-            <AntDesign name="infocirlceo" size={30} color="black" />
+            <AntDesign
+              name="infocirlceo"
+              size={30}
+              color={colorScheme == "dark" ? "white" : "black"}
+            />
           </View>
-          <Text className="text-justify">
+          <Text className="text-justify text-black dark:text-white">
             The Mifflin-St Jeor formula estimates Basal Metabolic Rate (BMR), or
             the calories your body needs at rest to maintain essential
             functions. Using weight, height, age, and gender, it provides a
@@ -151,10 +138,8 @@ const BmrCalculatorScreen = ({ navigation }: { navigation: any }) => {
           </Text>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
 export default BmrCalculatorScreen;
-const inputStyle =
-  "text-black px-4 h-12 bg-gray-50 my-2 w-72 rounded-xl text-center";

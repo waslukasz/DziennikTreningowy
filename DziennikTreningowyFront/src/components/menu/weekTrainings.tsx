@@ -8,6 +8,7 @@ import {
 } from "../../database/repositories/trainingRepository";
 import { useEffect, useState } from "react";
 import { fas } from "@fortawesome/free-solid-svg-icons";
+import { useColorScheme } from "nativewind";
 type weekTraining = {
   date: Date;
   isDone: boolean;
@@ -31,6 +32,8 @@ export default function WeekTrainings() {
 
     return weekDays;
   };
+  const { colorScheme } = useColorScheme();
+
   const currentWeek = getCurrentWeekDates();
   useEffect(() => {
     (async () => {
@@ -42,7 +45,7 @@ export default function WeekTrainings() {
           let allTrainingsDone: boolean | null = null;
           for (const training of trainings) {
             const isTrainingComplted = await isTrainingCompleted(training.id);
-            if (isTrainingComplted && allTrainingsDone!=false) {
+            if (isTrainingComplted && allTrainingsDone != false) {
               allTrainingsDone = true;
             } else {
               allTrainingsDone = false;
@@ -58,21 +61,20 @@ export default function WeekTrainings() {
       }
       setTrainingStatus(statusList);
     })();
-  }, [currentWeek]); 
-  
-
+  }, [currentWeek]);
+  const iconColor = colorScheme == "dark" ? "white" : "gray";
   return (
-    <View className="flex-row justify-between" >
+    <View className="flex-row justify-between bg-white dark:bg-zinc-400">
       {trainingStatus.map((training, index) => {
         return (
-          <View key={index} className=" items-center" >
-            <Text className="text-black font-bold pb-1" >
+          <View key={index} className=" items-center">
+            <Text className="text-black font-bold pb-1 dark:text-white">
               {training.date.toLocaleDateString("en-EN", { weekday: "short" })}
             </Text>
             <FontAwesome6
               name="circle-check"
               size={30}
-              color={training.isDone ? "green" : "gray"}
+              color={training.isDone ? "green" : iconColor}
             />
           </View>
         );

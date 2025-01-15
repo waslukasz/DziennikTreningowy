@@ -1,23 +1,16 @@
-import {
-  Keyboard,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import AuthForm from "./authForm";
 import { LinearGradient } from "expo-linear-gradient";
 import Toast from "react-native-toast-message";
 type Props = {
   isLogin: boolean;
-  onAuthenticate: (
-    email: string,
-    password: string,
-  ) => void;
+  onAuthenticate: (email: string, password: string) => void;
 };
-export default function AuthContent({ isLogin,onAuthenticate }: Props) {
+export default function AuthContent({ isLogin, onAuthenticate }: Props) {
   const submitHandler = (
     email: string,
     password: string,
-    confirmPassword: string,
+    confirmPassword: string
   ) => {
     const emailIsValid = email.includes("@");
     const passwordIsValid = password.length > 6;

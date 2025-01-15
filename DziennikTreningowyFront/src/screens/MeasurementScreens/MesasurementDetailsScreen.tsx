@@ -118,16 +118,16 @@ const MeasurementDetailsScreen = ({ navigation }: { navigation: any }) => {
     setEditedItem(item);
   }
   return (
-    <View className="flex justify-center p-2 ">
+    <View className="flex justify-center p-2 bg-zinc-100 dark:bg-zinc-500 min-h-screen">
       {editedItem ? (
         <Animated.View
           style={{
             transform: [{ translateY: slideAnim }],
           }}
-          className="min-h-32 bg-white mb-10 p-2 rounded-md shadow-sm shadow-black flex items-center"
+          className="min-h-32 bg-white dark:bg-zinc-400 mb-10 p-2 rounded-md shadow-sm shadow-black flex items-center"
         >
           <TextInput
-            className="text-black px-4 h-12 bg-gray-50 my-2 w-72 rounded-xl text-center border-2"
+            className="text-black px-4 h-12 bg-white my-2 border border-zinc-300 w-72 rounded-xl text-center dark:bg-zinc-400 dark:border-white dark:border-2 dark:text-white"
             value={newItemValue!}
             onChangeText={(text) => {
               if (!isNaN(+text)) {
@@ -137,9 +137,10 @@ const MeasurementDetailsScreen = ({ navigation }: { navigation: any }) => {
             placeholderTextColor="gray"
             keyboardType="number-pad"
           />
+
           <View className="flex-row justify-end">
             <Pressable
-              className=" bg-red-400 py-2 px-5 mr-2 mt-2 rounded-xl"
+              className=" bg-red-400 py-2 px-5 mr-2 mt-2 rounded-xl dark:bg-red-700"
               onPress={() => {
                 slideOut();
               }}
@@ -147,7 +148,7 @@ const MeasurementDetailsScreen = ({ navigation }: { navigation: any }) => {
               <Text className="text-white text-xl">Cancel</Text>
             </Pressable>
 
-            <Pressable className=" bg-green-400 py-2 px-5 mt-2 rounded-xl">
+            <Pressable className=" bg-green-400 py-2 px-5 mt-2 rounded-xl dark:bg-green-700">
               <Text className="text-white text-xl" onPress={editMeasurement}>
                 Save
               </Text>

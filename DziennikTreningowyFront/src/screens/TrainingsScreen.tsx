@@ -13,6 +13,7 @@ import DateRangePicker from "../components/training/dateRangePicker";
 import TrainingList from "../components/training/trainingList";
 import Toast from "react-native-toast-message";
 import { LinearGradient } from "expo-linear-gradient";
+import { useColorScheme } from "nativewind";
 export default function TrainingsScreen() {
   const [selectedWeek, setSelectedWeek] = useState(0);
   const [trainings, setTrainings] = useState<Training[]>([]);
@@ -22,7 +23,7 @@ export default function TrainingsScreen() {
   >("create");
   const [firstDayOfWeek, setFirstDayOfWeek] = useState<Date>();
   const [lastDayOfWeek, setLastDayOfWeek] = useState<Date>();
-
+  const { colorScheme } = useColorScheme();
   useEffect(() => {
     (async () => {
       if (!firstDayOfWeek && !lastDayOfWeek) {
@@ -168,8 +169,9 @@ export default function TrainingsScreen() {
     );
     return Math.floor(diffInDays / 7);
   };
+  const iconColor = colorScheme == "dark" ? "white" : "#090909";
   return (
-    <View className="flex-1   ">
+    <View className="flex-1 bg-zinc-100 dark:bg-zinc-500">
       <View className=" ">
         <LinearGradient colors={["#1C3113", "#40933A"]}>
           <View className=" mb-5 mx-5 mt-10 flex-row justify-between">
@@ -186,9 +188,9 @@ export default function TrainingsScreen() {
           <View className="flex-row  justify-center w-full">
             <Pressable
               onPress={() => handleWeekChange("-")}
-              className={` w-1/6 p-4 justify-center items-center  rounded-t-xl ml-1 bg-gray-50 border border-gray-300 border-b-0`}
+              className={` w-1/6 p-4 justify-center items-center  rounded-t-xl ml-1 bg-gray-50 border border-gray-300 border-b-0 dark:dark:bg-zinc-400 dark:border-0`}
             >
-              <FontAwesome6 name="angle-left" size={25} />
+              <FontAwesome6 name="angle-left" size={25} color={iconColor} />
             </Pressable>
 
             <DateRangePicker // Error with DefaultProps
@@ -198,13 +200,9 @@ export default function TrainingsScreen() {
             />
             <Pressable
               onPress={() => handleWeekChange("+")}
-              className={`w-1/6 p-4 justify-center items-center  rounded-t-xl mr-1 bg-gray-50 border border-gray-300 border-b-0 `}
+              className={`w-1/6 p-4 justify-center items-center  rounded-t-xl mr-1 bg-gray-50 border border-gray-300 border-b-0 dark:dark:bg-zinc-400 dark:border-0`}
             >
-              <FontAwesome6
-                name="angle-right"
-                size={25}
-                // color={}
-              />
+              <FontAwesome6 name="angle-right" size={25} color={iconColor} />
             </Pressable>
           </View>
         </LinearGradient>

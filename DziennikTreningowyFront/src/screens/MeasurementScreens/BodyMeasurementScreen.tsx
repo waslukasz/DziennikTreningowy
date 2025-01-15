@@ -74,7 +74,7 @@ const BodyMeasurementScreen = ({ navigation }: { navigation: any }) => {
     );
   };
   return (
-    <ScrollView className="flex">
+    <ScrollView className="flex bg-zinc-100 dark:bg-zinc-500">
       {data ? (
         <>
           {bodyWeightData ? (

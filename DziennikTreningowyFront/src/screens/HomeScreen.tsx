@@ -17,6 +17,7 @@ import { BodyPartEnum } from "../types/bodyPartEnum";
 import { useFocusEffect } from "@react-navigation/native";
 import { motivationalQuotes } from "../../assets/quotes";
 import React from "react";
+import { useColorScheme } from "nativewind";
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [userName, setUserName] = useState<null | string>(null);
@@ -25,6 +26,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     useState<null | BodyMeasurements>(null);
   const [exercisesCount, setExercisesCount] = useState<null | number>();
   const [quote, setQuote] = useState<Quote>();
+  const { colorScheme } = useColorScheme();
 
   useFocusEffect(() => {
     async function getUserData() {
@@ -57,9 +59,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     setQuote(motivationalQuotes[randomNumber]);
   }, []);
 
+  const gradientColors: [string, string] =
+    colorScheme == "dark" ? ["#696969", "#858585"] : ["#128A7F", "#30c96b"];
+
   return (
     <ScrollView>
-      <View className=" flex flex-row flex-wrap justify-around">
+      <View className=" flex flex-row flex-wrap justify-around bg-zinc-100 dark:bg-zinc-500 min-h-screen">
         {/* <LinearGradient
           colors={["#11998E", "#30c96b"]}
           start={{ x: 0, y: 0 }}
@@ -68,7 +73,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         > */}
 
         <View className="text-start w-full  h-24 pl-3 justify-center border-gray-300 border-b">
-          <Text className="text-4xl text-black font-thin">
+          <Text className="text-4xl text-black font-thin dark:text-white">
             Hello {userName}
           </Text>
         </View>
@@ -77,20 +82,20 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
         {quote ? (
           <View className="p-12">
-            <Text className="text-black text-center italic font-extralight text-lg">
+            <Text className="text-black text-center italic font-extralight text-lg dark:text-white">
               {quote.quote}
             </Text>
-            <Text className="text-black text-right w-full mt-5">
+            <Text className="text-black text-right w-full mt-5 dark:text-white">
               {quote.author}
             </Text>
           </View>
         ) : null}
 
         <LinearGradient
-          colors={["#128A7F", "#30c96b"]}
+          colors={gradientColors}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
-          className=" w-full h-36 my-1 p-5 justify-center"
+          className=" w-full h-36 my-1 p-5 justify-center border-y border-white"
         >
           {lastTraining?.timestamp ? (
             <>
@@ -147,7 +152,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         </LinearGradient>
 
         <LinearGradient
-          colors={["#139C84", "#30c96b"]}
+          colors={gradientColors}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           className="w-full mb-1 px-5 py-12 flex justify-center shadow-sm shadow-black"
@@ -184,7 +189,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           )}
         </LinearGradient>
 
-        <View className="flex border w-full p-4 bg-white rounded-lg border-gray-300 mb-5 ">
+        <View className="flex border w-full p-4 mt-5 bg-white rounded-lg border-gray-300 mb-5 dark:bg-zinc-400 ">
           <WeekTrainings />
         </View>
       </View>

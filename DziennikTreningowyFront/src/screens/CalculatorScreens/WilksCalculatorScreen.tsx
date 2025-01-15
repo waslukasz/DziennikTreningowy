@@ -4,6 +4,8 @@ import Toast from "react-native-toast-message";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { getUser } from "../../database/repositories/userRepository";
 import React from "react";
+import CalculatorInput from "../../components/calculator/CalculatorInput";
+import { useColorScheme } from "nativewind";
 
 const WilksCalculatorScreen = ({ navigation }: { navigation: any }) => {
   const [benchPressWeight, setBenchPressWeight] = useState<string>("");
@@ -12,9 +14,8 @@ const WilksCalculatorScreen = ({ navigation }: { navigation: any }) => {
   const [bodyWeight, setBodyWeight] = useState<string>("");
   const [gender, setGender] = useState<"male" | "female">("male");
   const [wilks, setWilks] = useState<number>();
+  const { colorScheme } = useColorScheme();
 
-  const inputStyle =
-    "text-black px-4 h-12 bg-gray-50 my-2 w-72 rounded-xl text-center";
   const maleStyle = `${
     gender === "male" ? "bg-blue-200" : "bg-gray-200"
   } w-24 py-2 rounded-l-lg`;
@@ -95,55 +96,30 @@ const WilksCalculatorScreen = ({ navigation }: { navigation: any }) => {
     }
   }
   return (
-    <ScrollView keyboardShouldPersistTaps="handled">
+    <ScrollView
+      keyboardShouldPersistTaps="handled"
+      className="bg-zinc-100 dark:bg-zinc-500"
+    >
       <View className="p-5 flex items-center">
-        <TextInput
-          className={inputStyle}
+        <CalculatorInput
           value={benchPressWeight}
-          onChangeText={(text) => {
-            if (!isNaN(+text)) {
-              setBenchPressWeight(text);
-            }
-          }}
-          placeholderTextColor="gray"
-          placeholder="Maximum bench press"
-          keyboardType="number-pad"
+          setValue={setBenchPressWeight}
+          placeholderText={"Maximum bench press"}
         />
-        <TextInput
-          className={inputStyle}
+        <CalculatorInput
           value={squatWeight}
-          onChangeText={(text) => {
-            if (!isNaN(+text)) {
-              setsquatWeight(text);
-            }
-          }}
-          placeholderTextColor="gray"
-          placeholder="Maximum squat"
-          keyboardType="number-pad"
+          setValue={setsquatWeight}
+          placeholderText={"Maximum squat"}
         />
-        <TextInput
-          className={inputStyle}
+        <CalculatorInput
           value={deadliftWeight}
-          onChangeText={(text) => {
-            if (!isNaN(+text)) {
-              setdeadliftWeight(text);
-            }
-          }}
-          placeholderTextColor="gray"
-          placeholder="Maximum deadlift"
-          keyboardType="number-pad"
+          setValue={setdeadliftWeight}
+          placeholderText={"Maximum deadlift"}
         />
-        <TextInput
-          className={inputStyle}
+        <CalculatorInput
           value={bodyWeight}
-          onChangeText={(text) => {
-            if (!isNaN(+text)) {
-              setBodyWeight(text);
-            }
-          }}
-          placeholderTextColor="gray"
-          placeholder="Body weight in kilograms"
-          keyboardType="number-pad"
+          setValue={setBodyWeight}
+          placeholderText={"Body weight in kilograms"}
         />
         <View className="flex content-center flex-row">
           <Pressable className={maleStyle} onPress={() => setGender("male")}>
@@ -159,28 +135,34 @@ const WilksCalculatorScreen = ({ navigation }: { navigation: any }) => {
           </Pressable>
         </View>
         <Pressable
-          className=" bg-green-400 py-2 px-5 mt-2 rounded-xl"
+          className=" bg-green-400 py-2 px-5 mt-2 rounded-xl dark:bg-green-700"
           onPress={calculateWilks}
         >
           <Text className="text-white text-xl">Calculate</Text>
         </Pressable>
       </View>
-      <View className="bg-white">
+      <View className="bg-white dark:bg-zinc-400">
         {wilks ? (
           <>
-            <Text className="text-center text-xl pt-4">Your Wilks Score:</Text>
-            <Text className="text-xl font-bold text-center pb-4">
+            <Text className="text-center text-xl pt-4 dark:text-white">
+              Your Wilks Score:
+            </Text>
+            <Text className="text-xl font-bold text-center pb-4 dark:text-white">
               {wilks.toFixed(2)}
             </Text>
           </>
         ) : null}
-        <View className="w-full h-0.5 bg-black opacity-10" />
+        <View className="w-full h-0.5 bg-zinc-200" />
 
         <View className="px-10 py-5">
           <View className="flex items-center mb-5">
-            <AntDesign name="infocirlceo" size={30} color="black" />
+            <AntDesign
+              name="infocirlceo"
+              size={30}
+              color={colorScheme == "dark" ? "white" : "black"}
+            />
           </View>
-          <Text className="text-justify">
+          <Text className="text-justify dark:text-white">
             The Wilks Score is a formula used in powerlifting to compare the
             strength of lifters of different body weights. It calculates a
             coefficient based on the lifter's body weight, which is then

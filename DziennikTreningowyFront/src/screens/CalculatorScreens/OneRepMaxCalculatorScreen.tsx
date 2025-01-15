@@ -3,6 +3,8 @@ import { Pressable, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import React from "react";
+import { useColorScheme } from "nativewind";
+import CalculatorInput from "../../components/calculator/CalculatorInput";
 
 const OneRepMaxCalculator = ({ navigation }: { navigation: any }) => {
   useEffect(() => {
@@ -10,9 +12,6 @@ const OneRepMaxCalculator = ({ navigation }: { navigation: any }) => {
       title: "One Rep Max calculator",
     });
   }, []);
-  const inputStyle =
-    "text-black px-4 h-12 bg-gray-50 my-2 w-72 rounded-xl text-center";
-
   const [weight, setWeight] = useState<string>("");
   const [reps, setReps] = useState<string>("");
   const [oneRepMax, setOneRepMax] = useState<number>();
@@ -30,59 +29,51 @@ const OneRepMaxCalculator = ({ navigation }: { navigation: any }) => {
     }
   }
 
+  const { colorScheme } = useColorScheme();
+
   return (
-    <>
-      <View className="p-5 flex items-center">
-        <TextInput
-          className={inputStyle}
+    <View className="bg-zinc-100 dark:bg-zinc-500 min-h-screen">
+      <View className="p-5 flex items-center ">
+        <CalculatorInput
           value={weight}
-          onChangeText={(text) => {
-            if (!isNaN(+text)) {
-              setWeight(text);
-            }
-          }}
-          placeholderTextColor="gray"
-          placeholder="Weight in kilograms"
-          keyboardType="number-pad"
+          setValue={setWeight}
+          placeholderText={"Weight in kilograms"}
+        />
+        <CalculatorInput
+          value={reps}
+          setValue={setReps}
+          placeholderText={"Repetitions"}
         />
 
-        <TextInput
-          className={inputStyle}
-          value={reps}
-          onChangeText={(text) => {
-            if (!isNaN(+text)) {
-              setReps(text);
-            }
-          }}
-          placeholderTextColor="gray"
-          placeholder="Repetitions"
-          keyboardType="number-pad"
-        />
         <Pressable
-          className=" bg-green-400 py-2 px-5 mt-2 rounded-xl"
+          className=" bg-green-400 py-2 px-5 mt-2 rounded-xl dark:bg-green-700"
           onPress={calculateMax}
         >
           <Text className="text-white text-xl">Calculate</Text>
         </Pressable>
       </View>
-      <View className="bg-white my-10">
+      <View className="bg-white my-10 dark:bg-zinc-400">
         {oneRepMax ? (
           <>
-            <Text className="text-center text-xl pt-4">
+            <Text className="text-center text-xl pt-4 text-black dark:text-white">
               Your estimated one rep max:
             </Text>
-            <Text className="text-xl font-bold text-center pb-4">
+            <Text className="text-xl font-bold text-center pb-4 text-black dark:text-white">
               {oneRepMax.toFixed(2)}kg
             </Text>
           </>
         ) : null}
-        <View className="w-full h-0.5 bg-black opacity-10" />
+        <View className="w-full h-0.5 bg-zinc-200" />
 
         <View className="px-10 py-5">
           <View className="flex items-center mb-5">
-            <AntDesign name="infocirlceo" size={30} color="black" />
+            <AntDesign
+              name="infocirlceo"
+              size={30}
+              color={colorScheme == "dark" ? "white" : "black"}
+            />
           </View>
-          <Text className="text-justify">
+          <Text className="text-justify text-black dark:text-white">
             We’re using the Epley formula to estimate the one-rep max (1RM), but
             these results are only approximate. Accuracy varies from person to
             person, as individual factors like muscle composition, experience,
@@ -90,7 +81,7 @@ const OneRepMaxCalculator = ({ navigation }: { navigation: any }) => {
           </Text>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 export default OneRepMaxCalculator;

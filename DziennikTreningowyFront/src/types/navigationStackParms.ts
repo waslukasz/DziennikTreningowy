@@ -22,6 +22,7 @@ export type RootStackParamList = {
   VO2Max: undefined;
   FirstLaunchScreen: undefined;
   mainApp: any;
+  Settings: undefined;
 };
 export type TrainingScreenProps = NativeStackScreenProps<
   RootStackParamList,

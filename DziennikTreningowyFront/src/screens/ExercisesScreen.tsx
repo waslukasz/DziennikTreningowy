@@ -103,13 +103,13 @@ export default function ExercisesScreen({
   const closeEditMode = () => {
     setExerciseToEdit(null);
   };
-  const setExerciseToDone = async (id: number,isDone:boolean) => {
-    const result = await setDoneStatusInExercise(id,isDone);
+  const setExerciseToDone = async (id: number, isDone: boolean) => {
+    const result = await setDoneStatusInExercise(id, isDone);
     await getExercises();
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="mt-12 flex-1">
+      <View className="pt-12 flex-1 bg-zinc-100 dark:bg-zinc-500 min-h-screen">
         <ExercieseInput
           handleEditExercise={handleEditExercise}
           handleCloseEditMode={closeEditMode}

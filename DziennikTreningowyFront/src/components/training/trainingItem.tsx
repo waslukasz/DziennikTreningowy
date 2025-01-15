@@ -4,6 +4,7 @@ import { countExercisesInTraining } from "../../database/repositories/exercisesR
 import { ExerciseScreenNavigateProp } from "../../types/navigationStackParms";
 import { useNavigation } from "@react-navigation/native";
 import { isTrainingCompleted } from "../../database/repositories/trainingRepository";
+import { useColorScheme } from "nativewind";
 interface Props {
   training: Training;
   handleDelete: (id: number) => void;
@@ -12,6 +13,7 @@ export default function TrainingItem({ training, handleDelete }: Props) {
   const navigation = useNavigation<ExerciseScreenNavigateProp>();
   const [exercisiesCount, setExercisesCount] = useState<number>(0);
   const [isTrainingDone, setIsTrainingDone] = useState<boolean>(false);
+  const { colorScheme } = useColorScheme();
   useEffect(() => {
     (async () => {
       const data = await countExercisesInTraining(training.id);
@@ -37,6 +39,28 @@ export default function TrainingItem({ training, handleDelete }: Props) {
   const handleDeleteTraining = () => {
     handleDelete(training.id);
   };
+  const styles = StyleSheet.create({
+    button: {
+      backgroundColor: colorScheme == "dark" ? "#a1a1aa" : "#f9fafb",
+      justifyContent: "center",
+      padding: 10,
+      borderWidth: 2,
+      borderColor: "#d1d5db",
+      shadowOpacity: 0.2,
+      shadowOffset: { width: 3, height: -3 },
+      marginVertical: 12,
+      marginHorizontal: 4,
+      width: "45%",
+      height: 96,
+      borderRadius: 16,
+    },
+    completedButton: {
+      borderColor: "#10b981",
+    },
+    inProgressButton: {
+      borderColor: "#d1d5db",
+    },
+  });
   return (
     <Pressable
       style={({ pressed }) => [
@@ -65,32 +89,12 @@ export default function TrainingItem({ training, handleDelete }: Props) {
         navigation.navigate("Exercises", { trainingId: training.id })
       }
     >
-      <Text style={{ textAlign: "center", fontSize: 18 }}>{dateFormat}</Text>
+      <Text className="text-center text-lg dark:text-white">{dateFormat}</Text>
       {exercisiesCount > 0 && (
-        <Text style={{ textAlign: "center" }}>{exercisiesCount} exercises</Text>
+        <Text className="text-center dark:text-white">
+          {exercisiesCount} exercises
+        </Text>
       )}
     </Pressable>
   );
 }
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: "#f9fafb",
-    justifyContent: "center",
-    padding: 10,
-    borderWidth: 2,
-    borderColor: "#d1d5db",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 3, height: -3 },
-    marginVertical: 12,
-    marginHorizontal: 4,
-    width: "45%",
-    height: 96,
-    borderRadius: 16,
-  },
-  completedButton: {
-    borderColor: "#10b981",
-  },
-  inProgressButton: {
-    borderColor: "#d1d5db",
-  },
-});

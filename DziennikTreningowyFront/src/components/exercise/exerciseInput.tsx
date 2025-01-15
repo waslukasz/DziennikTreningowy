@@ -1,4 +1,5 @@
 import Checkbox from "expo-checkbox";
+import { useColorScheme } from "nativewind";
 import { useEffect, useState } from "react";
 import {
   Pressable,
@@ -26,6 +27,7 @@ export default function ExercieseInput({
   const [name, setName] = useState("");
   const [repetition, setRepetition] = useState<number>();
   const [sets, setSets] = useState<number>();
+  const { colorScheme } = useColorScheme();
   useEffect(() => {
     if (exerciseToEdit) {
       setName(exerciseToEdit.name);
@@ -40,7 +42,7 @@ export default function ExercieseInput({
       repetitions: repetition,
       sets: sets,
       trainingId: trainingId,
-      isDone:false,
+      isDone: false,
     };
     if (
       name != "" &&
@@ -73,30 +75,31 @@ export default function ExercieseInput({
     setSets(0);
     handleCloseEditMode();
   };
+  const placeholderColor = colorScheme == "dark" ? "white" : "black";
   return (
     <View className=" px-2">
       <TextInput
-        className="text-black border border-gray-300 px-4 h-12 bg-gray-50 my-2 rounded-xl "
+        className="text-black border border-gray-300 px-4 h-12 bg-gray-50 my-2 rounded-xl dark:bg-zinc-400 dark:border-white dark:border-2 dark:text-white"
         value={name}
         onChangeText={(text) => setName(text)}
-        placeholderTextColor="#000000"
+        placeholderTextColor={placeholderColor}
         placeholder="Name"
       ></TextInput>
       <View className=" flex-row w-full  justify-center items-center  space-x-2">
         <TextInput
-          className="flex-1 text-black px-4 border border-gray-300 h-12   bg-gray-50  rounded-xl"
+          className="flex-1 text-black px-4 border border-gray-300 h-12   bg-gray-50  rounded-xl dark:bg-zinc-400 dark:border-white dark:border-2 dark:text-white"
           value={repetition ? repetition.toString() : ""}
           onChangeText={(text) => setRepetition(parseInt(text) || 0)}
-          placeholderTextColor="#000000"
+          placeholderTextColor={placeholderColor}
           placeholder="Repetitions "
           keyboardType="number-pad"
         ></TextInput>
-        <Text className=""> X </Text>
+        <Text className="dark:text-white"> X </Text>
         <TextInput
-          className="w-2/5 text-black px-4 h-12     border border-gray-300  bg-gray-50 rounded-xl"
+          className="w-2/5 text-black px-4 h-12     border border-gray-300  bg-gray-50 rounded-xl dark:bg-zinc-400 dark:border-white dark:border-2 dark:text-white"
           value={sets ? sets.toString() : ""}
           onChangeText={(text) => setSets(parseInt(text) || 0)}
-          placeholderTextColor="#000000"
+          placeholderTextColor={placeholderColor}
           placeholder="Set"
           keyboardType="number-pad"
         ></TextInput>
@@ -111,7 +114,7 @@ export default function ExercieseInput({
           </Pressable>
         )}
         <Pressable
-          className=" bg-green-400 py-2 px-5 mt-2 rounded-xl"
+          className=" bg-green-400 py-2 px-5 mt-2 rounded-xl dark:bg-green-700"
           onPress={handleCreate}
         >
           <Text className="text-white text-xl">

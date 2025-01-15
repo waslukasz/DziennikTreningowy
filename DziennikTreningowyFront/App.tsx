@@ -28,11 +28,14 @@ import { databaseName, initDatabase } from "./src/database/databaseSettings";
 import AuthContextProvider, {
   AuthContext,
 } from "./src/components/auth/authContext";
+import SettingsScreen from "./src/screens/SettingsScreen";
+import { useColorScheme } from "nativewind";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const { colorScheme } = useColorScheme();
   function LoginButton({ navigation }: { navigation: any }) {
     const authCtx = useContext(AuthContext);
     if (!authCtx.isAuthenticated) {
@@ -49,10 +52,20 @@ export default function App() {
   }
 
   const MeasurementStack = () => {
+    let fontColor,
+      tintColor = colorScheme == "dark" ? "white" : "black";
+    let headerBgColor = colorScheme == "dark" ? "#52525b" : "white";
     return (
       <Stack.Navigator
         screenOptions={({ route, navigation }) => ({
           headerRight: () => <LoginButton navigation={navigation} />,
+          headerStyle: {
+            backgroundColor: headerBgColor,
+          },
+          headerTitleStyle: {
+            color: fontColor,
+          },
+          headerTintColor: tintColor,
         })}
       >
         <Stack.Screen
@@ -75,10 +88,20 @@ export default function App() {
   };
 
   const CalculatorStack = () => {
+    let fontColor,
+      tintColor = colorScheme == "dark" ? "white" : "black";
+    let headerBgColor = colorScheme == "dark" ? "#52525b" : "white";
     return (
       <Stack.Navigator
         screenOptions={({ route, navigation }) => ({
           headerRight: () => <LoginButton navigation={navigation} />,
+          headerStyle: {
+            backgroundColor: headerBgColor,
+          },
+          headerTitleStyle: {
+            color: fontColor,
+          },
+          headerTintColor: tintColor,
         })}
       >
         <Stack.Screen
@@ -121,10 +144,20 @@ export default function App() {
   };
 
   const TrainingStack = () => {
+    let fontColor,
+      tintColor = colorScheme == "dark" ? "white" : "black";
+    let headerBgColor = colorScheme == "dark" ? "#52525b" : "white";
     return (
       <Stack.Navigator
         screenOptions={({ route, navigation }) => ({
           headerRight: () => <LoginButton navigation={navigation} />,
+          headerStyle: {
+            backgroundColor: headerBgColor,
+          },
+          headerTitleStyle: {
+            color: fontColor,
+          },
+          headerTintColor: tintColor,
         })}
       >
         <Stack.Screen
@@ -145,11 +178,43 @@ export default function App() {
     );
   };
 
+  const SettingsStack = () => {
+    let fontColor,
+      tintColor = colorScheme == "dark" ? "white" : "black";
+    let headerBgColor = colorScheme == "dark" ? "#52525b" : "white";
+    return (
+      <Stack.Navigator
+        screenOptions={({ route, navigation }) => ({
+          headerRight: () => <LoginButton navigation={navigation} />,
+          headerStyle: {
+            backgroundColor: headerBgColor,
+          },
+          headerTitleStyle: {
+            color: fontColor,
+          },
+          headerTintColor: tintColor,
+        })}
+      >
+        <Stack.Screen
+          name="Settings"
+          options={{ title: "" }}
+          component={SettingsScreen}
+        />
+      </Stack.Navigator>
+    );
+  };
+
   const TabNavigator = () => {
+    let bgColor = colorScheme == "dark" ? "#52525b" : "white";
+    let fontColor = colorScheme == "dark" ? "white" : "black";
+    let iconColor = colorScheme == "dark" ? "white" : "black";
     return (
       <Tab.Navigator
         initialRouteName="Home"
         screenOptions={({ route, navigation }) => ({
+          tabBarStyle: {
+            backgroundColor: bgColor,
+          },
           tabBarIcon: ({ focused, color, size }) => {
             let iconName: string = "";
 
@@ -161,12 +226,14 @@ export default function App() {
               iconName = "calculator";
             } else if (route.name === "BodyMeasurmentStack") {
               iconName = "weight-scale";
+            } else if (route.name === "SettingsStack") {
+              iconName = "gear";
             }
             return (
               <FontAwesome6
                 name={iconName}
                 size={24}
-                color={focused ? "tomato" : "gray"}
+                color={focused ? "tomato" : iconColor}
               />
             );
           },
@@ -180,6 +247,11 @@ export default function App() {
             },
             title: "",
             tabBarShowLabel: false,
+            headerStyle: {
+              backgroundColor: bgColor,
+              borderBottomColor: "#a1a1a1",
+              borderBottomWidth: 1,
+            },
             headerRight: () => <LoginButton navigation={navigation} />,
           })}
           component={HomeScreen}
@@ -193,7 +265,6 @@ export default function App() {
           }}
           component={TrainingStack}
         />
-
         <Tab.Screen
           name="BodyMeasurmentStack"
           options={{
@@ -213,14 +284,35 @@ export default function App() {
           component={CalculatorStack}
         />
         <Tab.Screen
+          name="SettingsStack"
+          options={{ title: "", tabBarShowLabel: false, headerShown: false }}
+          component={SettingsStack}
+        />
+        <Tab.Screen
           name="Login"
           component={LoginScreen}
-          options={{ tabBarButton: () => null }}
+          options={() => ({
+            tabBarButton: () => null,
+            headerStyle: {
+              backgroundColor: bgColor,
+            },
+            headerTitleStyle: {
+              color: fontColor,
+            },
+          })}
         />
         <Tab.Screen
           name="SignUp"
           component={SignUpScreen}
-          options={{ tabBarButton: () => null }}
+          options={() => ({
+            tabBarButton: () => null,
+            headerStyle: {
+              backgroundColor: bgColor,
+            },
+            headerTitleStyle: {
+              color: fontColor,
+            },
+          })}
         />
       </Tab.Navigator>
     );

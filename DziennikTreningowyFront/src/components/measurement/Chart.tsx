@@ -12,6 +12,7 @@ import { Dimensions } from "react-native";
 import { useState } from "react";
 import { BodyMeasurements } from "../../types/bodyMeasurementsType";
 import { BodyPartEnum } from "../../types/bodyPartEnum";
+import { useColorScheme } from "nativewind";
 
 export default function Chart({
   data,
@@ -23,9 +24,13 @@ export default function Chart({
   navigation: any;
 }) {
   const [selectedPoint, setSelectedPoint] = useState<string>();
+  const { colorScheme } = useColorScheme();
+  const bgGradientFrom = colorScheme == "dark" ? "#a1a1aa" : "white";
+  const bgGradientTo = colorScheme == "dark" ? "#9b9ba3" : "#efeeee";
+  const chartColors = colorScheme == "dark" ? "255,255,255" : "0,0,0";
 
   return (
-    <View className="p-4 flex items-center bg-white border-b border-gray-200 mb-5">
+    <View className="p-4 flex items-center bg-zinc-100 dark:bg-zinc-400 border-b border-gray-200 mb-5">
       <View className="flex-row items-center flex w-full justify-center">
         <Pressable
           onPress={() => {
@@ -44,7 +49,7 @@ export default function Chart({
             }
           }}
         >
-          <Text className="text-center text-3xl">{name}</Text>
+          <Text className="text-center text-3xl dark:text-white">{name}</Text>
         </Pressable>
         <View className="w-1/6 justify-center items-center">
           <Pressable
@@ -56,7 +61,7 @@ export default function Chart({
                   BodyPartEnum[part as keyof typeof BodyPartEnum],
               });
             }}
-            className="bg-emerald-500 rounded-md w-8 h-8 flex justify-center"
+            className="bg-emerald-500 rounded-md px-2 flex justify-center items-center dark:border dark:border-white dark:bg-green-700"
           >
             <Text className=" text-2xl text-white text-center">+</Text>
           </Pressable>
@@ -91,11 +96,12 @@ export default function Chart({
           fromZero
           chartConfig={{
             backgroundColor: "white",
-            backgroundGradientFrom: "white",
-            backgroundGradientTo: "#efeeee",
+            backgroundGradientFrom: bgGradientFrom,
+            backgroundGradientTo: bgGradientTo,
+
             decimalPlaces: 2,
-            color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+            color: (opacity = 1) => `rgba(${chartColors},${opacity})`,
+            labelColor: (opacity = 1) => `rgba(${chartColors}, ${opacity})`,
             style: {
               borderRadius: 16,
             },
@@ -118,7 +124,7 @@ export default function Chart({
         />
       ) : null}
       {selectedPoint ? (
-        <View className="bg-white p-1 w-24 rounded-md shadow-sm shadow-black">
+        <View className="bg-white p-1 min-w-24 rounded-md shadow-sm shadow-black">
           <Text className="text-center text-xl ">{selectedPoint}</Text>
         </View>
       ) : null}

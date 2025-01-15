@@ -5,6 +5,8 @@ import Toast from "react-native-toast-message";
 import { BodyMeasurements } from "../../types/bodyMeasurementsType";
 import { BodyPartEnum } from "../../types/bodyPartEnum";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useColorScheme } from "nativewind";
+import CalculatorInput from "../calculator/CalculatorInput";
 
 export default function MeasurementInput({
   navigation,
@@ -13,6 +15,7 @@ export default function MeasurementInput({
   navigation: any;
   measurementPart: BodyPartEnum;
 }) {
+  const { colorScheme } = useColorScheme();
   const placeholder =
     measurementPart === BodyPartEnum.bodyWeight
       ? "Body weight in kilograms"
@@ -48,23 +51,18 @@ export default function MeasurementInput({
   }
 
   return (
-    <View className="px-2 flex items-center pt-10">
-      <MaterialCommunityIcons name={icon} size={150} color="#69cf11" />
-      <TextInput
-        className={
-          "text-black px-4 h-12 bg-gray-50 my-2 w-72 rounded-xl text-center"
-        }
-        value={value}
-        onChangeText={(text) => {
-          if (!isNaN(+text)) {
-            setValue(text);
-          }
-        }}
-        placeholderTextColor="gray"
-        placeholder={placeholder}
-        keyboardType="number-pad"
+    <View className="px-2 flex items-center pt-10 bg-zinc-100 dark:bg-zinc-500 min-h-screen">
+      <MaterialCommunityIcons
+        name={icon}
+        size={150}
+        color={colorScheme == "dark" ? "white" : "#69cf11"}
       />
-      <Pressable className=" bg-green-400 py-2 px-5 mt-2 rounded-xl">
+      <CalculatorInput
+        value={value}
+        setValue={setValue}
+        placeholderText={placeholder}
+      />
+      <Pressable className=" bg-green-400 py-2 px-5 mt-2 rounded-xl dark:bg-green-700">
         <Text className="text-white text-xl" onPress={addValue}>
           Add
         </Text>

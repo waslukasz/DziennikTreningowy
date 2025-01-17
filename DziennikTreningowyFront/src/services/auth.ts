@@ -1,22 +1,46 @@
-import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import api from "../axios/axios";
 
-//const API_URL = "http://172.20.10.4:8000";
-const API_URL = "http://192.168.200.116:8000";
+
 export async function CreateUser(
   email: string,
   password: string,
+  userProfile: User | null
 ) {
-  const response = await axios.post(API_URL + "/api/auth/register", {
+  const response = await api.post("/api/auth/register", {
     email: email,
     password: password,
-    dateOfBirth: new Date(),// to remove 
+    profile: userProfile,
   });
-  return response.data
+  return response.data;
 }
 export async function Login(email: string, password: string) {
-  const response = await axios.post(API_URL + "/api/auth/login", {
+  const response = await api.post("/api/auth/login", {
     email: email,
     password: password,
   });
-  return response.data
+  return response.data;
+}
+export async function NewTokenWithRefreshToken() {
+  const refreshToken=await AsyncStorage.getItem("refreshToken");
+  if(refreshToken){
+    const response=await api.post("/api/auth/refresh",{
+      string:refreshToken //pewnie sie zmieni nazwa
+    })
+    return response;
+  }
+  return 
+  
+}
+export async function NewPassword(oldPassword: string, newPassword: string) {
+  const response = await api.put(
+    "/api/auth/update",
+    {
+      newPassword: newPassword,
+      currentPassword: oldPassword,
+    },
+  ).catch(function (error) {
+    return error.response.status;
+  });
+  return response;
 }

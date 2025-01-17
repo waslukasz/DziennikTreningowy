@@ -70,7 +70,7 @@ export default function AuthForm({ isLogin, onSubmit }: Props) {
           textContentType="emailAddress"
           keyboardType="email-address"
           placeholderTextColor={placeholderColor}
-          className="flex-1 h-full mx-1 text-xl dark:text-white"
+          className="flex-1 h-full mx-1 dark:text-white"
           onChangeText={(newValue) =>
             updateInputValueHandler("email", newValue)
           }
@@ -86,7 +86,7 @@ export default function AuthForm({ isLogin, onSubmit }: Props) {
           autoCapitalize="none"
           keyboardType="default"
           textContentType={isLogin ? "password" : "newPassword"}
-          className="flex-1 h-full mx-1 text-xl dark:text-white"
+          className="flex-1 h-full mx-1 dark:text-white"
           onChangeText={(newValue) =>
             updateInputValueHandler("password", newValue)
           }
@@ -112,7 +112,7 @@ export default function AuthForm({ isLogin, onSubmit }: Props) {
               }
               value={confirmPassword}
               secureTextEntry={!confirmPasswordVisibility}
-              className="flex-1 mx-1 h-full text-black text-xl dark:text-white "
+              className="flex-1 mx-1 h-full text-black dark:text-white "
             ></TextInput>
             <Pressable
               className="p-1"

@@ -208,6 +208,15 @@ export default function App() {
     let bgColor = colorScheme == "dark" ? "#52525b" : "white";
     let fontColor = colorScheme == "dark" ? "white" : "black";
     let iconColor = colorScheme == "dark" ? "white" : "black";
+    const authCtx = useContext(AuthContext);
+    useEffect(() => {
+      (async () => {
+        const storedToken = await AsyncStorage.getItem("token");
+        if (storedToken) {
+          authCtx.authenticate(storedToken);
+        }
+      })();
+    }, []);
     return (
       <Tab.Navigator
         initialRouteName="Home"
@@ -319,7 +328,6 @@ export default function App() {
   };
 
   const [isFirstTime, setIsFirstTime] = useState<boolean | null>(null);
-  const authCtx = useContext(AuthContext);
   useEffect(() => {
     async function firstLaunch() {
       const hasSeenLaunchScreen = await AsyncStorage.getItem(
@@ -329,22 +337,6 @@ export default function App() {
     }
     firstLaunch();
   }, []);
-  useEffect(() => {
-    (async () => {
-      const storedToken = await AsyncStorage.getItem("token");
-      if (storedToken) {
-        authCtx.authenticate(storedToken);
-      }
-    })();
-  }, []);
-  // const MyTheme = {
-  //   ...DefaultTheme,
-  //   colors: {
-  //     ...DefaultTheme.colors,
-  //     primary: 'rgb(0, 255, 00)',
-
-  //   },
-  // };
   return (
     <SQLiteProvider databaseName={databaseName} onInit={initDatabase}>
       <AuthContextProvider>

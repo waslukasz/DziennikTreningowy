@@ -14,7 +14,8 @@ export default function LoginScreen({ navigation }: any) {
     try {
       const response = await Login(email, password);
       const token = response.accessToken;
-      authCtx.authenticate(token);
+      const  refreshToken=response.refreshToken;
+      authCtx.authenticate(token,refreshToken);
       navigation.replace("mainApp", { screen: "Home" });
     } catch (error) {
       Toast.show({

@@ -45,19 +45,23 @@ export async function updateUser(user: User) {
     return false;
   }
 }
-export async function deleteUser(userId: number) {
+export async function deleteUser() {
   try {
-    const result = await db.runAsync(
-      `
-          DELETE FROM User
-          WHERE id = ?
+    const user = await getUser();
+    const userId = user?.id;
+    if (userId) {
+      const result = await db.runAsync(
+        `
+        DELETE FROM User
+        WHERE id = ?
         `,
-      [userId]
-    );
-    if (result.changes && result.changes > 0) {
-      return true;
-    } else {
-      return false;
+        [userId]
+      );
+      if (result.changes && result.changes > 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
   } catch (error) {
     console.log("delete user issue", error);

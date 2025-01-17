@@ -1,5 +1,9 @@
 import { SQLiteProvider } from "expo-sqlite";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  useNavigationState,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TrainingsScreen from "./src/screens/TrainingsScreen";
 import ExercisesScreen from "./src/screens/ExercisesScreen";
@@ -30,26 +34,13 @@ import AuthContextProvider, {
 } from "./src/components/auth/authContext";
 import SettingsScreen from "./src/screens/SettingsScreen";
 import { useColorScheme } from "nativewind";
+import ProfileScreen from "./src/screens/ProfileScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   const { colorScheme } = useColorScheme();
-  function LoginButton({ navigation }: { navigation: any }) {
-    const authCtx = useContext(AuthContext);
-    if (!authCtx.isAuthenticated) {
-      return (
-        <Button
-          onPress={() => navigation.navigate("Login")}
-          title="Login"
-          color="#000"
-        />
-      );
-    } else {
-      return <Button onPress={authCtx.logout} title="Logout" color="#000" />;
-    }
-  }
 
   const MeasurementStack = () => {
     let fontColor,
@@ -58,7 +49,7 @@ export default function App() {
     return (
       <Stack.Navigator
         screenOptions={({ route, navigation }) => ({
-          headerRight: () => <LoginButton navigation={navigation} />,
+          //  headerRight: () => <LoginButton navigation={navigation} />,
           headerStyle: {
             backgroundColor: headerBgColor,
           },
@@ -94,7 +85,7 @@ export default function App() {
     return (
       <Stack.Navigator
         screenOptions={({ route, navigation }) => ({
-          headerRight: () => <LoginButton navigation={navigation} />,
+          //  headerRight: () => <LoginButton navigation={navigation} />,
           headerStyle: {
             backgroundColor: headerBgColor,
           },
@@ -150,7 +141,7 @@ export default function App() {
     return (
       <Stack.Navigator
         screenOptions={({ route, navigation }) => ({
-          headerRight: () => <LoginButton navigation={navigation} />,
+          // headerRight: () => <LoginButton navigation={navigation} />,
           headerStyle: {
             backgroundColor: headerBgColor,
           },
@@ -177,6 +168,31 @@ export default function App() {
       </Stack.Navigator>
     );
   };
+  const ProfileStack = () => {
+    let fontColor,
+      tintColor = colorScheme == "dark" ? "white" : "black";
+    let headerBgColor = colorScheme == "dark" ? "#52525b" : "white";
+    return (
+      <Stack.Navigator
+        screenOptions={({ route, navigation }) => ({
+          //    headerRight: () => <LoginButton navigation={navigation} />,
+          headerStyle: {
+            backgroundColor: headerBgColor,
+          },
+          headerTitleStyle: {
+            color: fontColor,
+          },
+          headerTintColor: tintColor,
+        })}
+      >
+        <Stack.Screen
+          name="Profile"
+          options={{ title: "" }}
+          component={ProfileScreen}
+        />
+      </Stack.Navigator>
+    );
+  };
 
   const SettingsStack = () => {
     let fontColor,
@@ -185,7 +201,7 @@ export default function App() {
     return (
       <Stack.Navigator
         screenOptions={({ route, navigation }) => ({
-          headerRight: () => <LoginButton navigation={navigation} />,
+          // headerRight: () => <LoginButton navigation={navigation} />,
           headerStyle: {
             backgroundColor: headerBgColor,
           },
@@ -212,8 +228,9 @@ export default function App() {
     useEffect(() => {
       (async () => {
         const storedToken = await AsyncStorage.getItem("token");
-        if (storedToken) {
-          authCtx.authenticate(storedToken);
+        const storedRefreshToken = await AsyncStorage.getItem("refreshToken");
+        if (storedToken && storedRefreshToken) {
+          authCtx.authenticate(storedToken, storedRefreshToken);
         }
       })();
     }, []);
@@ -235,6 +252,8 @@ export default function App() {
               iconName = "calculator";
             } else if (route.name === "BodyMeasurmentStack") {
               iconName = "weight-scale";
+            } else if (route.name === "ProfileStack") {
+              iconName = "user";
             } else if (route.name === "SettingsStack") {
               iconName = "gear";
             }
@@ -261,7 +280,7 @@ export default function App() {
               borderBottomColor: "#a1a1a1",
               borderBottomWidth: 1,
             },
-            headerRight: () => <LoginButton navigation={navigation} />,
+            // headerRight: () => <LoginButton navigation={navigation} />,
           })}
           component={HomeScreen}
         />
@@ -291,6 +310,11 @@ export default function App() {
             headerShown: false,
           }}
           component={CalculatorStack}
+        />
+        <Tab.Screen
+          name="ProfileStack"
+          options={{ title: "", tabBarShowLabel: false, headerShown: false }}
+          component={ProfileStack}
         />
         <Tab.Screen
           name="SettingsStack"

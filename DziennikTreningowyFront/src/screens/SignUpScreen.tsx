@@ -3,6 +3,7 @@ import AuthContent from "../components/auth/authContent";
 import { CreateUser } from "../services/auth";
 import Toast from "react-native-toast-message";
 import LoadingOverlay from "../components/auth/loadingOverlay";
+import { getUser } from "../database/repositories/userRepository";
 
 export default function SignUpScreen({ navigation }: any) {// any do wyjebania ale SignupScreenProps cos sie jebie
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -12,7 +13,9 @@ export default function SignUpScreen({ navigation }: any) {// any do wyjebania a
   ) => {
     setIsAuthenticating(true);
     try {
-          await CreateUser(email, password);
+          const userProfile=await getUser();
+          console.log(userProfile);
+          await CreateUser(email, password,userProfile);
           navigation.replace("mainApp", { screen: "Login" });
     } catch (error) {
       Toast.show({

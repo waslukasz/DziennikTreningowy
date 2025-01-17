@@ -23,6 +23,7 @@ export type RootStackParamList = {
   FirstLaunchScreen: undefined;
   mainApp: any;
   Settings: undefined;
+  Profile:undefined;
 };
 export type TrainingScreenProps = NativeStackScreenProps<
   RootStackParamList,

@@ -28,6 +28,8 @@ export default function ExercieseInput({
   const [repetition, setRepetition] = useState<number>();
   const [sets, setSets] = useState<number>();
   const { colorScheme } = useColorScheme();
+  const placeholderColor = colorScheme == "dark" ? "white" : "black";
+
   useEffect(() => {
     if (exerciseToEdit) {
       setName(exerciseToEdit.name);
@@ -75,7 +77,6 @@ export default function ExercieseInput({
     setSets(0);
     handleCloseEditMode();
   };
-  const placeholderColor = colorScheme == "dark" ? "white" : "black";
   return (
     <View className=" px-2">
       <TextInput

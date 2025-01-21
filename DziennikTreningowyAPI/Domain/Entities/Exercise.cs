@@ -7,7 +7,10 @@ public class Exercise
     public int Repetitions { get; set; }
     public int Sets { get; set; }
     public double Weight { get; set; }
+    public DateTime UpdatedAt { get; set; } = DateTime.Now;
     
+    public Guid ProfileId { get; set; }
+    public Profile Profile { get; set; }
     public Guid TrainingId { get; set; }
     public virtual Training Training { get; set; }
 }

@@ -5,8 +5,10 @@ using DziennikTreningowyAPI.Application.Validators;
 using DziennikTreningowyAPI.Domain.Interfaces;
 using DziennikTreningowyAPI.Domain.Interfaces.Account;
 using DziennikTreningowyAPI.Domain.Interfaces.Exercise;
+using DziennikTreningowyAPI.Domain.Interfaces.Measurment;
 using DziennikTreningowyAPI.Domain.Interfaces.Profile;
 using DziennikTreningowyAPI.Domain.Interfaces.Training;
+using DziennikTreningowyAPI.Domain.Interfaces.Utilities;
 using DziennikTreningowyAPI.Infrastructure.Configurations;
 using DziennikTreningowyAPI.Infrastructure.Repositories;
 using DziennikTreningowyAPI.Utilities;
@@ -33,11 +35,11 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<ITrainingRepository, TrainingRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+builder.Services.AddScoped<IMeasurmentRepository, MeasurmentRepository>();
 // Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
-/*builder.Services.AddScoped<ITrainingService, TrainingService>();
-builder.Services.AddScoped<IExerciseService, ExerciseService>();*/
+builder.Services.AddScoped<ISyncService, SyncService>();
 // Validators
 builder.Services.AddScoped<IValidator<AccountRegisterDto>, AccountRegisterDtoValidator>();
 // Utilities

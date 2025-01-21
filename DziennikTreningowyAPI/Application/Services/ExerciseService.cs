@@ -20,7 +20,7 @@ public class ExerciseService : IExerciseService
 
     public async Task<ExerciseDetailsDto> GetByIdAsync(Guid exerciseId)
     {
-        if (await _exerciseRepository.ExistsAsync(exerciseId))
+        if (!await _exerciseRepository.ExistsAsync(exerciseId))
             throw new ExerciseNotFoundException(exerciseId);
 
         var exercise = await _exerciseRepository.GetByIdAsync(exerciseId);
@@ -43,7 +43,7 @@ public class ExerciseService : IExerciseService
 
     public async Task UpdateAsync(ExerciseUpdateDto dto)
     {
-        if (await _exerciseRepository.ExistsAsync(dto.Id))
+        if (!await _exerciseRepository.ExistsAsync(dto.Id))
             throw new ExerciseNotFoundException(dto.Id);
 
         var exercise = await _exerciseRepository.GetByIdAsync(dto.Id);
@@ -54,7 +54,7 @@ public class ExerciseService : IExerciseService
 
     public async Task DeleteAsync(Guid exerciseId)
     {
-        if (await _exerciseRepository.ExistsAsync(exerciseId))
+        if (!await _exerciseRepository.ExistsAsync(exerciseId))
             throw new ExerciseNotFoundException(exerciseId);
 
         var exercise = await _exerciseRepository.GetByIdAsync(exerciseId);

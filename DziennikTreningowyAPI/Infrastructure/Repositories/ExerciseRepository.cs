@@ -53,6 +53,14 @@ public class ExerciseRepository : IExerciseRepository
             .AnyAsync(exercise => exercise.Id == id);
     }
 
+    public async Task<IEnumerable<Exercise>> GetAllByProfileAsync(Guid profileId)
+    {
+        return await _context.Exercises
+            .AsNoTracking()
+            .Where(x => x.ProfileId == profileId)
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<Exercise>> GetAllByTrainingIdAsync(Guid trainingId)
     {
         return await _context.Exercises

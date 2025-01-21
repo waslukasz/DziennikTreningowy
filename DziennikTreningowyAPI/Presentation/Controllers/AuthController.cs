@@ -64,7 +64,7 @@ public class AuthController : Controller
         }
     }
 
-    [HttpPost("refresh")] // TODO: FIX
+    [HttpPost("refresh")]
     [AllowAnonymous]
     public async Task<IActionResult> RefreshTokens([FromBody] string refreshToken)
     {

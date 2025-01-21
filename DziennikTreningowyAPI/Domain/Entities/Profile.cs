@@ -9,8 +9,11 @@ public class Profile
     public DateTime? BirthDate { get; set; }
     public double? Height { get; set; }
     public double? Weight { get; set; }
-    
+    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
     public Guid AccountId { get; set; }
     public Account Account { get; set; }
     public ICollection<Training> Trainings { get; set; } = new List<Training>();
+    public ICollection<Exercise> Exercises { get; set; } = new List<Exercise>();
+    public ICollection<Measurment> Measurments { get; set; } = new List<Measurment>();
 }

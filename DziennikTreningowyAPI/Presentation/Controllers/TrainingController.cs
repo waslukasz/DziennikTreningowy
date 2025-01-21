@@ -1,4 +1,5 @@
-﻿using DziennikTreningowyAPI.Domain.Exceptions.Training;
+﻿using DziennikTreningowyAPI.Application.DTOs.Training;
+using DziennikTreningowyAPI.Domain.Exceptions.Training;
 using DziennikTreningowyAPI.Domain.Interfaces;
 using DziennikTreningowyAPI.Domain.Interfaces.Training;
 using Microsoft.AspNetCore.Mvc;
@@ -28,5 +29,12 @@ public class TrainingController : Controller
         {
             return NotFound(exception.Message);
         }
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddNewTrainingAsync([FromBody] TrainingCreateDto dto)
+    {
+        await _trainingService.AddAsync(dto);
+        return Ok();
     }
 }

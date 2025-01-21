@@ -6,7 +6,7 @@ public interface ITrainingService
 {
     Task<TrainingDetailsDto> GetByIdAsync(Guid trainingId);
     Task<IEnumerable<TrainingDetailsDto>> GetAllByUserIdAsync(Guid userId);
-    Task AddAsync(TrainingCreateDto trainingDto);
-    Task UpdateAsync(TrainingUpdateDto trainingDto);
+    Task AddAsync(TrainingCreateDto dto);
+    Task UpdateAsync(TrainingUpdateDto dto);
     Task DeleteAsync(Guid trainingId);
 }

@@ -7,6 +7,7 @@ public class Account
     public string PasswordHash { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.Now;
     
     public Profile Profile { get; set; }
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();

@@ -111,7 +111,7 @@ public class JwtTokenManager : IJwtTokenManager
             // TODO: Exception RefreshToken invalid or smth
         }
 
-        if (await _context.Accounts.AnyAsync(account => account.Id == existingToken.AccountId))
+        if (!await _context.Accounts.AnyAsync(account => account.Id == existingToken.AccountId))
         {
             return null;
             // TODO: Exception User do not exist. Think if this is possible. 

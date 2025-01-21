@@ -1,0 +1,66 @@
+﻿using System.Security.Claims;
+using DziennikTreningowyAPI.Application.DTOs.Sync;
+using DziennikTreningowyAPI.Domain.Interfaces.Utilities;
+using Microsoft.AspNetCore.Mvc;
+
+namespace DziennikTreningowyAPI.Presentation.Controllers;
+
+[ApiController]
+public class SyncController : Controller
+{
+    private readonly ISyncService _syncService;
+
+    public SyncController(ISyncService syncService)
+    {
+        _syncService = syncService;
+    }
+
+    [HttpGet("api/sync")]
+    public async Task<IActionResult> Synchronize()
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        try
+        {
+            var result = await _syncService.SynchronizeDataAsync(Guid.Parse(userIdClaim));
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
+    [HttpPost("api/sync2")]
+    public async Task<IActionResult> Synchronize([FromBody] DateTime lastSync)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        try
+        {
+            var result = await _syncService.SynchronizeDataAsync(Guid.Parse(userIdClaim), lastSync);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost("api/sync/save")]
+    public async Task<IActionResult> SaveData([FromBody] SyncDto dto)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        try
+        {
+            await _syncService.SaveDataAsync(Guid.Parse(userIdClaim), dto);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
+}

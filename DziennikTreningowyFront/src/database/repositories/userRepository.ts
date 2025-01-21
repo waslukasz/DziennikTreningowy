@@ -45,10 +45,8 @@ export async function updateUser(user: User) {
     return false;
   }
 }
-export async function deleteUser() {
+export async function deleteUser(userId?:number) {
   try {
-    const user = await getUser();
-    const userId = user?.id;
     if (userId) {
       const result = await db.runAsync(
         `

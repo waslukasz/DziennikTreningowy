@@ -24,9 +24,9 @@ export async function Login(email: string, password: string) {
 export async function NewTokenWithRefreshToken() {
   const refreshToken=await AsyncStorage.getItem("refreshToken");
   if(refreshToken){
-    const response=await api.post("/api/auth/refresh",{
-      string:refreshToken //pewnie sie zmieni nazwa
-    })
+    const response=await api.post("/api/auth/refresh",
+     refreshToken
+    )
     return response;
   }
   return 

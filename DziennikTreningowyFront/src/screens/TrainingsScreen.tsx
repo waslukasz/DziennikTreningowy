@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { View, Text, Pressable, ScrollView } from "react-native";
-
-import DateTimePicker from "react-native-modal-datetime-picker";
+import { View, Text, Pressable, ScrollView, Modal } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import {
@@ -9,11 +7,13 @@ import {
   deleteTraining,
   getTraingsInDateRange,
 } from "../database/repositories/trainingRepository";
-import DateRangePicker from "../components/training/dateRangePicker";
 import TrainingList from "../components/training/trainingList";
 import Toast from "react-native-toast-message";
 import { LinearGradient } from "expo-linear-gradient";
 import { useColorScheme } from "nativewind";
+import ModalDateRangePicker from "../components/training/modalDateRangePicker";
+import DateRangePicker from "../components/training/dateRangePicker";
+import dayjs from "dayjs";
 export default function TrainingsScreen() {
   const [selectedWeek, setSelectedWeek] = useState(0);
   const [trainings, setTrainings] = useState<Training[]>([]);
@@ -21,14 +21,12 @@ export default function TrainingsScreen() {
   const [datePickerMode, setDatePickerMode] = useState<
     "from" | "to" | "create"
   >("create");
-  const [firstDayOfWeek, setFirstDayOfWeek] = useState<Date>();
-  const [lastDayOfWeek, setLastDayOfWeek] = useState<Date>();
+  const [firstDayOfWeek, setFirstDayOfWeek] = useState(dayjs());
+  const [lastDayOfWeek, setLastDayOfWeek] = useState(dayjs());
   const { colorScheme } = useColorScheme();
   useEffect(() => {
     (async () => {
-      if (!firstDayOfWeek && !lastDayOfWeek) {
         await setFirstAndLastDays();
-      }
     })();
   }, []);
 
@@ -46,10 +44,8 @@ export default function TrainingsScreen() {
     const first =
       curr.getDate() - curr.getDay() + (curr.getDay() === 0 ? -6 : 1);
     const last = first + 6;
-    const firstday = new Date(curr.setDate(first));
-    const lastday = new Date(curr.setDate(last));
-    setFirstDayOfWeek(firstday);
-    setLastDayOfWeek(lastday);
+    setFirstDayOfWeek(dayjs(new Date(curr.setDate(first))));
+    setLastDayOfWeek(dayjs(new Date(curr.setDate(last))));
   };
 
   const loadTrainings = async () => {
@@ -59,7 +55,7 @@ export default function TrainingsScreen() {
         (a, b) =>
           new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
       );
-      setTrainings(data);
+      await setTrainings(data);
     } else {
       Toast.show({
         type: "error",
@@ -70,13 +66,6 @@ export default function TrainingsScreen() {
   };
 
   const handleCreateTraining = (date: Date) => {
-    const nowDate = new Date();
-    date.setHours(
-      nowDate.getHours(),
-      nowDate.getMinutes(),
-      nowDate.getSeconds()
-    );
-    console.log(date);
     createTraining(date);
     loadTrainings();
     setIsDatePickerVisible(false);
@@ -86,22 +75,28 @@ export default function TrainingsScreen() {
       text2: "Successfully added training!",
     });
   };
-
-  const handleDatePicked = async (date: Date) => {
-    if (datePickerMode === "from") {
-      if (lastDayOfWeek && date > lastDayOfWeek) {
-        setLastDayOfWeek(date);
+  const handleDatePicked = (date: Date) => {
+    switch (datePickerMode) {
+      case "create": {
+        handleCreateTraining(date);
+        break;
       }
-      const newSelectedWeek = calculateSelectedWeek(date);
-      setSelectedWeek(newSelectedWeek);
-      setFirstDayOfWeek(date);
-    } else if (datePickerMode === "to") {
-      if (firstDayOfWeek && date < firstDayOfWeek) {
-        setFirstDayOfWeek(date);
+      case "from": {
+        if (lastDayOfWeek && dayjs(date) > lastDayOfWeek) {
+          setLastDayOfWeek(dayjs(date));
+        }
+        const newSelectedWeek = calculateSelectedWeek(date);
+        setSelectedWeek(newSelectedWeek);
+        setFirstDayOfWeek(dayjs(date));
+        break;
       }
-      setLastDayOfWeek(date);
-    } else if (datePickerMode === "create") {
-      handleCreateTraining(date);
+      case "to": {
+        if (firstDayOfWeek && dayjs(date) < firstDayOfWeek) {
+          setFirstDayOfWeek(dayjs(date));
+        }
+        setLastDayOfWeek(dayjs(date));
+        break;
+      }
     }
     hideDatePicker();
   };
@@ -117,7 +112,10 @@ export default function TrainingsScreen() {
 
   const getWeekTraings = async () => {
     if (firstDayOfWeek && lastDayOfWeek)
-      return await getTraingsInDateRange(firstDayOfWeek, lastDayOfWeek);
+      return await getTraingsInDateRange(
+        firstDayOfWeek.toDate(),
+        lastDayOfWeek.toDate()
+      );
   };
 
   const handleDeleteTraining = async (id: number) => {
@@ -149,24 +147,11 @@ export default function TrainingsScreen() {
     setSelectedWeek(newWeek);
     setFirstAndLastDays(newWeek);
   };
-  const calculateSelectedWeek = (selectedDate: Date) => {
-    const today = new Date();
-    const todayStartOfWeek = new Date(
-      today.getFullYear(),
-      today.getMonth(),
-      today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1)
-    );
-    const selectedStartOfWeek = new Date(
-      selectedDate.getFullYear(),
-      selectedDate.getMonth(),
-      selectedDate.getDate() -
-        selectedDate.getDay() +
-        (selectedDate.getDay() === 0 ? -6 : 1)
-    );
-    const diffInDays = Math.floor(
-      (selectedStartOfWeek.getTime() - todayStartOfWeek.getTime()) /
-        (1000 * 60 * 60 * 24)
-    );
+  const calculateSelectedWeek = (selectedDate: Date): number => {
+    const todayStartOfWeek = dayjs().startOf("week").add(1, "day"); 
+    const selectedStartOfWeek = dayjs(selectedDate).startOf("week").add(1, "day");
+  
+    const diffInDays = selectedStartOfWeek.diff(todayStartOfWeek, "day");
     return Math.floor(diffInDays / 7);
   };
   const iconColor = colorScheme == "dark" ? "white" : "#090909";
@@ -193,10 +178,10 @@ export default function TrainingsScreen() {
               <FontAwesome6 name="angle-left" size={25} color={iconColor} />
             </Pressable>
 
-            <DateRangePicker // Error with DefaultProps
+            <DateRangePicker
               showDatePicker={showDatePicker}
-              from={firstDayOfWeek}
-              to={lastDayOfWeek}
+              from={firstDayOfWeek.toDate()}
+              to={lastDayOfWeek.toDate()}
             />
             <Pressable
               onPress={() => handleWeekChange("+")}
@@ -207,16 +192,19 @@ export default function TrainingsScreen() {
           </View>
         </LinearGradient>
       </View>
-      <DateTimePicker // Error with DefaultProps
-        themeVariant="light" // Problem with Calendar Display in Dark Mode (something with react navigation)
-        isVisible={isDatePickerVisible}
-        mode="date"
-        isDarkModeEnabled={false}
-        onConfirm={handleDatePicked}
-        onCancel={hideDatePicker}
-        display="inline"
-        date={new Date()}
-      />
+      {isDatePickerVisible && (
+        <ModalDateRangePicker
+          handleCloseCalendar={hideDatePicker}
+          handleSelectDate={handleDatePicked}
+          date={
+            datePickerMode === "from"
+              ? firstDayOfWeek.toDate()
+              : datePickerMode === "to"
+              ? lastDayOfWeek.toDate()
+              : new Date()
+          }
+        />
+      )}
       <View className="">
         <TrainingList
           trainings={trainings}

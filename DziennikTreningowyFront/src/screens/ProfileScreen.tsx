@@ -1,13 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import {
+  Alert,
   Pressable,
+  ScrollView,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { AuthContext } from "../components/auth/authContext";
-import { getUser, updateUser } from "../database/repositories/userRepository";
+import {
+  createUser,
+  deleteUser,
+  getUser,
+  updateUser,
+} from "../database/repositories/userRepository";
 import { useColorScheme } from "nativewind";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Toast from "react-native-toast-message";
@@ -19,7 +26,6 @@ export default function ProfileScreen({ navigation }: any) {
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const { colorScheme } = useColorScheme();
-
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -40,6 +46,10 @@ export default function ProfileScreen({ navigation }: any) {
       setFirstName(user.firstName);
       setWeight(user.weight.toString());
       setHeight(user.height.toString());
+    } else {
+      setFirstName("");
+      setWeight("");
+      setHeight("");
     }
   };
 
@@ -48,7 +58,13 @@ export default function ProfileScreen({ navigation }: any) {
     if (getuser) {
       await setUser(getuser);
       setUserDataToInput();
+    } else {
+      await setUser(undefined);
     }
+  };
+  const closeAllItems = () => {
+    setShowNewPassword(false);
+    setShowUserProfile(false);
   };
   const resetPasswordInputs = () => {
     setOldPassword("");
@@ -61,14 +77,18 @@ export default function ProfileScreen({ navigation }: any) {
   const userProfileUpdate = async () => {
     if (height && weight && firstName) {
       const newUser: User = {
-        id: user?.id,
+        id: user ? user?.id : undefined,
         firstName: firstName,
         height: parseFloat(height),
         weight: parseFloat(weight),
       };
-      updateUser(newUser);
+      if (user) {
+        updateUser(newUser);
+      } else {
+        createUser(newUser);
+      }
       getUserFromDatabase();
-      setShowUserProfile(false);
+      closeAllItems();
       Toast.show({
         type: "success",
         text1: "Success",
@@ -79,6 +99,18 @@ export default function ProfileScreen({ navigation }: any) {
         type: "error",
         text1: "Error",
         text2: "Enter correct data!",
+      });
+    }
+  };
+  const deleteUserProfile = async () => {
+    if (user) {
+      deleteUser(user.id);
+      getUserFromDatabase();
+      closeAllItems();
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Successfully deleted!",
       });
     }
   };
@@ -103,9 +135,15 @@ export default function ProfileScreen({ navigation }: any) {
       });
       return;
     }
+    closeAllItems();
+    Toast.show({
+      type: "success",
+      text1: "Success",
+      text2: "Successfully saved!",
+    });
   };
   return (
-    <View className="flex-1 bg-zinc-100 dark:bg-zinc-500 p-1">
+    <ScrollView className="flex-1 bg-zinc-100 dark:bg-zinc-500 p-1">
       {!auth.isAuthenticated && (
         <Pressable
           className="mb-1 w-full h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
@@ -125,7 +163,6 @@ export default function ProfileScreen({ navigation }: any) {
           User profile
         </Text>
       </TouchableOpacity>
-
       {showUserProfile && (
         <View>
           <TextInput
@@ -197,7 +234,7 @@ export default function ProfileScreen({ navigation }: any) {
               keyboardType="default"
               placeholderTextColor={placeholderColor}
               placeholder="Old password"
-              textContentType="oneTimeCode"
+              textContentType="password"
             ></TextInput>
             <Pressable
               className="p-1"
@@ -213,7 +250,7 @@ export default function ProfileScreen({ navigation }: any) {
               value={newPassword}
               autoCapitalize="none"
               keyboardType="default"
-              textContentType="oneTimeCode"
+              textContentType="newPassword"
               onChangeText={(text) => setNewPassword(text)}
               placeholderTextColor={placeholderColor}
               placeholder="New password"
@@ -267,15 +304,41 @@ export default function ProfileScreen({ navigation }: any) {
       )}
       {auth.isAuthenticated && (
         <TouchableOpacity
-          onPress={auth.logout}
-          className="w-full h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
+          onPress={() => {
+            auth.logout();
+            closeAllItems();
+          }}
+          className="w-full mb-1 h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
         >
           <Text className="text-center text-lg text-red-500 text-bold">
             Log out
           </Text>
         </TouchableOpacity>
       )}
-    </View>
+      {user && (
+        <TouchableOpacity
+          onPress={() =>
+            Alert.alert(
+              "",
+              "Are you sure you want to delete?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                { text: "Yes", onPress: deleteUserProfile },
+              ],
+              { cancelable: false }
+            )
+          }
+          className="w-full h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
+        >
+          <Text className="text-center mb-1 text-lg text-red-500 text-bold">
+            Delete User Profile
+          </Text>
+        </TouchableOpacity>
+      )}
+    </ScrollView>
   );
 }
 const inputStyle =

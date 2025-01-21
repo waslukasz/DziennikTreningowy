@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-export const databaseName = "DziennikTreningowy-v1.2";
+export const databaseName = "DziennikTreningowy-v1.3";
 export const db = SQLite.openDatabaseSync(databaseName);
 export async function initDatabase() {
   await db.execAsync(`

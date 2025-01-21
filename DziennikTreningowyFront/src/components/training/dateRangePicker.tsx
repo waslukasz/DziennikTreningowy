@@ -10,6 +10,7 @@ export default function DateRangePicker({
   from,
   to,
 }: Props) {
+
   return (
     <View
       className={` flex-1 py-3 justify-center shadow-2xl mx-1 rounded-t-xl bg-emerald-500

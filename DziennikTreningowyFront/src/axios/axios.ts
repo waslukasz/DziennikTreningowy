@@ -3,7 +3,7 @@ import axios from "axios";
 import { NewTokenWithRefreshToken } from "../services/auth";
 import { AuthContextValue } from "../components/auth/authContext";
 //const API_URL = "http://172.20.10.4:8000";
-const API_URL = "http://192.168.200.170:8000";
+const API_URL = "http://192.168.1.55:8000";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -25,13 +25,16 @@ api.interceptors.request.use(
   }
 );
 
-export function setupAxiosInterceptors(authContext: AuthContextValue ) {
+export function setupAxiosInterceptors(authContext: AuthContextValue) {
   api.interceptors.response.use(
     (response) => response,
     async (error) => {
       if (error.response && error.response.status === 401) {
         try {
           const response = await NewTokenWithRefreshToken();
+          if(!response){
+            return
+          }
           const { accessToken, refreshToken } = response?.data;
           await AsyncStorage.setItem("token", accessToken);
           await AsyncStorage.setItem("refreshToken", refreshToken);
@@ -50,4 +53,4 @@ export function setupAxiosInterceptors(authContext: AuthContextValue ) {
   );
 }
 
-export default api
+export default api;

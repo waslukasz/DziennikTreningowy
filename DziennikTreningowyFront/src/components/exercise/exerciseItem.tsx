@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Text, View } from "react-native";
 interface Props {
   exercise: Exercise;
-  setExerciseToDone: (id: number, isDone: boolean) => void;
+  setExerciseToDone: (id: string, isDone: boolean) => void;
 }
 export default function ExercieseItem({ exercise, setExerciseToDone }: Props) {
   const handleExerciseSetToDone = () => {

@@ -1,7 +1,8 @@
 import { BodyMeasurements } from "../../types/bodyMeasurementsType";
 import { BodyPartEnum } from "../../types/bodyPartEnum";
 import { db } from "../databaseSettings";
-
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 export async function getAllBodyMeasurements() {
   const result = await db.getAllAsync<BodyMeasurements>(
     //"SELECT * FROM BodyMeasurements ORDER BY measurementDate DESC LIMIT 10"
@@ -19,43 +20,38 @@ export async function getLastMeasurement() {
 
 export async function createBodyMeasurements(measurements: BodyMeasurements) {
   try {
+    const guidId = uuidv4();
     const { date, bodyPart, value } = measurements;
-    if (date) {
-      const result = await db.runAsync(
-        `
-      INSERT INTO BodyMeasurements (date, bodyPart, value)
-      VALUES (?,?,?)
-      `,
-        [date.toISOString(), bodyPart, value]
-      );
-      return result;
-    }
+
     const result = await db.runAsync(
       `
-    INSERT INTO BodyMeasurements (bodyPart, value)
-    VALUES (?, ?)
-    `,
-      [bodyPart, value]
+      INSERT INTO BodyMeasurements (id, date, bodyPart, value)
+      VALUES (?, ?, ?, ?)
+      `,
+      [
+        guidId,
+        date ? date.toISOString() : new Date().toISOString(),
+        bodyPart,
+        value,
+      ]
     );
-    if (result.changes && result.changes > 0) {
-      return true;
-    } else {
-      return false;
-    }
+
+    return result.changes && result.changes > 0;
   } catch (error) {
-    console.log("create BodyMeasurements issue");
+    console.log("create BodyMeasurements issue:", error);
     return false;
   }
 }
+
 export async function getBodyMeasurementsByBodyType(bodyPart: BodyPartEnum) {
   const result = await db.getFirstAsync<BodyMeasurements>(
-    "SELECT * FROM BodyMeasurements WHERE bodyType = ?",
+    "SELECT * FROM BodyMeasurements WHERE bodyPart = ?",
     [bodyPart]
   );
   return result;
 }
 
-export async function getBodyMeasurementsById(id: number) {
+export async function getBodyMeasurementsById(id: string) {
   const result = await db.getFirstAsync<BodyMeasurements>(
     "SELECT * FROM BodyMeasurements WHERE id = ?",
     [id]
@@ -63,7 +59,7 @@ export async function getBodyMeasurementsById(id: number) {
   return result;
 }
 
-export async function deleteBodyMeasurements(id: number) {
+export async function deleteBodyMeasurements(id: string) {
   try {
     const result = await db.runAsync(
       "DELETE FROM BodyMeasurements WHERE id = ?",

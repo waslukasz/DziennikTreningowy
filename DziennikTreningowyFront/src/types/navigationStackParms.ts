@@ -9,7 +9,7 @@ export type RootStackParamList = {
   BodyMeasurment: undefined;
   AddMeasurement: undefined;
   Training: undefined;
-  Exercises: { trainingId: number };
+  Exercises: { trainingId: string };
   MeasurementDetails: undefined;
   Calculators: undefined;
   BmiCalculator: undefined;

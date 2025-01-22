@@ -7,7 +7,7 @@ import { isTrainingCompleted } from "../../database/repositories/trainingReposit
 import { useColorScheme } from "nativewind";
 interface Props {
   training: Training;
-  handleDelete: (id: number) => void;
+  handleDelete: (id: string) => void;
 }
 export default function TrainingItem({ training, handleDelete }: Props) {
   const navigation = useNavigation<ExerciseScreenNavigateProp>();

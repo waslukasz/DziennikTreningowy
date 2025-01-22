@@ -1,5 +1,5 @@
 type User={
-    id?:number,
+    id?:string,
     firstName:string,
     height:number,
     weight:number,

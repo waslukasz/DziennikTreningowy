@@ -1,4 +1,4 @@
 type Training = {
-  id: number;
+  id: string;
   timestamp: Date;
 };

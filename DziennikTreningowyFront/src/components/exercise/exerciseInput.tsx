@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import Toast from "react-native-toast-message";
 interface Props {
-  trainingId: number;
+  trainingId: string;
   exerciseToEdit?: Exercise | null;
   handleCloseEditMode: () => void;
   handleEditExercise: (updateExercise: Exercise) => void;

@@ -1,5 +1,6 @@
 import { db } from "../databaseSettings";
-
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 export async function getLastTraining() {
   const result = await db.getFirstAsync<Training>(
     `SELECT * FROM Trainings ORDER BY timestamp DESC LIMIT 1`
@@ -11,7 +12,7 @@ export async function getAllTraingins() {
   const result = await db.getAllAsync<Training>("SELECT * FROM Trainings");
   return result;
 }
-export async function getTrainingById(id: number) {
+export async function getTrainingById(id: string) {
   const result = await db.getFirstAsync<Training>(
     "SELECT * FROM Trainings WHERE id = $value",
     { $value: id }
@@ -60,9 +61,11 @@ export async function getTraingsInDateRange(from: Date, to: Date) {
 }
 export async function createTraining(date: Date) {
   try {
+    const guidId=uuidv4();
     const dateToString = date.toISOString();
     const result = await db.runAsync(
-      `INSERT INTO Trainings (timestamp) VALUES ('${dateToString}')`
+      `INSERT INTO Trainings (id, timestamp) VALUES (?, ?)`,
+      [guidId, dateToString]
     );
     if (result.changes && result.changes > 0) {
       return true;
@@ -74,7 +77,7 @@ export async function createTraining(date: Date) {
     return false;
   }
 }
-export async function deleteTraining(id: number) {
+export async function deleteTraining(id: string) {
   try {
     const result = await db.runAsync(
       "DELETE FROM Trainings WHERE id = $value",
@@ -108,7 +111,7 @@ export async function updateTraining(training: Training) {
   }
 }
 export async function isTrainingCompleted(
-  trainingId: number
+  trainingId: string
 ): Promise<boolean> {
   try {
     const result = await db.getFirstAsync<{ isTrainingDone: number }>(

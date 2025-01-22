@@ -61,7 +61,7 @@ const MeasurementDetailsScreen = ({ navigation }: { navigation: any }) => {
     }
   }, [editedItem]);
 
-  async function deleteMeasurement(id: number) {
+  async function deleteMeasurement(id: string) {
     if (id) {
       const result = await deleteBodyMeasurements(id);
       if (result) {

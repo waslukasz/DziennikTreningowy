@@ -1,7 +1,7 @@
 import { BodyPartEnum } from "./bodyPartEnum";
 
 export type BodyMeasurements = {
-  id?: number;
+  id?: string;
   date?: Date;
   bodyPart: BodyPartEnum;
   value: number;

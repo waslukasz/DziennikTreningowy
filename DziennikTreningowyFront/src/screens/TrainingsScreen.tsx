@@ -118,7 +118,7 @@ export default function TrainingsScreen() {
       );
   };
 
-  const handleDeleteTraining = async (id: number) => {
+  const handleDeleteTraining = async (id: string) => {
     const result = await deleteTraining(id);
     if (result) {
       await loadTrainings();

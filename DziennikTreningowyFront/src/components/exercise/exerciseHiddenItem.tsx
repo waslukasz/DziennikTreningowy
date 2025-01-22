@@ -4,7 +4,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 interface Props {
   exercise: Exercise;
   handleEdit: (exercise: Exercise) => void;
-  handleDelete: (id?: number) => void;
+  handleDelete: (id?: string) => void;
 }
 export default function ExerciseHiddenItem({
   exercise,

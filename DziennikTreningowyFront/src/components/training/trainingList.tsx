@@ -3,7 +3,7 @@ import TrainingItem from "./trainingItem";
 
 type Props = {
   trainings: Training[];
-  handleDeleteTraining: (id: number) => void;
+  handleDeleteTraining: (id: string) => void;
 };
 export default function TrainingList({
   trainings,

@@ -10,7 +10,7 @@ export default function MeasurementDetailsHiddenItem({
   editMeasurement,
 }: {
   item: BodyMeasurements;
-  deleteMeasurement: (id: number) => void;
+  deleteMeasurement: (id: string) => void;
   editMeasurement: (item: BodyMeasurements) => void;
 }) {
   const deleteHandler = () => {

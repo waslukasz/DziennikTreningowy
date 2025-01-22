@@ -63,7 +63,7 @@ export default function ExercisesScreen({
       });
     }
   };
-  const handleDeleteExercise = async (id?: number) => {
+  const handleDeleteExercise = async (id?: string) => {
     if (id) {
       const result = await deleteExercise(id);
       if (result) {
@@ -103,7 +103,7 @@ export default function ExercisesScreen({
   const closeEditMode = () => {
     setExerciseToEdit(null);
   };
-  const setExerciseToDone = async (id: number, isDone: boolean) => {
+  const setExerciseToDone = async (id: string, isDone: boolean) => {
     const result = await setDoneStatusInExercise(id, isDone);
     await getExercises();
   };

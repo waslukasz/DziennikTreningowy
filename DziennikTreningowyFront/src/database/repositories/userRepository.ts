@@ -1,14 +1,17 @@
 import { db } from "../databaseSettings";
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 export async function createUser(user: User) {
   try {
+    const guidId=uuidv4();
     const { firstName, height, weight } = user;
     const result = await db.runAsync(
       `
-        INSERT INTO User (firstName, height, weight)
-        VALUES (?, ?, ?)
+        INSERT INTO User (id,firstName, height, weight)
+        VALUES (?, ?, ?, ?)
         `,
-      [firstName, height, weight]
+      [guidId,firstName, height, weight]
     );
     if (result.changes && result.changes > 0) {
       return true;
@@ -45,7 +48,7 @@ export async function updateUser(user: User) {
     return false;
   }
 }
-export async function deleteUser(userId?:number) {
+export async function deleteUser(userId?:string) {
   try {
     if (userId) {
       const result = await db.runAsync(

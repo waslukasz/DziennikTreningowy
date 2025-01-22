@@ -1,13 +1,14 @@
 import { db } from "../databaseSettings";
-
-export async function getAllExercises(trainingId: number) {
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
+export async function getAllExercises(trainingId: string) {
   const result = await db.getAllAsync<Exercise>(
     "SELECT * FROM Exercises WHERE trainingId = $value",
     { $value: trainingId }
   );
   return result;
 }
-export async function countExercisesInTraining(trainingId: number) {
+export async function countExercisesInTraining(trainingId: string) {
   interface CountResult {
     count: number;
   }
@@ -20,23 +21,24 @@ export async function countExercisesInTraining(trainingId: number) {
     return result.count;
   }
 }
-export async function getExerciseById(id: number) {
+export async function getExerciseById(id: string) {
   const result = await db.getFirstAsync<Exercise>(
     "SELECT * FROM Exercises WHERE id = $value",
     { $value: id }
   );
   return result;
 }
-export async function setDoneStatusInExercise(id: number, isDone: boolean) {
+export async function setDoneStatusInExercise(id: string, isDone: boolean) {
   const isDoneNumber = isDone ? 1 : 0;
   const result = await db.runAsync(
     "UPDATE Exercises SET isDone = $isDoneNumber WHERE id = $value",
-    { $value: id,$isDoneNumber:!isDoneNumber }
+    { $value: id,$isDoneNumber:!isDoneNumber }//moze byc blad
   );
   return result;
 }
 export async function createExercise(exercise: Exercise) {
   try {
+    const guidId=uuidv4();
     const {
       name,
       description,
@@ -48,10 +50,11 @@ export async function createExercise(exercise: Exercise) {
     } = exercise;
     const result = await db.runAsync(
       `
-    INSERT INTO Exercises (name, description, weight, repetitions, sets, duration, trainingId)
-    VALUES (?, ?, ?, ?,?, ?, ?)
+    INSERT INTO Exercises (id, name, description, weight, repetitions, sets, duration, trainingId)
+    VALUES (? ,?, ?, ?, ?, ?, ?, ?)
     `,
       [
+        guidId,
         name,
         description || null,
         weight || null,
@@ -72,7 +75,7 @@ export async function createExercise(exercise: Exercise) {
   }
 }
 
-export async function deleteExercise(id: number) {
+export async function deleteExercise(id: string) {
   try {
     const result = await db.runAsync(
       "DELETE FROM Exercises WHERE id = $value",

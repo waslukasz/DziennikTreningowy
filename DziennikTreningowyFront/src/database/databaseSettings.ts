@@ -1,34 +1,34 @@
 import * as SQLite from "expo-sqlite";
-export const databaseName = "DziennikTreningowy-v1.3";
+export const databaseName = "DziennikTreningowy-v1.4.1";
 export const db = SQLite.openDatabaseSync(databaseName);
 export async function initDatabase() {
   await db.execAsync(`
         PRAGMA journal_mode = WAL;
         CREATE TABLE IF NOT EXISTS Exercises (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id TEXT PRIMARY KEY,
             name TEXT CHECK(LENGTH(name) <= 30),
             description TEXT CHECK(LENGTH(Description) <= 30),
             weight INTEGER,
             repetitions INTEGER,
             sets INTEGER,
             duration TEXT,
-            trainingId INTEGER,
+            trainingId TEXT,
             timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW')),
             isDone INTEGER DEFAULT 0,
             FOREIGN KEY (trainingId) REFERENCES trainings(Id)
             );
         CREATE TABLE IF NOT EXISTS Trainings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id TEXT PRIMARY KEY,
             timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW'))
         );
         CREATE TABLE IF NOT EXISTS User (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          id TEXT PRIMARY KEY,
           firstName TEXT,
           height INTEGER,
           weight REAL
         );
         CREATE TABLE IF NOT EXISTS BodyMeasurements (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          id TEXT PRIMARY KEY,
           date TEXT DEFAULT (STRFTIME('%Y-%m-%d %H %M %S', 'NOW')),
           bodyPart TEXT NOT NULL,
           value INTEGER,

@@ -32,7 +32,7 @@ public class TrainingService : ITrainingService
         return _mapper.Map<IEnumerable<TrainingDetailsDto>>(trainings);
     }
 
-    public async Task AddAsync(TrainingCreateDto dto)
+    /*public async Task AddAsync(TrainingCreateDto dto)
     {
         var training = _mapper.Map<Training>(dto);
         training.Id = new Guid();
@@ -49,7 +49,7 @@ public class TrainingService : ITrainingService
         _mapper.Map(dto, training);
         
         await _trainingRepository.UpdateAsync(training);
-    }
+    }*/
 
     public async Task DeleteAsync(Guid trainingId)
     {

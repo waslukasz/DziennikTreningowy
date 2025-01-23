@@ -36,6 +36,7 @@ builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<ITrainingRepository, TrainingRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
 builder.Services.AddScoped<IMeasurmentRepository, MeasurmentRepository>();
+builder.Services.AddScoped<ISyncRepository, SyncRepository>();
 // Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
@@ -46,6 +47,7 @@ builder.Services.AddScoped<IValidator<AccountRegisterDto>, AccountRegisterDtoVal
 builder.Services.AddScoped<IPasswordHasher, Pbkdf2PasswordHasher>();
 
 var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

@@ -31,7 +31,7 @@ public class ProfileService : IProfileService
         return _mapper.Map<IEnumerable<ProfileDetailsDto>>(profiles);
     }
 
-    public async Task AddAsync(ProfileCreateDto profile)
+    /*public async Task AddAsync(ProfileCreateDto profile)
     {
         throw new NotImplementedException();
     }
@@ -39,7 +39,7 @@ public class ProfileService : IProfileService
     public async Task UpdateAsync(ProfileUpdateDto profile)
     {
         throw new NotImplementedException();
-    }
+    }*/
 
     public async Task DeleteAsync(Guid profileId)
     {

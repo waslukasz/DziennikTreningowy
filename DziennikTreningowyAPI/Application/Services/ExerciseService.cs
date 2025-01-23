@@ -33,7 +33,7 @@ public class ExerciseService : IExerciseService
         return _mapper.Map<IEnumerable<ExerciseDetailsDto>>(exercises);
     }
 
-    public async Task AddAsync(ExerciseCreateDto exerciseDto)
+    /*public async Task AddAsync(ExerciseCreateDto exerciseDto)
     {
         var exercise = _mapper.Map<Exercise>(exerciseDto);
         exercise.Id = new Guid();
@@ -50,7 +50,7 @@ public class ExerciseService : IExerciseService
         _mapper.Map(dto, exercise);
 
         await _exerciseRepository.UpdateAsync(exercise);
-    }
+    }*/
 
     public async Task DeleteAsync(Guid exerciseId)
     {

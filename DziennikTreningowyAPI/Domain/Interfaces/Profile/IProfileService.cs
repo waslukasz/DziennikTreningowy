@@ -6,7 +6,7 @@ public interface IProfileService
 {
     Task<ProfileDetailsDto> GetByIdAsync(Guid profileId);
     Task<IEnumerable<ProfileDetailsDto>> GetAllAsync();
-    Task AddAsync(ProfileCreateDto profile);
-    Task UpdateAsync(ProfileUpdateDto profile);
+    /*Task AddAsync(ProfileCreateDto profile);
+    Task UpdateAsync(ProfileUpdateDto profile);*/
     Task DeleteAsync(Guid profileId);
 }

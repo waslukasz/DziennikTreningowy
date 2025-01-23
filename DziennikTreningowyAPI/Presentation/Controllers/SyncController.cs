@@ -16,29 +16,13 @@ public class SyncController : Controller
     }
 
     [HttpGet("api/sync")]
-    public async Task<IActionResult> Synchronize()
+    public async Task<IActionResult> Synchronize([FromQuery] DateTime? lastSync)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
         try
         {
-            var result = await _syncService.SynchronizeDataAsync(Guid.Parse(userIdClaim));
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
-    
-    [HttpPost("api/sync2")]
-    public async Task<IActionResult> Synchronize([FromBody] DateTime lastSync)
-    {
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-        try
-        {
-            var result = await _syncService.SynchronizeDataAsync(Guid.Parse(userIdClaim), lastSync);
+            var result = await _syncService.SyncDataAsync(Guid.Parse(userIdClaim), lastSync);
             return Ok(result);
         }
         catch (Exception ex)
@@ -47,7 +31,7 @@ public class SyncController : Controller
         }
     }
 
-    [HttpPost("api/sync/save")]
+    [HttpPost("api/save")]
     public async Task<IActionResult> SaveData([FromBody] SyncDto dto)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;

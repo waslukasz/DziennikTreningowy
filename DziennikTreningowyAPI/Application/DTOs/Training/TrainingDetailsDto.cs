@@ -9,5 +9,4 @@ public class TrainingDetailsDto
     public string Name { get; set; }
     public DateTime Date { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public ICollection<ExerciseDetailsDto> Exercises { get; set; }
 }

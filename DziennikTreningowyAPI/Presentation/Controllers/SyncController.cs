@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using DziennikTreningowyAPI.Application.DTOs.Sync;
 using DziennikTreningowyAPI.Domain.Interfaces.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DziennikTreningowyAPI.Presentation.Controllers;
@@ -16,6 +17,7 @@ public class SyncController : Controller
     }
 
     [HttpGet("api/sync")]
+    [Authorize]
     public async Task<IActionResult> Synchronize([FromQuery] DateTime? lastSync)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -32,6 +34,7 @@ public class SyncController : Controller
     }
 
     [HttpPost("api/save")]
+    [Authorize]
     public async Task<IActionResult> SaveData([FromBody] SyncDto dto)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;

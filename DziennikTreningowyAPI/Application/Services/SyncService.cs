@@ -26,6 +26,6 @@ public class SyncService : ISyncService
 
     public async Task SaveDataAsync(Guid accountId, SyncDto dto)
     {
-        throw new NotImplementedException();
+        await _syncRepository.SaveDataAsync(accountId, dto);
     }
 }

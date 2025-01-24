@@ -1,12 +1,13 @@
 import { Pressable, Text, TextInput, View } from "react-native";
 import { createBodyMeasurements } from "../../database/repositories/bodyMeasurementRepository";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Toast from "react-native-toast-message";
 import { BodyMeasurements } from "../../types/bodyMeasurementsType";
 import { BodyPartEnum } from "../../types/bodyPartEnum";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useColorScheme } from "nativewind";
 import CalculatorInput from "../calculator/CalculatorInput";
+import { AuthContext } from "../auth/authContext";
 
 export default function MeasurementInput({
   navigation,
@@ -15,6 +16,7 @@ export default function MeasurementInput({
   navigation: any;
   measurementPart: BodyPartEnum;
 }) {
+  const auth=useContext(AuthContext);
   const { colorScheme } = useColorScheme();
   const placeholder =
     measurementPart === BodyPartEnum.bodyWeight
@@ -34,7 +36,7 @@ export default function MeasurementInput({
         bodyPart: measurementPart,
         value: parseFloat(value),
       };
-      await createBodyMeasurements(temp);
+      await createBodyMeasurements(temp,auth.isAuthenticated);
       Toast.show({
         type: "success",
         text1: "Success",

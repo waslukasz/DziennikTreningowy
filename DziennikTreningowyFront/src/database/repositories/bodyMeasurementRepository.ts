@@ -24,7 +24,7 @@ export async function createBodyMeasurements(measurements: BodyMeasurements,isAu
   try {
     const guidId = uuidv4();
     const { date, bodyPart, value } = measurements;
-
+    
     const result = await db.runAsync(
       `
       INSERT INTO BodyMeasurements (id, date, bodyPart, value)
@@ -37,7 +37,7 @@ export async function createBodyMeasurements(measurements: BodyMeasurements,isAu
         value,
       ]
     );
-
+    
     if (result.changes && result.changes > 0) {
       if (isAuthenticate) {
         dataToSync();

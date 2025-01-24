@@ -1,5 +1,5 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Animated, Pressable, Text, TextInput, View } from "react-native";
 import { BodyMeasurements } from "../../types/bodyMeasurementsType";
 import MeasurementDetailsItem from "../../components/measurement/MeasurementDetailsItem";
@@ -10,6 +10,7 @@ import {
   updateBodyMeasurements,
 } from "../../database/repositories/bodyMeasurementRepository";
 import Toast from "react-native-toast-message";
+import { AuthContext } from "../../components/auth/authContext";
 
 type RouteParams = {
   MeasurementDetails: {
@@ -20,7 +21,7 @@ type RouteParams = {
 
 const MeasurementDetailsScreen = ({ navigation }: { navigation: any }) => {
   const route = useRoute<RouteProp<RouteParams, "MeasurementDetails">>();
-
+  const auth=useContext(AuthContext);
   const title: string = route.params?.title;
   const dataFromRoute: BodyMeasurements[] = route.params?.data;
   const [measurementsData, setMeasurementsData] =
@@ -63,7 +64,7 @@ const MeasurementDetailsScreen = ({ navigation }: { navigation: any }) => {
 
   async function deleteMeasurement(id: string) {
     if (id) {
-      const result = await deleteBodyMeasurements(id);
+      const result = await deleteBodyMeasurements(id,auth.isAuthenticated);
       if (result) {
         const temp = measurementsData.filter((i) => i.id != id);
         setMeasurementsData(temp);
@@ -90,7 +91,7 @@ const MeasurementDetailsScreen = ({ navigation }: { navigation: any }) => {
       date: editedItem!.date,
     };
 
-    const result = await updateBodyMeasurements(newItem);
+    const result = await updateBodyMeasurements(newItem,auth.isAuthenticated);
     if (result) {
       slideOut();
       const updatedData: BodyMeasurements[] = measurementsData!.map((i) => {

@@ -83,9 +83,9 @@ export default function ProfileScreen({ navigation }: any) {
         weight: parseFloat(weight),
       };
       if (user) {
-        updateUser(newUser);
+        updateUser(newUser,auth.isAuthenticated);
       } else {
-        createUser(newUser);
+        createUser(newUser,auth.isAuthenticated);
       }
       getUserFromDatabase();
       closeAllItems();
@@ -104,7 +104,7 @@ export default function ProfileScreen({ navigation }: any) {
   };
   const deleteUserProfile = async () => {
     if (user) {
-      deleteUser(user.id);
+      deleteUser(auth.isAuthenticated,user.id);
       getUserFromDatabase();
       closeAllItems();
       Toast.show({

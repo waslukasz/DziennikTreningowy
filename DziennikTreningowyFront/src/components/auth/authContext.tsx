@@ -38,7 +38,6 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
     setAuthRefreshToken(null);
     AsyncStorage.removeItem("token");
     AsyncStorage.removeItem("refreshToken");
-    //Po automtycznym wylgwaniu zmienic ekran lub odswiezyc 
   }
   const value: AuthContextValue = {
     token: authToken,
@@ -48,7 +47,7 @@ function AuthContextProvider({ children }: AuthContextProviderProps) {
     logout,
   };
   useEffect(() => {
-    setupAxiosInterceptors(value); // Przekazuje kontekst uwierzytelniania
+    setupAxiosInterceptors(value);
   }, [value]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

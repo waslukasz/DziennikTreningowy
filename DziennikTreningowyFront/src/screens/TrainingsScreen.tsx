@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { View, Text, Pressable, ScrollView, Modal } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -14,7 +14,9 @@ import { useColorScheme } from "nativewind";
 import ModalDateRangePicker from "../components/training/modalDateRangePicker";
 import DateRangePicker from "../components/training/dateRangePicker";
 import dayjs from "dayjs";
+import { AuthContext } from "../components/auth/authContext";
 export default function TrainingsScreen() {
+  const auth = useContext(AuthContext);
   const [selectedWeek, setSelectedWeek] = useState(0);
   const [trainings, setTrainings] = useState<Training[]>([]);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
@@ -26,7 +28,7 @@ export default function TrainingsScreen() {
   const { colorScheme } = useColorScheme();
   useEffect(() => {
     (async () => {
-        await setFirstAndLastDays();
+      await setFirstAndLastDays();
     })();
   }, []);
 
@@ -44,8 +46,8 @@ export default function TrainingsScreen() {
     const first =
       curr.getDate() - curr.getDay() + (curr.getDay() === 0 ? -6 : 1);
     const last = first + 6;
-    setFirstDayOfWeek(dayjs(new Date(curr.setDate(first))));
-    setLastDayOfWeek(dayjs(new Date(curr.setDate(last))));
+    setFirstDayOfWeek(dayjs(new Date(curr.setDate(first))).startOf("day"));
+    setLastDayOfWeek(dayjs(new Date(curr.setDate(last))).startOf("day"));
   };
 
   const loadTrainings = async () => {
@@ -66,7 +68,8 @@ export default function TrainingsScreen() {
   };
 
   const handleCreateTraining = (date: Date) => {
-    createTraining(date);
+    const dateAtMidnight = dayjs(date).startOf("day").toDate();
+    createTraining(dateAtMidnight, auth.isAuthenticated);
     loadTrainings();
     setIsDatePickerVisible(false);
     Toast.show({
@@ -78,6 +81,7 @@ export default function TrainingsScreen() {
   const handleDatePicked = (date: Date) => {
     switch (datePickerMode) {
       case "create": {
+        console.log(date);
         handleCreateTraining(date);
         break;
       }
@@ -119,7 +123,7 @@ export default function TrainingsScreen() {
   };
 
   const handleDeleteTraining = async (id: string) => {
-    const result = await deleteTraining(id);
+    const result = await deleteTraining(id, auth.isAuthenticated);
     if (result) {
       await loadTrainings();
       Toast.show({
@@ -148,9 +152,11 @@ export default function TrainingsScreen() {
     setFirstAndLastDays(newWeek);
   };
   const calculateSelectedWeek = (selectedDate: Date): number => {
-    const todayStartOfWeek = dayjs().startOf("week").add(1, "day"); 
-    const selectedStartOfWeek = dayjs(selectedDate).startOf("week").add(1, "day");
-  
+    const todayStartOfWeek = dayjs().startOf("week").add(1, "day");
+    const selectedStartOfWeek = dayjs(selectedDate)
+      .startOf("week")
+      .add(1, "day");
+
     const diffInDays = selectedStartOfWeek.diff(todayStartOfWeek, "day");
     return Math.floor(diffInDays / 7);
   };

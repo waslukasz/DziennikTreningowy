@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import {
   createExercise,
   deleteExercise,
   getAllExercises,
+  getAllExercisesByTrainingId,
   setDoneStatusInExercise,
   updateExercise,
 } from "../database/repositories/exercisesRepository";
@@ -13,10 +14,12 @@ import ExercieseInput from "../components/exercise/exerciseInput";
 import ExercieseItem from "../components/exercise/exerciseItem";
 import { ExerciseScreenProps } from "../types/navigationStackParms";
 import Toast from "react-native-toast-message";
+import { AuthContext } from "../components/auth/authContext";
 export default function ExercisesScreen({
   navigation,
   route,
 }: ExerciseScreenProps) {
+  const auth=useContext(AuthContext);
   const { trainingId } = route.params;
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [exerciseToEdit, setExerciseToEdit] = useState<Exercise | null>(null);
@@ -26,11 +29,11 @@ export default function ExercisesScreen({
     })();
   }, []);
   const getExercises = async () => {
-    const data = await getAllExercises(trainingId);
+    const data = await getAllExercisesByTrainingId(trainingId);
     setExercises(data);
   };
   const handleCreateExercise = async (newExercise: Exercise) => {
-    const result = await createExercise(newExercise);
+    const result = await createExercise(newExercise,auth.isAuthenticated);
     if (result) {
       await getExercises();
       Toast.show({
@@ -47,7 +50,7 @@ export default function ExercisesScreen({
     }
   };
   const handleEditExercise = async (editExercise: Exercise) => {
-    const result = await updateExercise(editExercise);
+    const result = await updateExercise(editExercise,auth.isAuthenticated);
     if (result) {
       await getExercises();
       Toast.show({
@@ -65,7 +68,7 @@ export default function ExercisesScreen({
   };
   const handleDeleteExercise = async (id?: string) => {
     if (id) {
-      const result = await deleteExercise(id);
+      const result = await deleteExercise(id,auth.isAuthenticated);
       if (result) {
         if (exerciseToEdit) {
           setExerciseToEdit(null);

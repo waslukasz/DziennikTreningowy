@@ -1,7 +1,15 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../databaseSettings";
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-export async function getAllExercises(trainingId: string) {
+import { dataToSync } from "./syncRepository";
+export async function getAllExercises() {
+  const result = await db.getAllAsync<Exercise>(
+    "SELECT * FROM Exercises"
+  );
+  return result;
+}
+export async function getAllExercisesByTrainingId(trainingId: string) {
   const result = await db.getAllAsync<Exercise>(
     "SELECT * FROM Exercises WHERE trainingId = $value",
     { $value: trainingId }
@@ -36,7 +44,7 @@ export async function setDoneStatusInExercise(id: string, isDone: boolean) {
   );
   return result;
 }
-export async function createExercise(exercise: Exercise) {
+export async function createExercise(exercise: Exercise,isAuthenticate:boolean) {
   try {
     const guidId=uuidv4();
     const {
@@ -65,6 +73,9 @@ export async function createExercise(exercise: Exercise) {
       ]
     );
     if (result.changes && result.changes > 0) {
+      if (isAuthenticate) {
+        dataToSync();
+      }
       return true;
     } else {
       return false;
@@ -75,7 +86,7 @@ export async function createExercise(exercise: Exercise) {
   }
 }
 
-export async function deleteExercise(id: string) {
+export async function deleteExercise(id: string,isAuthenticate:boolean) {
   try {
     const result = await db.runAsync(
       "DELETE FROM Exercises WHERE id = $value",
@@ -84,7 +95,10 @@ export async function deleteExercise(id: string) {
       }
     );
     if (result.changes && result.changes > 0) {
-      return true;
+      if (isAuthenticate) {
+        //dataToSync(); zmienic
+      }
+      return true
     } else {
       return false;
     }
@@ -94,7 +108,7 @@ export async function deleteExercise(id: string) {
   }
 }
 
-export async function updateExercise(exercise: Exercise) {
+export async function updateExercise(exercise: Exercise,isAuthenticate:boolean) {
   try {
     const {
       id,
@@ -126,6 +140,9 @@ export async function updateExercise(exercise: Exercise) {
       ]
     );
     if (result.changes && result.changes > 0) {
+      if (isAuthenticate) {
+        dataToSync();
+      }
       return true;
     } else {
       return false;
@@ -133,5 +150,18 @@ export async function updateExercise(exercise: Exercise) {
   } catch (error) {
     console.log("update exercise issue");
     return false;
+  }
+}
+export async function getExercisesToSync() {
+  const lastSync=await AsyncStorage.getItem("lastSync");
+  if(lastSync){
+    const result=await db.getAllAsync<Exercise>(
+      "SELECT * FROM Exercises WHERE updatedAt > ?",
+      [lastSync]
+    );
+    return result
+  }else{
+    const result=await getAllExercises();
+    return result
   }
 }

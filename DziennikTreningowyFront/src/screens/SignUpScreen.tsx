@@ -14,7 +14,6 @@ export default function SignUpScreen({ navigation }: any) {// any do wyjebania a
     setIsAuthenticating(true);
     try {
           const userProfile=await getUser();
-          console.log(userProfile);
           await CreateUser(email, password,userProfile);
           navigation.replace("mainApp", { screen: "Login" });
     } catch (error) {

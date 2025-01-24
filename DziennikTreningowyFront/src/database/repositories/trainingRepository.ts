@@ -1,6 +1,8 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../databaseSettings";
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
+import { dataToSync } from "./syncRepository";
 export async function getLastTraining() {
   const result = await db.getFirstAsync<Training>(
     `SELECT * FROM Trainings ORDER BY timestamp DESC LIMIT 1`
@@ -59,15 +61,18 @@ export async function getTraingsInDateRange(from: Date, to: Date) {
     return false;
   }
 }
-export async function createTraining(date: Date) {
+export async function createTraining(date: Date, isAuthenticate: Boolean) {
   try {
-    const guidId=uuidv4();
+    const guidId = uuidv4();
     const dateToString = date.toISOString();
     const result = await db.runAsync(
       `INSERT INTO Trainings (id, timestamp) VALUES (?, ?)`,
       [guidId, dateToString]
     );
     if (result.changes && result.changes > 0) {
+      if (isAuthenticate) {
+        dataToSync();
+      }
       return true;
     } else {
       return false;
@@ -77,13 +82,16 @@ export async function createTraining(date: Date) {
     return false;
   }
 }
-export async function deleteTraining(id: string) {
+export async function deleteTraining(id: string, isAuthenticate: Boolean) {
   try {
     const result = await db.runAsync(
       "DELETE FROM Trainings WHERE id = $value",
       { $value: id }
     );
     if (result.changes && result.changes > 0) {
+      if (isAuthenticate) {
+       // dataToSync(); zmienic na fukcje do usuwania
+      }
       return true;
     } else {
       return false;
@@ -93,7 +101,10 @@ export async function deleteTraining(id: string) {
     return false;
   }
 }
-export async function updateTraining(training: Training) {
+export async function updateTraining(
+  training: Training,
+  isAuthenticate: Boolean
+) {
   try {
     const dateToString = training.timestamp.toISOString();
     const result = await db.runAsync(

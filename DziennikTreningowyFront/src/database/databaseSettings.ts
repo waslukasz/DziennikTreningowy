@@ -1,7 +1,8 @@
 import * as SQLite from "expo-sqlite";
-export const databaseName = "DziennikTreningowy-v1.4.1";
+export const databaseName = "DziennikTreningowy-v1.4.5";
 export const db = SQLite.openDatabaseSync(databaseName);
 export async function initDatabase() {
+  await db.execAsync("PRAGMA foreign_keys = ON;");
   await db.execAsync(`
         PRAGMA journal_mode = WAL;
         CREATE TABLE IF NOT EXISTS Exercises (
@@ -14,17 +15,20 @@ export async function initDatabase() {
             duration TEXT,
             trainingId TEXT,
             timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW')),
+            updatedAt TEXT DEFAULT (STRFTIME('%Y-%m-%dT%H:%M:%fZ', 'NOW')),
             isDone INTEGER DEFAULT 0,
-            FOREIGN KEY (trainingId) REFERENCES trainings(Id)
+            FOREIGN KEY (trainingId) REFERENCES trainings(Id) ON DELETE CASCADE
             );
         CREATE TABLE IF NOT EXISTS Trainings (
             id TEXT PRIMARY KEY,
+            updatedAt TEXT DEFAULT (STRFTIME('%Y-%m-%dT%H:%M:%fZ', 'NOW')),
             timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW'))
         );
         CREATE TABLE IF NOT EXISTS User (
           id TEXT PRIMARY KEY,
           firstName TEXT,
           height INTEGER,
+          updatedAt TEXT DEFAULT (STRFTIME('%Y-%m-%dT%H:%M:%fZ', 'NOW')),
           weight REAL
         );
         CREATE TABLE IF NOT EXISTS BodyMeasurements (
@@ -32,6 +36,7 @@ export async function initDatabase() {
           date TEXT DEFAULT (STRFTIME('%Y-%m-%d %H %M %S', 'NOW')),
           bodyPart TEXT NOT NULL,
           value INTEGER,
+          updatedAt TEXT DEFAULT (STRFTIME('%Y-%m-%dT%H:%M:%fZ', 'NOW')),
           CHECK (bodyPart IN ('neck', 'belly', 'chest', 'hips', 'bicep', 'thigh', 'waist', 'calf', 'bodyWeight'))
         );`);
 }

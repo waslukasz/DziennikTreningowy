@@ -28,7 +28,7 @@ export default function TrainingItem({ training, handleDelete }: Props) {
     [];
   const trainingDate = new Date(training.timestamp);
   const dateFormat = trainingDate
-    .toLocaleDateString("us-US", {
+    .toLocaleDateString("en-EN", {
       weekday: "long",
       day: "2-digit",
       month: "2-digit",

@@ -6,9 +6,10 @@ import {
   getTrainingsByDate,
   isTrainingCompleted,
 } from "../../database/repositories/trainingRepository";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { useColorScheme } from "nativewind";
+import { useFocusEffect } from "@react-navigation/native";
 type weekTraining = {
   date: Date;
   isDone: boolean;
@@ -19,11 +20,11 @@ export default function WeekTrainings() {
     const today = new Date();
     const currentDay = today.getDay();
 
-    const mondayOffset = currentDay === 0 ? -6 : 1 - currentDay;
+    const mondayOffset = currentDay === 0 ? 1 : 1 - currentDay;
 
     const monday = new Date(today);
     monday.setDate(today.getDate() + mondayOffset);
-
+    monday.setHours(0, 0, 0, 0);
     const weekDays = Array.from({ length: 7 }, (_, i) => {
       const day = new Date(monday);
       day.setDate(monday.getDate() + i);
@@ -35,33 +36,34 @@ export default function WeekTrainings() {
   const { colorScheme } = useColorScheme();
 
   const currentWeek = getCurrentWeekDates();
-  useEffect(() => {
-    (async () => {
-      const statusList: weekTraining[] = [];
-      for (const date of currentWeek) {
-        const trainings = await getTrainingsByDate(date);
-        let isDone: boolean = false;
-        if (trainings) {
-          let allTrainingsDone: boolean | null = null;
-          for (const training of trainings) {
-            const isTrainingComplted = await isTrainingCompleted(training.id);
-            if (isTrainingComplted && allTrainingsDone != false) {
-              allTrainingsDone = true;
-            } else {
-              allTrainingsDone = false;
+  useFocusEffect(
+    useCallback(() => {
+      (async () => {
+        const statusList: weekTraining[] = [];
+        for (const date of currentWeek) {
+          const trainings = await getTrainingsByDate(date);
+          let isDone: boolean = false;
+          if (trainings) {
+            let allTrainingsDone: boolean | null = null;
+            for (const training of trainings) {
+              const isTrainingComplted = await isTrainingCompleted(training.id);
+              if (isTrainingComplted && allTrainingsDone != false) {
+                allTrainingsDone = true;
+              } else {
+                allTrainingsDone = false;
+              }
             }
+            isDone = allTrainingsDone ? true : false;
           }
-          isDone = allTrainingsDone ? true : false;
+          statusList.push({
+            date: date,
+            isDone,
+          });
         }
-
-        statusList.push({
-          date: date,
-          isDone,
-        });
-      }
-      setTrainingStatus(statusList);
-    })();
-  }, [currentWeek]);
+        setTrainingStatus(statusList);
+      })();
+    }, []) 
+  );
   const iconColor = colorScheme == "dark" ? "white" : "gray";
   return (
     <View className="flex-row justify-between bg-white dark:bg-zinc-400">

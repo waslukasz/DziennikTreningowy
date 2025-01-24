@@ -1,8 +1,10 @@
+import { saveData } from "../../services/sync";
 import { BodyMeasurements } from "../../types/bodyMeasurementsType";
 import { BodyPartEnum } from "../../types/bodyPartEnum";
 import { db } from "../databaseSettings";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
+import { dataToSync } from "./syncRepository";
 export async function getAllBodyMeasurements() {
   const result = await db.getAllAsync<BodyMeasurements>(
     //"SELECT * FROM BodyMeasurements ORDER BY measurementDate DESC LIMIT 10"
@@ -18,7 +20,7 @@ export async function getLastMeasurement() {
   return result;
 }
 
-export async function createBodyMeasurements(measurements: BodyMeasurements) {
+export async function createBodyMeasurements(measurements: BodyMeasurements,isAuthenticate:boolean) {
   try {
     const guidId = uuidv4();
     const { date, bodyPart, value } = measurements;
@@ -36,7 +38,14 @@ export async function createBodyMeasurements(measurements: BodyMeasurements) {
       ]
     );
 
-    return result.changes && result.changes > 0;
+    if (result.changes && result.changes > 0) {
+      if (isAuthenticate) {
+        dataToSync();
+      }
+      return true;
+    } else {
+      return false;
+    }
   } catch (error) {
     console.log("create BodyMeasurements issue:", error);
     return false;
@@ -59,13 +68,19 @@ export async function getBodyMeasurementsById(id: string) {
   return result;
 }
 
-export async function deleteBodyMeasurements(id: string) {
+export async function deleteBodyMeasurements(
+  id: string,
+  isAuthenticate: boolean
+) {
   try {
     const result = await db.runAsync(
       "DELETE FROM BodyMeasurements WHERE id = ?",
       [id]
     );
     if (result.changes && result.changes > 0) {
+      if (isAuthenticate) {
+        // dataToSync(); zmienic
+      }
       return true;
     } else {
       return false;
@@ -76,7 +91,10 @@ export async function deleteBodyMeasurements(id: string) {
   }
 }
 
-export async function updateBodyMeasurements(measurements: BodyMeasurements) {
+export async function updateBodyMeasurements(
+  measurements: BodyMeasurements,
+  isAuthenticate: boolean
+) {
   try {
     const { id, date, bodyPart, value } = measurements;
     if (date == undefined) {
@@ -92,6 +110,9 @@ export async function updateBodyMeasurements(measurements: BodyMeasurements) {
         [new Date(date).toISOString(), bodyPart, value, id!]
       );
       if (result.changes && result.changes > 0) {
+        if (isAuthenticate) {
+          dataToSync();
+        }
         return true;
       } else {
         return false;

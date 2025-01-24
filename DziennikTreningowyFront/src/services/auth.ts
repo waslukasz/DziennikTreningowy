@@ -21,17 +21,7 @@ export async function Login(email: string, password: string) {
   });
   return response.data;
 }
-export async function NewTokenWithRefreshToken() {
-  const refreshToken=await AsyncStorage.getItem("refreshToken");
-  if(refreshToken){
-    const response=await api.post("/api/auth/refresh",
-     refreshToken
-    )
-    return response;
-  }
-  return 
-  
-}
+
 export async function NewPassword(oldPassword: string, newPassword: string) {
   const response = await api.put(
     "/api/auth/update",

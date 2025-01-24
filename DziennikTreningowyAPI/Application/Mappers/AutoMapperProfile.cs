@@ -13,29 +13,25 @@ public class AutoMapperProfile : AutoMapper.Profile
     public AutoMapperProfile()
     {
         // Account
-        CreateMap<Account, AccountDetailsDto>()
-            .ReverseMap();
-        CreateMap<Account, AccountRegisterDto>()
-            .ReverseMap();
-        CreateMap<Account, AccountUpdateDto>()
-            .ReverseMap();
+        CreateMap<Account, AccountDetailsDto>().ReverseMap();
+        CreateMap<Account, AccountRegisterDto>().ReverseMap();
+        CreateMap<Account, AccountUpdateDto>().ReverseMap();
         
         // Profile
-        CreateMap<Profile, ProfileDetailsDto>()
-            .ReverseMap();
-        CreateMap<Profile, AccountRegisterProfileDto>()
-            .ReverseMap();
+        CreateMap<Profile, ProfileDetailsDto>().ReverseMap();
+        CreateMap<Profile, AccountRegisterProfileDto>().ReverseMap();
         
         // Training
-        CreateMap<Training, TrainingDetailsDto>()
-            .ReverseMap();
+        CreateMap<Training, TrainingDetailsDto>().ReverseMap();
+        CreateMap<Training, TrainingSaveDto>().ReverseMap();
         
         // Exercise
-        CreateMap<Exercise, ExerciseDetailsDto>()
-            .ReverseMap();
+        CreateMap<Exercise, ExerciseDetailsDto>().ReverseMap();
+        CreateMap<Exercise, ExerciseSaveDto>().ReverseMap();
+        
         
         // Measurment
-        CreateMap<Measurment, MeasurmentDetailsDto>()
-            .ReverseMap();
+        CreateMap<Measurment, MeasurmentDetailsDto>().ReverseMap();
+        CreateMap<Measurment, MeasurmentSaveDto>().ReverseMap();
     }
 }

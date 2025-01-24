@@ -24,7 +24,7 @@ public class SyncService : ISyncService
         return await _syncRepository.GetDataAsync(accountId, lastSync);
     }
 
-    public async Task SaveDataAsync(Guid accountId, SyncDto dto)
+    public async Task SaveDataAsync(Guid accountId, SaveDto dto)
     {
         await _syncRepository.SaveDataAsync(accountId, dto);
     }

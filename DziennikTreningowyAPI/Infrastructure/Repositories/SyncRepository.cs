@@ -42,7 +42,7 @@ public class SyncRepository : ISyncRepository
         return result;
     }
 
-    public async Task SaveDataAsync(Guid accountId, SyncDto syncDto)
+    public async Task SaveDataAsync(Guid accountId, SaveDto dto)
     {
         var profile = await _context.Profiles.FirstOrDefaultAsync(x => x.AccountId == accountId);
 
@@ -50,52 +50,79 @@ public class SyncRepository : ISyncRepository
         {
             try
             {
-                if (syncDto.Profile != null)
+                if (dto.Profile != null)
                 {
-                    _mapper.Map(syncDto.Profile, profile);
+                    _mapper.Map(dto.Profile, profile);
                     await _context.SaveChangesAsync();
                 }
                 
-                if (syncDto.Trainings != null)
+                if (dto.Trainings != null)
                 {
                     var existingTrainings = await _context.Trainings
-                        .Where(x => x.ProfileId == profile.Id).ToListAsync();
+                        .Where(x => x.ProfileId == profile.Id).AsNoTracking().ToListAsync();
 
-                    foreach (var trainingDto in syncDto.Trainings)
+                    foreach (var trainingDto in dto.Trainings)
                     {
                         var existingTraining = existingTrainings.FirstOrDefault(x => x.Id == trainingDto.Id);
-                        if (existingTraining != null) _mapper.Map(trainingDto, existingTraining);
-                        else _context.Trainings.Add(_mapper.Map<Training>(trainingDto));
+                        var result = existingTraining ?? _mapper.Map<Training>(trainingDto);
 
+                        if (existingTraining != null)
+                        {
+                            _context.Trainings.Update(result);
+                        }
+                        else
+                        {
+                            result.ProfileId = profile.Id;
+                            await _context.Trainings.AddAsync(result);
+                        }
+                        
                         await _context.SaveChangesAsync();
                     }
                 }
 
-                if (syncDto.Exercises != null)
+                if (dto.Exercises != null)
                 {
                     var existingExercises = await _context.Exercises
-                        .Where(x => x.ProfileId == profile.Id).ToListAsync();
+                        .Where(x => x.ProfileId == profile.Id).AsNoTracking().ToListAsync();
                     
-                    foreach (var exerciseDto in syncDto.Exercises)
+                    foreach (var exerciseDto in dto.Exercises)
                     {
                         var existingExercise = existingExercises.FirstOrDefault(x => x.Id == exerciseDto.Id);
-                        if (existingExercise != null) _mapper.Map(exerciseDto, existingExercise);
-                        else _context.Exercises.Add(_mapper.Map<Exercise>(exerciseDto));
+                        var result = existingExercise ?? _mapper.Map<Exercise>(exerciseDto);
+
+                        if (existingExercise != null)
+                        {
+                            _context.Exercises.Update(result);
+                        }
+                        else
+                        {
+                            result.ProfileId = profile.Id;
+                            await _context.Exercises.AddAsync(result);
+                        }
 
                         await _context.SaveChangesAsync();
                     }
                 }
 
-                if (syncDto.Measurments != null)
+                if (dto.Measurments != null)
                 {
                     var existingMeasurments = await _context.Measurments
-                        .Where(x => x.ProfileId == profile.Id).ToListAsync();
+                        .Where(x => x.ProfileId == profile.Id).AsNoTracking().ToListAsync();
                     
-                    foreach (var measurmentDto in syncDto.Measurments)
+                    foreach (var measurmentDto in dto.Measurments)
                     {
                         var existingMeasurment = existingMeasurments.FirstOrDefault(x => x.Id == measurmentDto.Id);
-                        if (existingMeasurment != null) _mapper.Map(measurmentDto, existingMeasurment);
-                        else _context.Measurments.Add(_mapper.Map<Measurment>(measurmentDto));
+                        var result = existingMeasurment ?? _mapper.Map<Measurment>(measurmentDto);
+
+                        if (existingMeasurment != null)
+                        {
+                            _context.Measurments.Update(result);
+                        }
+                        else
+                        {
+                            result.ProfileId = profile.Id;
+                            await _context.Measurments.AddAsync(result);
+                        }
 
                         await _context.SaveChangesAsync();
                     }

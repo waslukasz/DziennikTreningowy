@@ -33,9 +33,9 @@ public class SyncController : Controller
         }
     }
 
-    [HttpPost("api/save")]
+    [HttpPost("api/sync")]
     [Authorize]
-    public async Task<IActionResult> SaveData([FromBody] SyncDto dto)
+    public async Task<IActionResult> SaveData([FromBody] SaveDto dto)
     {
         var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 

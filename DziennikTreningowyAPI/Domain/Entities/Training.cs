@@ -3,8 +3,7 @@
 public class Training
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public string Name { get; set; }
-    public DateTime Date { get; set; }
+    public DateTime Timestamp { get; set; }
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public Guid ProfileId { get; set; }

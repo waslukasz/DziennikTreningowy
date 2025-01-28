@@ -11,4 +11,5 @@ public class SyncDto
     public IEnumerable<TrainingDetailsDto>? Trainings { get; set; }
     public IEnumerable<ExerciseDetailsDto>? Exercises { get; set; }
     public IEnumerable<MeasurmentDetailsDto>? Measurments { get; set; }
+    public IEnumerable<ToDeleteDto>? ToDelete { get; set; }
 }

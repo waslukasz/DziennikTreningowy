@@ -11,4 +11,5 @@ public class SaveDto
     public IEnumerable<TrainingSaveDto>? Trainings { get; set; }
     public IEnumerable<ExerciseSaveDto>? Exercises { get; set; }
     public IEnumerable<MeasurmentSaveDto>? Measurments { get; set; }
+    public IEnumerable<ToDeleteDto>? ToDelete { get; set; }
 }

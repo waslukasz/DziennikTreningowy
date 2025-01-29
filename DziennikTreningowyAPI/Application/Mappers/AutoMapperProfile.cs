@@ -19,6 +19,7 @@ public class AutoMapperProfile : AutoMapper.Profile
         
         // Profile
         CreateMap<Profile, ProfileDetailsDto>().ReverseMap();
+        CreateMap<Profile, ProfileSaveDto>().ReverseMap();
         CreateMap<Profile, AccountRegisterProfileDto>().ReverseMap();
         
         // Training

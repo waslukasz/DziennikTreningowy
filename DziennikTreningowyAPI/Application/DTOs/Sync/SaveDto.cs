@@ -7,7 +7,7 @@ namespace DziennikTreningowyAPI.Application.DTOs.Sync;
 
 public class SaveDto
 {
-    public ProfileDetailsDto? Profile { get; set; }
+    public ProfileSaveDto? Profile { get; set; }
     public IEnumerable<TrainingSaveDto>? Trainings { get; set; }
     public IEnumerable<ExerciseSaveDto>? Exercises { get; set; }
     public IEnumerable<MeasurmentSaveDto>? Measurments { get; set; }

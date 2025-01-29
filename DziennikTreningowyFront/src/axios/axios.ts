@@ -2,7 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { AuthContextValue } from "../components/auth/authContext";
 //const API_URL = "http://172.20.10.4:8000";
-const API_URL = "http://192.168.1.55:8000";
+// const API_URL = "http://192.168.1.55:8000";
+const API_URL = "http://192.168.0.15:8000";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -31,8 +32,8 @@ export function setupAxiosInterceptors(authContext: AuthContextValue) {
       if (error.response && error.response.status === 401) {
         try {
           const response = await NewTokenWithRefreshToken();
-          if(!response){
-            return
+          if (!response) {
+            return;
           }
           const { accessToken, refreshToken } = response?.data;
           await AsyncStorage.setItem("token", accessToken);
@@ -52,15 +53,12 @@ export function setupAxiosInterceptors(authContext: AuthContextValue) {
   );
 }
 export async function NewTokenWithRefreshToken() {
-  const refreshToken=await AsyncStorage.getItem("refreshToken");
-  if(refreshToken){
-    const response=await api.post("/api/auth/refresh",
-     refreshToken
-    )
+  const refreshToken = await AsyncStorage.getItem("refreshToken");
+  if (refreshToken) {
+    const response = await api.post("/api/auth/refresh", refreshToken);
     return response;
   }
-  return 
-  
+  return;
 }
 
 export default api;

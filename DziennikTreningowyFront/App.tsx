@@ -28,13 +28,19 @@ import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "./src/screens/HomeScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
-import { databaseName, deleteAllData, DropDatabase, initDatabase } from "./src/database/databaseSettings";
+import {
+  databaseName,
+  deleteAllData,
+  DropDatabase,
+  initDatabase,
+} from "./src/database/databaseSettings";
 import AuthContextProvider, {
   AuthContext,
 } from "./src/components/auth/authContext";
 import SettingsScreen from "./src/screens/SettingsScreen";
 import { useColorScheme } from "nativewind";
 import ProfileScreen from "./src/screens/ProfileScreen";
+import UserGuideScreen from "./src/screens/UserGuideScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -336,6 +342,19 @@ export default function App() {
         <Tab.Screen
           name="SignUp"
           component={SignUpScreen}
+          options={() => ({
+            tabBarButton: () => null,
+            headerStyle: {
+              backgroundColor: bgColor,
+            },
+            headerTitleStyle: {
+              color: fontColor,
+            },
+          })}
+        />
+        <Tab.Screen
+          name="UserGuide"
+          component={UserGuideScreen}
           options={() => ({
             tabBarButton: () => null,
             headerStyle: {

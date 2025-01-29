@@ -9,7 +9,7 @@ public class Exercise
     public float Weight { get; set; }
     public Boolean IsDone { get; set; }
     public DateTime Timestamp { get; set; }
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public Guid ProfileId { get; set; }
     public Profile Profile { get; set; }

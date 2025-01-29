@@ -9,7 +9,7 @@ public class Profile
     public DateTime? BirthDate { get; set; }
     public double? Height { get; set; }
     public double? Weight { get; set; }
-    public DateTime UpdatedAt { get; set; } = DateTime.Now;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public Guid AccountId { get; set; }
     public Account Account { get; set; }

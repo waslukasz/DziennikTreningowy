@@ -13,7 +13,6 @@
         "packagesPath": "C:\\Users\\lucas\\.nuget\\packages\\",
         "outputPath": "D:\\JetBrains Rider\\DziennikTreningowy\\DziennikTreningowyAPI\\obj\\",
         "projectStyle": "PackageReference",
-        "UsingMicrosoftNETSdk": false,
         "configFilePaths": [
           "C:\\Users\\lucas\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"

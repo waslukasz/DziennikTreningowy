@@ -5,7 +5,7 @@ using DziennikTreningowyAPI.Application.Validators;
 using DziennikTreningowyAPI.Domain.Interfaces;
 using DziennikTreningowyAPI.Domain.Interfaces.Account;
 using DziennikTreningowyAPI.Domain.Interfaces.Exercise;
-using DziennikTreningowyAPI.Domain.Interfaces.Measurment;
+using DziennikTreningowyAPI.Domain.Interfaces.Measurement;
 using DziennikTreningowyAPI.Domain.Interfaces.Profile;
 using DziennikTreningowyAPI.Domain.Interfaces.Training;
 using DziennikTreningowyAPI.Domain.Interfaces.Utilities;

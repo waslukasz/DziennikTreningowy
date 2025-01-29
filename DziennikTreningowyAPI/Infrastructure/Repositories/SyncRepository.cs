@@ -1,7 +1,6 @@
-﻿using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
 using DziennikTreningowyAPI.Application.DTOs.Exercise;
-using DziennikTreningowyAPI.Application.DTOs.Measurment;
+using DziennikTreningowyAPI.Application.DTOs.Measurement;
 using DziennikTreningowyAPI.Application.DTOs.Profile;
 using DziennikTreningowyAPI.Application.DTOs.Sync;
 using DziennikTreningowyAPI.Application.DTOs.Training;
@@ -9,7 +8,6 @@ using DziennikTreningowyAPI.Domain.Entities;
 using DziennikTreningowyAPI.Domain.Interfaces.Utilities;
 using DziennikTreningowyAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using Profile = AutoMapper.Profile;
 
 namespace DziennikTreningowyAPI.Infrastructure.Repositories;
 
@@ -29,14 +27,14 @@ public class SyncRepository : ISyncRepository
         var profile = await _context.Profiles.FirstOrDefaultAsync(x => x.AccountId == accountId);
         var trainings = await _context.Trainings.Where(x => x.ProfileId == profile.Id && (lastSync == null || lastSync < x.UpdatedAt )).ToListAsync();
         var exercises = await _context.Exercises.Where(x => x.ProfileId == profile.Id && (lastSync == null || lastSync < x.UpdatedAt )).ToListAsync();
-        var measurments = await _context.Measurments.Where(x => x.ProfileId == profile.Id && (lastSync == null || lastSync < x.UpdatedAt )).ToListAsync();
+        var measurements = await _context.Measurements.Where(x => x.ProfileId == profile.Id && (lastSync == null || lastSync < x.UpdatedAt )).ToListAsync();
 
         var result = new SyncDto()
         {
             Profile = (lastSync == null || lastSync < profile.UpdatedAt) ? _mapper.Map<ProfileDetailsDto>(profile) : null,
             Trainings = _mapper.Map<IEnumerable<TrainingDetailsDto>>(trainings),
             Exercises = _mapper.Map<IEnumerable<ExerciseDetailsDto>>(exercises),
-            Measurments = _mapper.Map<IEnumerable<MeasurementDetailsDto>>(measurments)
+            Measurements = _mapper.Map<IEnumerable<MeasurementDetailsDto>>(measurements)
         };
         
         return result;
@@ -106,25 +104,25 @@ public class SyncRepository : ISyncRepository
                     }
                 }
 
-                if (dto.Measurments != null)
+                if (dto.Measurements != null)
                 {
-                    var existingMeasurments = await _context.Measurments
+                    var existingMeasurements = await _context.Measurements
                         .Where(x => x.ProfileId == profile.Id).AsNoTracking().ToListAsync();
                     
-                    foreach (var measurmentDto in dto.Measurments)
+                    foreach (var measurementDto in dto.Measurements)
                     {
-                        var existingMeasurment = existingMeasurments.FirstOrDefault(x => x.Id == measurmentDto.Id);
-                        if (existingMeasurment != null) _mapper.Map(measurmentDto, existingMeasurment);
-                        var result = existingMeasurment ?? _mapper.Map<Measurement>(measurmentDto);
+                        var existingMeasurement = existingMeasurements.FirstOrDefault(x => x.Id == measurementDto.Id);
+                        if (existingMeasurement != null) _mapper.Map(measurementDto, existingMeasurement);
+                        var result = existingMeasurement ?? _mapper.Map<Measurement>(measurementDto);
 
-                        if (existingMeasurment != null)
+                        if (existingMeasurement != null)
                         {
-                            _context.Measurments.Update(result);
+                            _context.Measurements.Update(result);
                         }
                         else
                         {
                             result.ProfileId = profile.Id;
-                            await _context.Measurments.AddAsync(result);
+                            await _context.Measurements.AddAsync(result);
                         }
 
                         await _context.SaveChangesAsync();
@@ -143,8 +141,8 @@ public class SyncRepository : ISyncRepository
                             case "exercise":
                                 _context.Exercises.Remove(await _context.Exercises.FirstOrDefaultAsync(x => x.Id == toDelete.Id));
                                 break;
-                            case "measurment":
-                                _context.Measurments.Remove(await _context.Measurments.FirstOrDefaultAsync(x => x.Id == toDelete.Id));
+                            case "measurement":
+                                _context.Measurements.Remove(await _context.Measurements.FirstOrDefaultAsync(x => x.Id == toDelete.Id));
                                 break;
                         }
                         await _context.SaveChangesAsync();

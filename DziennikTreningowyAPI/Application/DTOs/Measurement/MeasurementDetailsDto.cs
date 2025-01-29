@@ -1,4 +1,4 @@
-﻿namespace DziennikTreningowyAPI.Application.DTOs.Measurment;
+﻿namespace DziennikTreningowyAPI.Application.DTOs.Measurement;
 
 public class MeasurementDetailsDto
 {

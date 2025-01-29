@@ -1,12 +1,5 @@
 ﻿using DziennikTreningowyAPI.Application.DTOs.Sync;
-using DziennikTreningowyAPI.Domain.Entities;
-using DziennikTreningowyAPI.Domain.Interfaces.Account;
-using DziennikTreningowyAPI.Domain.Interfaces.Exercise;
-using DziennikTreningowyAPI.Domain.Interfaces.Measurment;
-using DziennikTreningowyAPI.Domain.Interfaces.Profile;
-using DziennikTreningowyAPI.Domain.Interfaces.Training;
 using DziennikTreningowyAPI.Domain.Interfaces.Utilities;
-using DziennikTreningowyAPI.Infrastructure.Data;
 
 namespace DziennikTreningowyAPI.Application.Services;
 

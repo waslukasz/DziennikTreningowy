@@ -1,6 +1,6 @@
 ﻿using DziennikTreningowyAPI.Application.DTOs.Account;
 using DziennikTreningowyAPI.Application.DTOs.Exercise;
-using DziennikTreningowyAPI.Application.DTOs.Measurment;
+using DziennikTreningowyAPI.Application.DTOs.Measurement;
 using DziennikTreningowyAPI.Application.DTOs.Profile;
 using DziennikTreningowyAPI.Application.DTOs.Training;
 using DziennikTreningowyAPI.Domain.Entities;
@@ -31,7 +31,7 @@ public class AutoMapperProfile : AutoMapper.Profile
         CreateMap<Exercise, ExerciseSaveDto>().ReverseMap();
         
         
-        // Measurment
+        // Measurement
         CreateMap<Measurement, MeasurementDetailsDto>().ReverseMap();
         CreateMap<Measurement, MeasurementSaveDto>().ReverseMap();
     }

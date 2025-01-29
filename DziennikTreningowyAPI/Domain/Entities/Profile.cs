@@ -15,5 +15,5 @@ public class Profile
     public Account Account { get; set; }
     public ICollection<Training> Trainings { get; set; } = new List<Training>();
     public ICollection<Exercise> Exercises { get; set; } = new List<Exercise>();
-    public ICollection<Measurement> Measurments { get; set; } = new List<Measurement>();
+    public ICollection<Measurement> Measurements { get; set; } = new List<Measurement>();
 }

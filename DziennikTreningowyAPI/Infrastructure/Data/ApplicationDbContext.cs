@@ -9,7 +9,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Profile> Profiles { get; set; }
     public DbSet<Training> Trainings { get; set; }
     public DbSet<Exercise> Exercises { get; set; }
-    public DbSet<Measurement> Measurments { get; set; }
+    public DbSet<Measurement> Measurements { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,14 +36,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         modelBuilder.Entity<Profile>()
             .HasMany(profile => profile.Exercises)
-            .WithOne(measurment => measurment.Profile)
-            .HasForeignKey(measurment => measurment.ProfileId)
+            .WithOne(measurement => measurement.Profile)
+            .HasForeignKey(measurement => measurement.ProfileId)
             .OnDelete(DeleteBehavior.NoAction);
         
         modelBuilder.Entity<Profile>()
-            .HasMany(profile => profile.Measurments)
-            .WithOne(measurment => measurment.Profile)
-            .HasForeignKey(measurment => measurment.ProfileId)
+            .HasMany(profile => profile.Measurements)
+            .WithOne(measurement => measurement.Profile)
+            .HasForeignKey(measurement => measurement.ProfileId)
             .OnDelete(DeleteBehavior.Cascade);
         
         modelBuilder.Entity<Training>()

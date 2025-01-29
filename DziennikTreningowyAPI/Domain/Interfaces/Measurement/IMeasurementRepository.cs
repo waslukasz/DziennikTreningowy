@@ -1,6 +1,6 @@
 ﻿using DziennikTreningowyAPI.Domain.Interfaces.Utilities;
 
-namespace DziennikTreningowyAPI.Domain.Interfaces.Measurment;
+namespace DziennikTreningowyAPI.Domain.Interfaces.Measurement;
 
 public interface IMeasurementRepository : IGenericRepository<Entities.Measurement>
 {

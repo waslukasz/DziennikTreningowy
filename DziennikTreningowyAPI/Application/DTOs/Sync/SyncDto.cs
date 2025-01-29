@@ -1,5 +1,5 @@
 ﻿using DziennikTreningowyAPI.Application.DTOs.Exercise;
-using DziennikTreningowyAPI.Application.DTOs.Measurment;
+using DziennikTreningowyAPI.Application.DTOs.Measurement;
 using DziennikTreningowyAPI.Application.DTOs.Profile;
 using DziennikTreningowyAPI.Application.DTOs.Training;
 
@@ -10,5 +10,5 @@ public class SyncDto
     public ProfileDetailsDto? Profile { get; set; }
     public IEnumerable<TrainingDetailsDto>? Trainings { get; set; }
     public IEnumerable<ExerciseDetailsDto>? Exercises { get; set; }
-    public IEnumerable<MeasurementDetailsDto>? Measurments { get; set; }
+    public IEnumerable<MeasurementDetailsDto>? Measurements { get; set; }
 }

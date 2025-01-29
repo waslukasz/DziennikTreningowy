@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { View, Text, TextInput } from "react-native";
 import Toast from "react-native-toast-message";
 import { createUser } from "../database/repositories/userRepository";
@@ -11,7 +11,6 @@ const FirstLaunchScreen = ({ navigation }: { navigation: any }) => {
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [name, setName] = useState("");
-
   async function handleButton() {
     if (height && weight && name) {
       await AsyncStorage.setItem("hasSeenLaunchScreen", "true");
@@ -20,7 +19,7 @@ const FirstLaunchScreen = ({ navigation }: { navigation: any }) => {
         height: parseFloat(height),
         weight: parseFloat(weight),
       };
-      const response = await createUser(user);
+      const response = await createUser(user,false);
       if (response) {
         navigation.replace("mainApp", { screen: "Home" });
       } else {

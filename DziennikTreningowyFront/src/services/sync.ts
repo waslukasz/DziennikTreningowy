@@ -1,62 +1,77 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../axios/axios";
 import { BodyMeasurements } from "../types/bodyMeasurementsType";
+import {
+  dataToSync,
+  saveSyncedData,
+} from "../database/repositories/syncRepository";
+import { SyncData } from "../types/syncDataType";
 
-export async function synchronize(lastSync?: string|null) {
-  console.log(lastSync ? "Synchronizing with lastSync" : "Synchronizing");
-
+export async function synchronize(lastSync?: string | null) {
   try {
     const response = await api.get("/api/sync", {
       params: lastSync ? { lastSync } : undefined,
     });
-
-    console.log("Synchronization successful:", response.data);
-
+    const { trainings, exercises, measurements, profile } = response.data;
+    saveSyncedData(trainings, exercises, measurements, profile);
     return response.data;
   } catch (error) {
     console.error("Synchronization failed:", error);
     throw error;
   }
 }
-export async function saveData(
-  trainings?: Training[],
-  exercises?: Exercise[],
-  measurements?: BodyMeasurements[],
-  profile?: User | null
-) {
-  if (
-    (!trainings || trainings.length === 0) &&
-    (!exercises || exercises.length === 0) &&
-    (!measurements || measurements.length === 0) &&
-    !profile
-  ) {
-    console.log("No data to save");
-    return;
-  }
-
-  const payload: Record<string, unknown> = {};
-  if (trainings && trainings.length > 0) {
-    payload.trainings = trainings;
-  }
-  if (exercises && exercises.length > 0) {
-    payload.exercises = exercises.map(exercise => ({
-      ...exercise,
-      isDone: !!exercise.isDone
-    }));
-  }
-  if (measurements && measurements.length > 0) {
-    payload.measurements = measurements;
-  }
-  if (profile) {
-    payload.profile = profile;
-  }
-  console.log(payload)
+export async function saveData() {
   try {
-    const response = await api.post("/api/sync", payload);
-    if (response.status == 200) {
+    const data = await dataToSync();
+
+    if (!data) {
       AsyncStorage.setItem("lastSync", new Date().toISOString());
+      console.log("No data to save");
+      return;
     }
-    console.log("Data saved successfully:", response.data);
+
+    const { trainings, exercises, measurements, profile, toDelete } = data;
+
+    if (
+      (!trainings || trainings.length === 0) &&
+      (!exercises || exercises.length === 0) &&
+      (!measurements || measurements.length === 0) &&
+      !profile &&
+      (!toDelete || toDelete.length === 0)
+    ) {
+      AsyncStorage.setItem("lastSync", new Date().toISOString());
+      console.log("No data to save");
+      return;
+    }
+
+    const payload: Record<string, unknown> = {};
+
+    if (trainings?.length) {
+      payload.trainings = trainings;
+    }
+
+    if (exercises?.length) {
+      payload.exercises = exercises.map((exercise) => ({
+        ...exercise,
+        isDone: !!exercise.isDone,
+      }));
+    }
+
+    if (measurements?.length) {
+      payload.measurements = measurements;
+    }
+
+    if (profile) {
+      payload.profile = profile;
+    }
+    if (toDelete?.length) {
+      payload.toDelete = toDelete;
+    }
+    const response = await api.post("/api/sync", payload);
+
+    if (response.status === 200) {
+      await AsyncStorage.setItem("lastSync", new Date().toISOString());
+    }
   } catch (error) {
     console.error("Error saving data:", error);
   }

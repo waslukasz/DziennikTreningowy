@@ -2,7 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../databaseSettings";
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { dataToSync } from "./syncRepository";
+import { saveData } from "../../services/sync";
+import { createToDelete } from "./toDeleteRepository";
 export async function getAllExercises() {
   const result = await db.getAllAsync<Exercise>(
     "SELECT * FROM Exercises"
@@ -36,13 +37,26 @@ export async function getExerciseById(id: string) {
   );
   return result;
 }
-export async function setDoneStatusInExercise(id: string, isDone: boolean) {
-  const isDoneNumber = isDone ? 1 : 0;
-  const result = await db.runAsync(
-    "UPDATE Exercises SET isDone = $isDoneNumber WHERE id = $value",
-    { $value: id,$isDoneNumber:!isDoneNumber }//moze byc blad
-  );
-  return result;
+export async function setDoneStatusInExercise(id: string, isDone: boolean,isAuthenticate:boolean) {
+  try{
+    const updatedAt = new Date().toISOString();
+    const isDoneNumber = isDone ? 1 : 0;
+    const result = await db.runAsync(
+      "UPDATE Exercises SET isDone = $isDoneNumber,updatedAt = $updatedAt WHERE id = $value",
+      { $value: id,$isDoneNumber:!isDoneNumber,$updatedAt:updatedAt }
+    );
+    if (result.changes && result.changes > 0) {
+      if (isAuthenticate) {
+        saveData();
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }catch(error){
+    console.log("isDone exercise issue",error);
+    return false;
+  }
 }
 export async function createExercise(exercise: Exercise,isAuthenticate:boolean) {
   try {
@@ -70,7 +84,7 @@ export async function createExercise(exercise: Exercise,isAuthenticate:boolean) 
     );
     if (result.changes && result.changes > 0) {
       if (isAuthenticate) {
-        dataToSync();
+        saveData();
       }
       return true;
     } else {
@@ -91,8 +105,9 @@ export async function deleteExercise(id: string,isAuthenticate:boolean) {
       }
     );
     if (result.changes && result.changes > 0) {
+      await createToDelete(id,"training");
       if (isAuthenticate) {
-        //dataToSync(); zmienic
+       saveData();
       }
       return true
     } else {
@@ -115,10 +130,12 @@ export async function updateExercise(exercise: Exercise,isAuthenticate:boolean) 
       trainingId,
       isDone,
     } = exercise;
+    const updatedAt = new Date().toISOString();
+
     const result = await db.runAsync(
       `
         UPDATE Exercises 
-        SET name = ?, weight = ?, repetitions = ?,sets=?, trainingId = ?, isDone=?
+        SET name = ?, weight = ?, repetitions = ?,sets=?, trainingId = ?, updatedAt = ?, isDone=?
         WHERE id = ?
     `,
       [
@@ -127,13 +144,14 @@ export async function updateExercise(exercise: Exercise,isAuthenticate:boolean) 
         repetitions || null,
         sets || null,
         trainingId,
+        updatedAt,
         isDone ? 1 : 0,
         id!,
       ]
     );
     if (result.changes && result.changes > 0) {
       if (isAuthenticate) {
-        dataToSync();
+        saveData();
       }
       return true;
     } else {

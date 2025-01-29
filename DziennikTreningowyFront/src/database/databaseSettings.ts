@@ -1,5 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SQLite from "expo-sqlite";
-export const databaseName = "DziennikTreningowy-v1.6.1";
+export const databaseName = "DziennikTreningowy-v1.8";
 export const db = SQLite.openDatabaseSync(databaseName);
 export async function initDatabase() {
   await db.execAsync("PRAGMA foreign_keys = ON;");
@@ -29,6 +30,10 @@ export async function initDatabase() {
           updatedAt TEXT DEFAULT (STRFTIME('%Y-%m-%dT%H:%M:%fZ', 'NOW')),
           weight REAL
         );
+        CREATE TABLE IF NOT EXISTS ToDelete (
+          id TEXT PRIMARY KEY,
+          type TEXT CHECK(type IN ('training', 'exercise', 'measurement'))
+          );
         CREATE TABLE IF NOT EXISTS BodyMeasurements (
           id TEXT PRIMARY KEY,
           date TEXT DEFAULT (STRFTIME('%Y-%m-%d %H %M %S', 'NOW')),
@@ -45,4 +50,17 @@ export async function DropDatabase() {
     DROP TABLE IF EXISTS BodyMeasurements;
     Drop TABLE IF EXISTS User;
   `);
+}
+export async function deleteAllData() {
+  try {
+    AsyncStorage.clear();
+    await db.runAsync("DELETE FROM Trainings");
+    await db.runAsync("DELETE FROM Exercises");
+    await db.runAsync("DELETE FROM BodyMeasurements");
+    await db.runAsync("DELETE FROM User");
+    await db.runAsync("DELETE FROM ToDelete");
+    console.log("All data has been deleted.");
+  } catch (error) {
+    console.error("Error deleting data:", error);
+  }
 }

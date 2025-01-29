@@ -19,6 +19,7 @@ import { useColorScheme } from "nativewind";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Toast from "react-native-toast-message";
 import { DeleteAccount, NewPassword } from "../services/auth";
+import { deleteAllData } from "../database/databaseSettings";
 
 export default function ProfileScreen({ navigation }: any) {
   const auth = useContext(AuthContext);
@@ -37,15 +38,14 @@ export default function ProfileScreen({ navigation }: any) {
   const [newPasswordVisibility, setNewPasswordVisibility] = useState(false);
   const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
     useState(false);
-
   const placeholderColor = colorScheme == "dark" ? "white" : "black";
   const iconColor = colorScheme == "dark" ? "white" : "gray";
 
   const setUserDataToInput = () => {
     if (user) {
       setFirstName(user.firstName);
-      setWeight(user.weight.toString());
-      setHeight(user.height.toString());
+      setWeight(user.weight ? user.weight.toString() : "");
+      setHeight(user.height ? user.height.toString() : "");
     } else {
       setFirstName("");
       setWeight("");
@@ -155,6 +155,12 @@ export default function ProfileScreen({ navigation }: any) {
       text2: "Try again later!",
     });
   };
+  const handleDeleteAllData=async()=>{
+    deleteAllData();
+    closeAllItems();
+    auth.logout();
+    getUserFromDatabase();
+  }
   return (
     <ScrollView className="flex-1 bg-zinc-100 dark:bg-zinc-500 p-1">
       {!auth.isAuthenticated && (
@@ -315,7 +321,28 @@ export default function ProfileScreen({ navigation }: any) {
           </View>
         </View>
       )}
-      {user && (
+      <TouchableOpacity
+        onPress={() =>
+          Alert.alert(
+            "",
+            "Are you sure you want to delete?",
+            [
+              {
+                text: "Cancel",
+                style: "cancel",
+              },
+              { text: "Yes", onPress: handleDeleteAllData },
+            ],
+            { cancelable: false }
+          )
+        }
+        className="w-full mb-1 h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
+      >
+        <Text className="text-center mb-1 text-lg text-red-500 text-bold">
+          Delete all data
+        </Text>
+      </TouchableOpacity>
+      {/* {user && (
         <TouchableOpacity
           onPress={() =>
             Alert.alert(
@@ -337,7 +364,7 @@ export default function ProfileScreen({ navigation }: any) {
             Delete User Profile
           </Text>
         </TouchableOpacity>
-      )}
+      )} */}
       {auth.isAuthenticated && (
         <>
           <TouchableOpacity

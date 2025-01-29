@@ -2,7 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../databaseSettings";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { dataToSync } from "./syncRepository";
+import { saveData } from "../../services/sync";
+import { createToDelete } from "./toDeleteRepository";
 export async function getLastTraining() {
   const result = await db.getFirstAsync<Training>(
     `SELECT * FROM Trainings ORDER BY timestamp DESC LIMIT 1`
@@ -71,7 +72,7 @@ export async function createTraining(date: Date, isAuthenticate: Boolean) {
     );
     if (result.changes && result.changes > 0) {
       if (isAuthenticate) {
-        dataToSync();
+        saveData();
       }
       return true;
     } else {
@@ -89,8 +90,9 @@ export async function deleteTraining(id: string, isAuthenticate: Boolean) {
       { $value: id }
     );
     if (result.changes && result.changes > 0) {
+      await createToDelete(id, "training");
       if (isAuthenticate) {
-       // dataToSync(); zmienic na fukcje do usuwania
+        saveData();
       }
       return true;
     } else {

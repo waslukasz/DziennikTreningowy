@@ -28,7 +28,7 @@ import { useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "./src/screens/HomeScreen";
 import SignUpScreen from "./src/screens/SignUpScreen";
-import { databaseName, initDatabase } from "./src/database/databaseSettings";
+import { databaseName, deleteAllData, DropDatabase, initDatabase } from "./src/database/databaseSettings";
 import AuthContextProvider, {
   AuthContext,
 } from "./src/components/auth/authContext";

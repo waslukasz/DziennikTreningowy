@@ -98,6 +98,7 @@ export default function ExercieseInput({
           onChangeText={(text) => setWeight(parseInt(text) || 0)}
           placeholderTextColor={placeholderColor}
           placeholder="Weight"
+          keyboardType="number-pad"
         ></TextInput>
       </View>
       <View className=" flex-row w-full  justify-center items-center  space-x-2">

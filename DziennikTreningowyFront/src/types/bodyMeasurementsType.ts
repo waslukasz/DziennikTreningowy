@@ -5,5 +5,7 @@ export type BodyMeasurements = {
   date?: Date;
   bodyPart: BodyPartEnum;
   value: number;
+  updatedAt?:Date;
+
 };
 

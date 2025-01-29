@@ -107,7 +107,7 @@ export default function ExercisesScreen({
     setExerciseToEdit(null);
   };
   const setExerciseToDone = async (id: string, isDone: boolean) => {
-    const result = await setDoneStatusInExercise(id, isDone);
+    const result = await setDoneStatusInExercise(id, isDone,auth.isAuthenticated);
     await getExercises();
   };
   return (

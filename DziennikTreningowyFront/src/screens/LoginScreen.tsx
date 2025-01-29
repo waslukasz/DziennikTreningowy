@@ -5,7 +5,7 @@ import LoadingOverlay from "../components/auth/loadingOverlay";
 import Toast from "react-native-toast-message";
 import { AuthContext } from "../components/auth/authContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { synchronize } from "../services/sync";
+import {  saveData, synchronize } from "../services/sync";
 
 export default function LoginScreen({ navigation }: any) {
   //wyjebac any
@@ -20,6 +20,7 @@ export default function LoginScreen({ navigation }: any) {
       authCtx.authenticate(token,refreshToken);
       const lastSync=await AsyncStorage.getItem("lastSync")
       synchronize(lastSync)
+      saveData()
       navigation.replace("mainApp", { screen: "Home" });
     } catch (error) {
       Toast.show({

@@ -7,4 +7,6 @@ type Exercise = {
   trainingId:string;
   timestamp?: Date;
   isDone:boolean;
+  updatedAt?:Date;
+
 };

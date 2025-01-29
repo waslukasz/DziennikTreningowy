@@ -4,7 +4,7 @@ import { BodyPartEnum } from "../../types/bodyPartEnum";
 import { db } from "../databaseSettings";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import { dataToSync } from "./syncRepository";
+import { createToDelete } from "./toDeleteRepository";
 export async function getAllBodyMeasurements() {
   const result = await db.getAllAsync<BodyMeasurements>(
     //"SELECT * FROM BodyMeasurements ORDER BY measurementDate DESC LIMIT 10"
@@ -40,7 +40,7 @@ export async function createBodyMeasurements(measurements: BodyMeasurements,isAu
     
     if (result.changes && result.changes > 0) {
       if (isAuthenticate) {
-        dataToSync();
+        saveData();
       }
       return true;
     } else {
@@ -78,8 +78,9 @@ export async function deleteBodyMeasurements(
       [id]
     );
     if (result.changes && result.changes > 0) {
+      await createToDelete(id,"measurement");
       if (isAuthenticate) {
-        // dataToSync(); zmienic
+         saveData();
       }
       return true;
     } else {
@@ -97,6 +98,7 @@ export async function updateBodyMeasurements(
 ) {
   try {
     const { id, date, bodyPart, value } = measurements;
+    const updatedAt = new Date().toISOString();
     if (date == undefined) {
       console.log("error");
       return;
@@ -104,14 +106,15 @@ export async function updateBodyMeasurements(
       const result = await db.runAsync(
         `
         UPDATE BodyMeasurements 
-        SET date = ?, bodyPart = ?, value = ?
+        SET date = ?, bodyPart = ?,updatedAt = ?, value = ?
         WHERE id = ?
         `,
-        [new Date(date).toISOString(), bodyPart, value, id!]
+        [new Date(date).toISOString(), bodyPart,updatedAt, value, id!]
       );
+      console.log(result.changes)
       if (result.changes && result.changes > 0) {
         if (isAuthenticate) {
-          dataToSync();
+          saveData();
         }
         return true;
       } else {

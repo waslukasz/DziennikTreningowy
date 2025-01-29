@@ -36,7 +36,7 @@ public class SyncRepository : ISyncRepository
             Profile = (lastSync == null || lastSync < profile.UpdatedAt) ? _mapper.Map<ProfileDetailsDto>(profile) : null,
             Trainings = _mapper.Map<IEnumerable<TrainingDetailsDto>>(trainings),
             Exercises = _mapper.Map<IEnumerable<ExerciseDetailsDto>>(exercises),
-            Measurments = _mapper.Map<IEnumerable<MeasurmentDetailsDto>>(measurments)
+            Measurments = _mapper.Map<IEnumerable<MeasurementDetailsDto>>(measurments)
         };
         
         return result;
@@ -115,7 +115,7 @@ public class SyncRepository : ISyncRepository
                     {
                         var existingMeasurment = existingMeasurments.FirstOrDefault(x => x.Id == measurmentDto.Id);
                         if (existingMeasurment != null) _mapper.Map(measurmentDto, existingMeasurment);
-                        var result = existingMeasurment ?? _mapper.Map<Measurment>(measurmentDto);
+                        var result = existingMeasurment ?? _mapper.Map<Measurement>(measurmentDto);
 
                         if (existingMeasurment != null)
                         {

@@ -32,7 +32,7 @@ public class AutoMapperProfile : AutoMapper.Profile
         
         
         // Measurment
-        CreateMap<Measurment, MeasurmentDetailsDto>().ReverseMap();
-        CreateMap<Measurment, MeasurmentSaveDto>().ReverseMap();
+        CreateMap<Measurement, MeasurementDetailsDto>().ReverseMap();
+        CreateMap<Measurement, MeasurementSaveDto>().ReverseMap();
     }
 }

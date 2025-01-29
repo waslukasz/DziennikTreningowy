@@ -1,6 +1,6 @@
 ﻿namespace DziennikTreningowyAPI.Domain.Entities;
 
-public class Measurment
+public class Measurement
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string BodyPart { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace DziennikTreningowyAPI.Application.DTOs.Measurment;
 
-public class MeasurmentSaveDto
+public class MeasurementSaveDto
 {
     public Guid Id { get; set; }
     public string BodyPart { get; set; }

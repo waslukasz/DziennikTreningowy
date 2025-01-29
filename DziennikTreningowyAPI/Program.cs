@@ -35,7 +35,7 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
 builder.Services.AddScoped<ITrainingRepository, TrainingRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
-builder.Services.AddScoped<IMeasurmentRepository, MeasurmentRepository>();
+builder.Services.AddScoped<IMeasurementRepository, MeasurementRepository>();
 builder.Services.AddScoped<ISyncRepository, SyncRepository>();
 // Services
 builder.Services.AddScoped<IAccountService, AccountService>();

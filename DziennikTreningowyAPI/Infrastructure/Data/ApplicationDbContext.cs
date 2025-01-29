@@ -9,7 +9,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Profile> Profiles { get; set; }
     public DbSet<Training> Trainings { get; set; }
     public DbSet<Exercise> Exercises { get; set; }
-    public DbSet<Measurment> Measurments { get; set; }
+    public DbSet<Measurement> Measurments { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

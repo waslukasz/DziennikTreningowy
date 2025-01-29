@@ -127,6 +127,26 @@ public class SyncRepository : ISyncRepository
                         await _context.SaveChangesAsync();
                     }
                 }
+
+                if (dto.ToDelete != null)
+                {
+                    foreach (var toDelete in dto.ToDelete)
+                    {
+                        switch (toDelete.Type)
+                        {
+                            case "training":
+                                _context.Trainings.Remove(await _context.Trainings.FirstOrDefaultAsync(x => x.Id == toDelete.Id));
+                                break;
+                            case "exercise":
+                                _context.Exercises.Remove(await _context.Exercises.FirstOrDefaultAsync(x => x.Id == toDelete.Id));
+                                break;
+                            case "measurment":
+                                _context.Measurments.Remove(await _context.Measurments.FirstOrDefaultAsync(x => x.Id == toDelete.Id));
+                                break;
+                        }
+                        await _context.SaveChangesAsync();
+                    }
+                }
                 
                 await transaction.CommitAsync();
             }

@@ -40,7 +40,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-  
   const { colorScheme } = useColorScheme();
   const MeasurementStack = () => {
     let fontColor,

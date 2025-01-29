@@ -11,7 +11,6 @@ export default function ExercieseItem({ exercise, setExerciseToDone }: Props) {
       setExerciseToDone(exercise.id, !!exercise.isDone);
     }
   };
-
   return (
     <View className="bg-gray-50 mb-1 p-2 border shadow border-gray-300 dark:bg-zinc-400  rounded-xl ">
       <View className="flex flex-row justify-between">

@@ -6,7 +6,6 @@ import { BodyMeasurements } from "../../types/bodyMeasurementsType";
 
 export async function dataToSync() {
   try {
-    console.log("Synchronizacja datoToSync()")
     const traingings = await getTrainingsToSync();
     const exercises = await getExercisesToSync();
     const measurements = await getMeasurementsToSync();
@@ -36,7 +35,7 @@ async function getExercisesToSync() {
       "SELECT * FROM Exercises WHERE updatedAt > ?",
       [lastSync]
     );
-    return result;
+    return result; 
   } else {
     const result = await db.getAllAsync<Exercise>("SELECT * FROM Exercises");
     return result;

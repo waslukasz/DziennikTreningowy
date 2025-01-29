@@ -81,7 +81,6 @@ export default function TrainingsScreen() {
   const handleDatePicked = (date: Date) => {
     switch (datePickerMode) {
       case "create": {
-        console.log(date);
         handleCreateTraining(date);
         break;
       }

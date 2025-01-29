@@ -49,26 +49,22 @@ export async function createExercise(exercise: Exercise,isAuthenticate:boolean) 
     const guidId=uuidv4();
     const {
       name,
-      description,
       weight,
       repetitions,
       sets,
-      duration,
       trainingId,
     } = exercise;
     const result = await db.runAsync(
       `
-    INSERT INTO Exercises (id, name, description, weight, repetitions, sets, duration, trainingId)
-    VALUES (? ,?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO Exercises (id, name, weight, repetitions, sets, trainingId)
+    VALUES (? , ?, ?, ?, ?, ?)
     `,
       [
         guidId,
         name,
-        description || null,
         weight || null,
         repetitions || null,
         sets || null,
-        duration || null,
         trainingId,
       ]
     );
@@ -113,27 +109,23 @@ export async function updateExercise(exercise: Exercise,isAuthenticate:boolean) 
     const {
       id,
       name,
-      description,
       weight,
       repetitions,
       sets,
-      duration,
       trainingId,
       isDone,
     } = exercise;
     const result = await db.runAsync(
       `
         UPDATE Exercises 
-        SET name = ?, description = ?, weight = ?, repetitions = ?,sets=?, duration = ?, trainingId = ?, isDone=?
+        SET name = ?, weight = ?, repetitions = ?,sets=?, trainingId = ?, isDone=?
         WHERE id = ?
     `,
       [
         name,
-        description || null,
         weight || null,
         repetitions || null,
         sets || null,
-        duration || null,
         trainingId,
         isDone ? 1 : 0,
         id!,

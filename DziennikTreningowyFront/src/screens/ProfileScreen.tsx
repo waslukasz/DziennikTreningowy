@@ -18,7 +18,7 @@ import {
 import { useColorScheme } from "nativewind";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Toast from "react-native-toast-message";
-import { NewPassword } from "../services/auth";
+import { DeleteAccount, NewPassword } from "../services/auth";
 
 export default function ProfileScreen({ navigation }: any) {
   const auth = useContext(AuthContext);
@@ -83,9 +83,9 @@ export default function ProfileScreen({ navigation }: any) {
         weight: parseFloat(weight),
       };
       if (user) {
-        updateUser(newUser,auth.isAuthenticated);
+        updateUser(newUser, auth.isAuthenticated);
       } else {
-        createUser(newUser,auth.isAuthenticated);
+        createUser(newUser, auth.isAuthenticated);
       }
       getUserFromDatabase();
       closeAllItems();
@@ -104,7 +104,7 @@ export default function ProfileScreen({ navigation }: any) {
   };
   const deleteUserProfile = async () => {
     if (user) {
-      deleteUser(auth.isAuthenticated,user.id);
+      deleteUser(auth.isAuthenticated, user.id);
       getUserFromDatabase();
       closeAllItems();
       Toast.show({
@@ -140,6 +140,19 @@ export default function ProfileScreen({ navigation }: any) {
       type: "success",
       text1: "Success",
       text2: "Successfully saved!",
+    });
+  };
+  const handleDeleteAccount = async () => {
+    const result = await DeleteAccount();
+    if (result.status == 200) {
+      auth.logout();
+      closeAllItems();
+      return;
+    }
+    Toast.show({
+      type: "error",
+      text1: "Error",
+      text2: "Try again later!",
     });
   };
   return (
@@ -302,19 +315,6 @@ export default function ProfileScreen({ navigation }: any) {
           </View>
         </View>
       )}
-      {auth.isAuthenticated && (
-        <TouchableOpacity
-          onPress={() => {
-            auth.logout();
-            closeAllItems();
-          }}
-          className="w-full mb-1 h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
-        >
-          <Text className="text-center text-lg text-red-500 text-bold">
-            Log out
-          </Text>
-        </TouchableOpacity>
-      )}
       {user && (
         <TouchableOpacity
           onPress={() =>
@@ -331,12 +331,48 @@ export default function ProfileScreen({ navigation }: any) {
               { cancelable: false }
             )
           }
-          className="w-full h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
+          className="w-full mb-1 h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
         >
           <Text className="text-center mb-1 text-lg text-red-500 text-bold">
             Delete User Profile
           </Text>
         </TouchableOpacity>
+      )}
+      {auth.isAuthenticated && (
+        <>
+          <TouchableOpacity
+            onPress={() =>
+              Alert.alert(
+                "",
+                "Are you sure you want to delete?",
+                [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  { text: "Yes", onPress: handleDeleteAccount },
+                ],
+                { cancelable: false }
+              )
+            }
+            className="w-full mb-1 h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
+          >
+            <Text className="text-center text-lg text-red-500 text-bold">
+              Delete Account
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              auth.logout();
+              closeAllItems();
+            }}
+            className="w-full mb-1 h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
+          >
+            <Text className="text-center text-lg text-red-500 text-bold">
+              Log out
+            </Text>
+          </TouchableOpacity>
+        </>
       )}
     </ScrollView>
   );

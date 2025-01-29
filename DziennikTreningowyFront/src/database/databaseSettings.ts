@@ -1,5 +1,5 @@
 import * as SQLite from "expo-sqlite";
-export const databaseName = "DziennikTreningowy-v1.4.5";
+export const databaseName = "DziennikTreningowy-v1.6.1";
 export const db = SQLite.openDatabaseSync(databaseName);
 export async function initDatabase() {
   await db.execAsync("PRAGMA foreign_keys = ON;");
@@ -8,13 +8,11 @@ export async function initDatabase() {
         CREATE TABLE IF NOT EXISTS Exercises (
             id TEXT PRIMARY KEY,
             name TEXT CHECK(LENGTH(name) <= 30),
-            description TEXT CHECK(LENGTH(Description) <= 30),
             weight INTEGER,
             repetitions INTEGER,
             sets INTEGER,
-            duration TEXT,
             trainingId TEXT,
-            timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%d %H:%M:%S', 'NOW')),
+            timestamp TEXT DEFAULT (STRFTIME('%Y-%m-%dT%H:%M:%SZ', 'NOW')),
             updatedAt TEXT DEFAULT (STRFTIME('%Y-%m-%dT%H:%M:%fZ', 'NOW')),
             isDone INTEGER DEFAULT 0,
             FOREIGN KEY (trainingId) REFERENCES trainings(Id) ON DELETE CASCADE

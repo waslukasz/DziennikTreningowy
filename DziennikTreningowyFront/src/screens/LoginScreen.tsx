@@ -4,6 +4,8 @@ import { Login } from "../services/auth";
 import LoadingOverlay from "../components/auth/loadingOverlay";
 import Toast from "react-native-toast-message";
 import { AuthContext } from "../components/auth/authContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { synchronize } from "../services/sync";
 
 export default function LoginScreen({ navigation }: any) {
   //wyjebac any
@@ -16,6 +18,8 @@ export default function LoginScreen({ navigation }: any) {
       const token = response.accessToken;
       const  refreshToken=response.refreshToken;
       authCtx.authenticate(token,refreshToken);
+      const lastSync=await AsyncStorage.getItem("lastSync")
+      synchronize(lastSync)
       navigation.replace("mainApp", { screen: "Home" });
     } catch (error) {
       Toast.show({

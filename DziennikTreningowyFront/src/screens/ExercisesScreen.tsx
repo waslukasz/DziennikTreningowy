@@ -128,7 +128,9 @@ export default function ExercisesScreen({
             <ExercieseItem
               exercise={item}
               setExerciseToDone={setExerciseToDone}
-            ></ExercieseItem>
+            >
+              
+            </ExercieseItem>
           )}
           renderHiddenItem={renderHiddenItem}
           keyExtractor={(item) => item.id!.toString()}

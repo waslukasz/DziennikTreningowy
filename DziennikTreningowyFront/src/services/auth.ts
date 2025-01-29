@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../axios/axios";
 
-
 export async function CreateUser(
   email: string,
   password: string,
@@ -23,13 +22,18 @@ export async function Login(email: string, password: string) {
 }
 
 export async function NewPassword(oldPassword: string, newPassword: string) {
-  const response = await api.put(
-    "/api/auth/update",
-    {
+  const response = await api
+    .put("/api/auth/update", {
       newPassword: newPassword,
       currentPassword: oldPassword,
-    },
-  ).catch(function (error) {
+    })
+    .catch(function (error) {
+      return error.response.status;
+    });
+  return response;
+}
+export async function DeleteAccount() {
+  const response = await api.delete("/api/auth/delete").catch(function (error) {
     return error.response.status;
   });
   return response;

@@ -33,7 +33,7 @@ public class SyncRepository : ISyncRepository
 
         var result = new SyncDto()
         {
-            Profile = _mapper.Map<ProfileDetailsDto>(profile),
+            Profile = (lastSync == null || lastSync < profile.UpdatedAt) ? _mapper.Map<ProfileDetailsDto>(profile) : null,
             Trainings = _mapper.Map<IEnumerable<TrainingDetailsDto>>(trainings),
             Exercises = _mapper.Map<IEnumerable<ExerciseDetailsDto>>(exercises),
             Measurments = _mapper.Map<IEnumerable<MeasurmentDetailsDto>>(measurments)
@@ -64,6 +64,7 @@ public class SyncRepository : ISyncRepository
                     foreach (var trainingDto in dto.Trainings)
                     {
                         var existingTraining = existingTrainings.FirstOrDefault(x => x.Id == trainingDto.Id);
+                        if (existingTraining != null) _mapper.Map(trainingDto, existingTraining);
                         var result = existingTraining ?? _mapper.Map<Training>(trainingDto);
 
                         if (existingTraining != null)
@@ -88,6 +89,7 @@ public class SyncRepository : ISyncRepository
                     foreach (var exerciseDto in dto.Exercises)
                     {
                         var existingExercise = existingExercises.FirstOrDefault(x => x.Id == exerciseDto.Id);
+                        if (existingExercise != null) _mapper.Map(exerciseDto, existingExercise);
                         var result = existingExercise ?? _mapper.Map<Exercise>(exerciseDto);
 
                         if (existingExercise != null)
@@ -112,6 +114,7 @@ public class SyncRepository : ISyncRepository
                     foreach (var measurmentDto in dto.Measurments)
                     {
                         var existingMeasurment = existingMeasurments.FirstOrDefault(x => x.Id == measurmentDto.Id);
+                        if (existingMeasurment != null) _mapper.Map(measurmentDto, existingMeasurment);
                         var result = existingMeasurment ?? _mapper.Map<Measurment>(measurmentDto);
 
                         if (existingMeasurment != null)

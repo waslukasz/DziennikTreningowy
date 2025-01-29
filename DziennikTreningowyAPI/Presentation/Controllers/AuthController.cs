@@ -99,7 +99,8 @@ public class AuthController : Controller
     [Authorize]
     public async Task<IActionResult> Delete()
     {
-        // TODO: Soft delete, turn account inactive, and make a way to delete data permanently after 1 month.
-        throw new NotImplementedException();
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        await _accountService.DeleteAsync(Guid.Parse(userIdClaim));
+        return Ok();
     }
 }

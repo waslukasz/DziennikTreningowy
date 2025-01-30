@@ -2,11 +2,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { AuthContextValue } from "../components/auth/authContext";
 //const API_URL = "http://172.20.10.4:8000";
-// const API_URL = "http://192.168.1.55:8000";
-const API_URL = "http://192.168.0.15:8000";
+ const API_URL = "http://192.168.1.55:8000";
+//const API_URL = "http://192.168.0.15:8000";
 
 const api = axios.create({
   baseURL: API_URL,
+  timeout:10000,
+  timeoutErrorMessage:"Network timeout. Check your internet connection and try again.",
   headers: {
     "Content-Type": "application/json",
   },

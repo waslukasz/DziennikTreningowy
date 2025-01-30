@@ -12,7 +12,7 @@ export async function createToDelete(id: string, type: "training" | "exercise" |
       return false;
     }
   }
-export async function deleteToDelete() {
+export async function clearToDelete() {
     try{
         await db.runAsync("DELETE FROM ToDelete");
         return true

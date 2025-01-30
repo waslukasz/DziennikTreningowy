@@ -11,14 +11,14 @@ export async function CreateUser(
     password: password,
     profile: userProfile,
   });
-  return response.data;
+  return response;
 }
 export async function Login(email: string, password: string) {
   const response = await api.post("/api/auth/login", {
     email: email,
     password: password,
-  });
-  return response.data;
+  })
+  return response;
 }
 
 export async function NewPassword(oldPassword: string, newPassword: string) {

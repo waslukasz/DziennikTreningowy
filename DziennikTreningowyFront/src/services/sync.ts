@@ -1,11 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../axios/axios";
-import { BodyMeasurements } from "../types/bodyMeasurementsType";
 import {
   dataToSync,
   saveSyncedData,
 } from "../database/repositories/syncRepository";
-import { SyncData } from "../types/syncDataType";
+import { clearToDelete } from "../database/repositories/toDeleteRepository";
 
 export async function synchronize(lastSync?: string | null) {
   try {
@@ -71,8 +70,9 @@ export async function saveData() {
 
     if (response.status === 200) {
       await AsyncStorage.setItem("lastSync", new Date().toISOString());
+      clearToDelete();
     }
   } catch (error) {
-    console.error("Error saving data:", error);
+    console.log("Error saving data:", error);
   }
 }

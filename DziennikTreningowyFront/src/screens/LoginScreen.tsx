@@ -5,7 +5,7 @@ import LoadingOverlay from "../components/auth/loadingOverlay";
 import Toast from "react-native-toast-message";
 import { AuthContext } from "../components/auth/authContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {  saveData, synchronize } from "../services/sync";
+import { saveData, synchronize } from "../services/sync";
 
 export default function LoginScreen({ navigation }: any) {
   //wyjebac any
@@ -15,19 +15,28 @@ export default function LoginScreen({ navigation }: any) {
     setIsAuthenticating(true);
     try {
       const response = await Login(email, password);
-      const token = response.accessToken;
-      const  refreshToken=response.refreshToken;
-      authCtx.authenticate(token,refreshToken);
-      const lastSync=await AsyncStorage.getItem("lastSync")
-      synchronize(lastSync)
-      saveData()
+      const token = response.data.accessToken;
+      const refreshToken = response.data.refreshToken;
+      authCtx.authenticate(token, refreshToken);
+      const lastSync = await AsyncStorage.getItem("lastSync");
+      synchronize(lastSync);
+      saveData();
       navigation.replace("mainApp", { screen: "Home" });
-    } catch (error) {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Incorrect email or password!",
-      });
+    } catch (error: any) {
+      if (error.code === "ECONNABORTED") {
+        Toast.show({
+          type: "error",
+          text1: "Timeout",
+          text2:
+            "The request took too long. Please check your internet connection and try again.",
+        });
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Incorrect email or password!",
+        });
+      }
     }
     setIsAuthenticating(false);
   };

@@ -21,11 +21,12 @@ export async function Login(email: string, password: string) {
   return response;
 }
 
-export async function NewPassword(oldPassword: string, newPassword: string) {
+export async function UpdateAccount(password: string, newPassword?: string,newEmail?:string) {
   const response = await api
     .put("/api/auth/update", {
-      newPassword: newPassword,
-      currentPassword: oldPassword,
+      newEmail:newEmail?newEmail:null,
+      newPassword: newPassword ? newPassword : null,
+      currentPassword: password,
     })
     .catch(function (error) {
       return error.response.status;

@@ -16,28 +16,23 @@ import {
   updateUser,
 } from "../database/repositories/userRepository";
 import { useColorScheme } from "nativewind";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import Toast from "react-native-toast-message";
-import { DeleteAccount, NewPassword } from "../services/auth";
+import { DeleteAccount, UpdateAccount } from "../services/auth";
 import { deleteAllData } from "../database/databaseSettings";
+import NewPasswordInput from "../components/profile/newPasswordInput";
+import NewEmailInput from "../components/profile/newEmailInput";
 
 export default function ProfileScreen({ navigation }: any) {
   const auth = useContext(AuthContext);
   const [user, setUser] = useState<User>();
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showNewEmail, setShowNewEmail] = useState(false);
   const { colorScheme } = useColorScheme();
   const [height, setHeight] = useState("");
   const [weight, setWeight] = useState("");
   const [firstName, setFirstName] = useState("");
 
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [oldPasswordVisibility, setOldPasswordVisibility] = useState(false);
-  const [newPasswordVisibility, setNewPasswordVisibility] = useState(false);
-  const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
-    useState(false);
   const placeholderColor = colorScheme == "dark" ? "white" : "black";
   const iconColor = colorScheme == "dark" ? "white" : "gray";
 
@@ -63,14 +58,11 @@ export default function ProfileScreen({ navigation }: any) {
     }
   };
   const closeAllItems = () => {
+    setShowNewEmail(false)
     setShowNewPassword(false);
     setShowUserProfile(false);
   };
-  const resetPasswordInputs = () => {
-    setOldPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
-  };
+
   useEffect(() => {
     getUserFromDatabase();
   }, []);
@@ -102,19 +94,44 @@ export default function ProfileScreen({ navigation }: any) {
       });
     }
   };
-  const deleteUserProfile = async () => {
-    if (user) {
-      deleteUser(auth.isAuthenticated, user.id);
-      getUserFromDatabase();
-      closeAllItems();
+  const changeEmail = async (
+    newEmail: string,
+    confirmEmail: string,
+    password: string
+  ) => {
+    const emailIsValid = newEmail.includes("@");
+    const passwordIsValid = password.length > 6;
+    const emailsAreEqual = newEmail === confirmEmail;
+    if (!passwordIsValid || !emailsAreEqual || !emailIsValid) {
       Toast.show({
-        type: "success",
-        text1: "Success",
-        text2: "Successfully deleted!",
+        type: "error",
+        text1: "Error",
+        text2: "Invalid inputs!",
       });
+      return;
     }
+    const result = await UpdateAccount(password,undefined,newEmail);
+    if (result == 400) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Please check your input and try again.",
+      });
+      return;
+    }
+    closeAllItems();
+    Toast.show({
+      type: "success",
+      text1: "Success",
+      text2: "Successfully saved!",
+    });
   };
-  const changePassword = async () => {
+
+  const changePassword = async (
+    oldPassword: string,
+    newPassword: string,
+    confirmPassword: string
+  ) => {
     const oldPasswordIsEmpty = oldPassword.length > 0;
     const passwordIsValid = newPassword.length > 6;
     const passwordsAreEqual = newPassword === confirmPassword;
@@ -126,7 +143,7 @@ export default function ProfileScreen({ navigation }: any) {
       });
       return;
     }
-    const result = await NewPassword(oldPassword, newPassword);
+    const result = await UpdateAccount(oldPassword, newPassword);
     if (result == 400) {
       Toast.show({
         type: "error",
@@ -155,12 +172,17 @@ export default function ProfileScreen({ navigation }: any) {
       text2: "Try again later!",
     });
   };
-  const handleDeleteAllData=async()=>{
+  const handleDeleteAllData = async () => {
     deleteAllData();
     closeAllItems();
     auth.logout();
     getUserFromDatabase();
-  }
+    Toast.show({
+      type: "success",
+      text1: "Success",
+      text2: "Successfully deleted!",
+    });
+  };
   return (
     <ScrollView className="flex-1 bg-zinc-100 dark:bg-zinc-500 p-1">
       {!auth.isAuthenticated && (
@@ -231,8 +253,26 @@ export default function ProfileScreen({ navigation }: any) {
       {auth.isAuthenticated && (
         <TouchableOpacity
           onPress={() => {
+            setShowNewEmail(!showNewEmail);
+            // resetEmailInputs();
+          }}
+          className="mb-1 w-full h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
+        >
+          <Text className="text-center text-lg dark:text-white ">
+            Set new email
+          </Text>
+        </TouchableOpacity>
+      )}
+      {showNewEmail && (
+        <NewEmailInput
+          handleSetNewEmail={changeEmail}
+          setShowNewEmail={() => setShowNewEmail(false)}
+        ></NewEmailInput>
+      )}
+      {auth.isAuthenticated && (
+        <TouchableOpacity
+          onPress={() => {
             setShowNewPassword(!showNewPassword);
-            resetPasswordInputs();
           }}
           className="mb-1 w-full h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
         >
@@ -242,84 +282,10 @@ export default function ProfileScreen({ navigation }: any) {
         </TouchableOpacity>
       )}
       {showNewPassword && (
-        <View>
-          <View className={inputStyle}>
-            <TextInput
-              className="flex-1 text-black dark:text-white"
-              value={oldPassword}
-              secureTextEntry={!oldPasswordVisibility}
-              onChangeText={(text) => setOldPassword(text)}
-              autoCapitalize="none"
-              keyboardType="default"
-              placeholderTextColor={placeholderColor}
-              placeholder="Old password"
-              textContentType="password"
-            ></TextInput>
-            <Pressable
-              className="p-1"
-              onPress={() => setOldPasswordVisibility(!oldPasswordVisibility)}
-            >
-              <FontAwesome6 name="eye-slash" size={20} color={iconColor} />
-            </Pressable>
-          </View>
-          <View className={inputStyle}>
-            <TextInput
-              className="flex-1 text-black dark:text-white"
-              secureTextEntry={!newPasswordVisibility}
-              value={newPassword}
-              autoCapitalize="none"
-              keyboardType="default"
-              textContentType="newPassword"
-              onChangeText={(text) => setNewPassword(text)}
-              placeholderTextColor={placeholderColor}
-              placeholder="New password"
-            ></TextInput>
-            <Pressable
-              className="p-1"
-              onPress={() => setNewPasswordVisibility(!newPasswordVisibility)}
-            >
-              <FontAwesome6 name="eye-slash" size={20} color={iconColor} />
-            </Pressable>
-          </View>
-          <View className={inputStyle}>
-            <TextInput
-              className="flex-1 text-black dark:text-white"
-              secureTextEntry={!confirmPasswordVisibility}
-              value={confirmPassword}
-              autoCapitalize="none"
-              keyboardType="default"
-              textContentType="oneTimeCode"
-              onChangeText={(text) => setConfirmPassword(text)}
-              placeholderTextColor={placeholderColor}
-              placeholder="Confirm new password"
-            ></TextInput>
-            <Pressable
-              className="p-1"
-              onPress={() =>
-                setConfirmPasswordVisibility(!confirmPasswordVisibility)
-              }
-            >
-              <FontAwesome6 name="eye-slash" size={20} color={iconColor} />
-            </Pressable>
-          </View>
-          <View className=" flex flex-row justify-center my-2">
-            <TouchableOpacity
-              onPress={() => {
-                setShowNewPassword(false);
-                resetPasswordInputs();
-              }}
-              className=" h-12 justify-center items-center w-2/5 mx-1 bg-red-400  rounded-xl "
-            >
-              <Text className="dark:text-white">Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={changePassword}
-              className=" h-12 justify-center items-center w-2/5 mx-1 bg-green-400  rounded-xl "
-            >
-              <Text className="dark:text-white">Save</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        <NewPasswordInput
+          handleSetNewPassword={changePassword}
+          setShowNewPassword={() => setShowNewPassword(false)}
+        ></NewPasswordInput>
       )}
       <TouchableOpacity
         onPress={() =>

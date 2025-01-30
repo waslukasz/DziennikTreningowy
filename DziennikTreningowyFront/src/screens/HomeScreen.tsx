@@ -33,6 +33,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       let user = await getUser();
       if (user) {
         setUserName(user.firstName);
+      } else {
+        setUserName(null);
       }
     }
     async function getTrainingData() {
@@ -41,12 +43,17 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         let exercisesCount = await countExercisesInTraining(training.id);
         setExercisesCount(exercisesCount);
         setLastTraining(training);
+      } else {
+        setExercisesCount(null);
+        setLastTraining(null);
       }
     }
     async function getMeasurement() {
       let measurement = await getLastMeasurement();
       if (measurement) {
         setLastMeasurement(measurement);
+      }else{
+        setLastMeasurement(null);
       }
     }
     getMeasurement();

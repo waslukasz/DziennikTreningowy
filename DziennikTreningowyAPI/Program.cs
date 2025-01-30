@@ -39,7 +39,6 @@ builder.Services.AddScoped<IMeasurementRepository, MeasurementRepository>();
 builder.Services.AddScoped<ISyncRepository, SyncRepository>();
 // Services
 builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<ISyncService, SyncService>();
 // Validators
 builder.Services.AddScoped<IValidator<AccountRegisterDto>, AccountRegisterDtoValidator>();

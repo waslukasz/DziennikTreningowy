@@ -6,7 +6,6 @@ public class TrainingDetailsDto
 {
     public Guid Id { get; set; }
     public Guid ProfileId { get; set; }
-    public string Name { get; set; }
-    public DateTime Date { get; set; }
+    public DateTime Timestamp { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

@@ -18,7 +18,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne(account => account.Profile)
             .WithOne(profile => profile.Account)
             .HasForeignKey<Profile>(profile => profile.AccountId)
-            .IsRequired(true)
+            .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Account>()
@@ -31,7 +31,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasMany(profile => profile.Trainings)
             .WithOne(training => training.Profile)
             .HasForeignKey(training => training.ProfileId)
-            .IsRequired(true)
+            .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Profile>()
@@ -50,7 +50,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasMany(training => training.Exercises)
             .WithOne(exercise => exercise.Training)
             .HasForeignKey(exercise => exercise.TrainingId)
-            .IsRequired(true)
+            .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
         
         base.OnModelCreating(modelBuilder);

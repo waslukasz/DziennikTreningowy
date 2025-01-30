@@ -6,9 +6,9 @@ public class Profile
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? Gender { get; set; }
-    public DateTime? BirthDate { get; set; }
     public double? Height { get; set; }
     public double? Weight { get; set; }
+    public DateTime? BirthDate { get; set; }
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
     public Guid AccountId { get; set; }

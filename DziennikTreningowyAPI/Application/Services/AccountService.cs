@@ -85,7 +85,7 @@ public class AccountService : IAccountService
         if (dto.NewPassword != null)
         {
             if (_hasher.VerifyPassword(dto.NewPassword, account.PasswordHash))
-                throw new InvalidOperationException("New password cannot be same as current password");
+                throw new AccountUpdateException("New password cannot be same as current password");
 
             account.PasswordHash = _hasher.HashPassword(dto.NewPassword);
         }

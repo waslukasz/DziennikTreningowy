@@ -28,6 +28,7 @@ export async function createUser(user: User, isAuthenticate: boolean) {
   }
 }
 export async function getUser() {
+  // const result = await db.getAllAsync<User>("SELECT * FROM User");
   const result = await db.getFirstAsync<User>("SELECT * FROM User");
   return result;
 }
@@ -41,7 +42,7 @@ export async function updateUser(user: User, isAuthenticate: boolean) {
           SET firstName = ?, height = ?, weight = ?, updatedAt = ?
           WHERE id = ?
         `,
-      [firstName || null, height || null, weight || null,updatedAt, id!]
+      [firstName || null, height || null, weight || null, updatedAt, id!]
     );
     if (result.changes && result.changes > 0) {
       if (isAuthenticate) {

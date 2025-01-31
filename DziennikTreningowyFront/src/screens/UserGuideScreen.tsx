@@ -60,8 +60,8 @@ By default, the current week is selected. Use the left arrow to go back one week
         <GuideList text="Clicking 'Delete all data' button will remove all local data." />
         <GuideText text="After loggin in, you will have access to:" />
         <GuideList text="The 'Set new password' button, which allows you to change your password after correctly filling out the form and pressing the green button." />
-        <GuideList text="The 'Delete all data' button, which will remove all data stored in the cloud." />
-        <GuideList text="The 'Delete account' button, which will delete your account." />
+        <GuideList text="A ranking page where you can find the results of the top five users and your own score." />
+        <GuideList text="The 'Delete account' button, which will delete your account and all your data stored in the cloud" />
         <GuideList text="The 'Logout' button, which will log you out." />
         <Line />
         <GuideHeader text="Application settings" />

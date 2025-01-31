@@ -41,6 +41,7 @@ import SettingsScreen from "./src/screens/SettingsScreen";
 import { useColorScheme } from "nativewind";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import UserGuideScreen from "./src/screens/UserGuideScreen";
+import RankingScreen from "./src/screens/RankingScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -195,6 +196,7 @@ export default function App() {
           options={{ title: "" }}
           component={ProfileScreen}
         />
+        <Stack.Screen name="Ranking" component={RankingScreen} />
       </Stack.Navigator>
     );
   };
@@ -221,6 +223,7 @@ export default function App() {
           options={{ title: "" }}
           component={SettingsScreen}
         />
+        <Stack.Screen name="UserGuide" component={UserGuideScreen} />
       </Stack.Navigator>
     );
   };
@@ -342,19 +345,6 @@ export default function App() {
         <Tab.Screen
           name="SignUp"
           component={SignUpScreen}
-          options={() => ({
-            tabBarButton: () => null,
-            headerStyle: {
-              backgroundColor: bgColor,
-            },
-            headerTitleStyle: {
-              color: fontColor,
-            },
-          })}
-        />
-        <Tab.Screen
-          name="UserGuide"
-          component={UserGuideScreen}
           options={() => ({
             tabBarButton: () => null,
             headerStyle: {

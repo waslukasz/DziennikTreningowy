@@ -25,6 +25,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Profile: undefined;
   UserGuide: undefined;
+  Ranking: undefined;
 };
 export type TrainingScreenProps = NativeStackScreenProps<
   RootStackParamList,

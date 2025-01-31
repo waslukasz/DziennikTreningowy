@@ -58,7 +58,7 @@ export default function ProfileScreen({ navigation }: any) {
     }
   };
   const closeAllItems = () => {
-    setShowNewEmail(false)
+    setShowNewEmail(false);
     setShowNewPassword(false);
     setShowUserProfile(false);
   };
@@ -110,7 +110,7 @@ export default function ProfileScreen({ navigation }: any) {
       });
       return;
     }
-    const result = await UpdateAccount(password,undefined,newEmail);
+    const result = await UpdateAccount(password, undefined, newEmail);
     if (result == 400) {
       Toast.show({
         type: "error",
@@ -192,6 +192,16 @@ export default function ProfileScreen({ navigation }: any) {
         >
           <Text className=" text-center text-lg dark:text-white">Login</Text>
         </Pressable>
+      )}
+      {auth.isAuthenticated && (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Ranking");
+          }}
+          className="mb-1 w-full h-16 justify-center bg-white dark:bg-zinc-400 dark:border-white"
+        >
+          <Text className="text-center text-lg dark:text-white ">Ranking</Text>
+        </TouchableOpacity>
       )}
       <TouchableOpacity
         onPress={() => {
